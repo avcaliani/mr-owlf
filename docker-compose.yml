@@ -2,7 +2,11 @@
 version: '3.7'
 
 services:
-    mongodb:
+
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    #  DATABASE
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
+    db:
         image: mongo:latest
         container_name: mr-owlf-mongodb
         restart: always
@@ -14,4 +18,18 @@ services:
             - 27017:27017
         volumes:
             - ./mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    #  DATA STREAM SERVICES
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
+    dss:
+        image: mr-owlf-dss
+        container_name: mr-owlf-dss
+        # restart: always
+        environment:
+            MR_OWLF_DB_CONN: db
+            MR_OWLF_DB_PORT: "27017"
+            MR_OWLF_DB_NAME: "mr-owlf-db"
+            MR_OWLF_DB_USER: "dss"
+            MR_OWLF_DB_PASSWORD: "D4t4SS"
 
