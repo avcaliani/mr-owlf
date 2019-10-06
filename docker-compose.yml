@@ -33,3 +33,21 @@ services:
             MR_OWLF_DB_USER: "dss"
             MR_OWLF_DB_PASSWORD: "D4t4SS"
 
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    #  MACHINE LEARNING SERVICES
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
+    mls:
+        image: mr-owlf-mls
+        container_name: mr-owlf-mls
+        # restart: always
+        environment:
+            MR_OWLF_DB_CONN: db
+            MR_OWLF_DB_PORT: "27017"
+            MR_OWLF_DB_NAME: "mr-owlf-db"
+            MR_OWLF_DB_USER: "mls"
+            MR_OWLF_DB_PASSWORD: "ML34rn"
+            MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
+        volumes:
+            - ./docker-shared:/usr/src/mr-owlf/shared/
+ 
+

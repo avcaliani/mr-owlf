@@ -1,7 +1,9 @@
 /*
- * @author      avcaliani
- * @project     mr-owlf
- * @description Initialization Script
+ * @author      Anthony Vilarim Caliani
+ * @contact      github.com/avcaliani
+ * 
+ * @description
+ * Mr. Owlf database initialization script
  */
 
 db.createUser({
@@ -18,3 +20,10 @@ db.createUser({
     ]
 });
 
+db.createUser({
+    user: "mls",
+    pwd: "ML34rn",
+    roles: [
+        { role: "read", db: "mr-owlf-db" }
+    ]
+});

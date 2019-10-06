@@ -1,2 +1,10 @@
+# OS
 *.DS_Store
 *.swp
+
+# Dev
+docker-shared
+
+# IDEs
+.vscode
+.idea

@@ -66,6 +66,7 @@ case "$1" in
   start)
     cool "Starting project..."
     build_image "mr-owlf-dss"
+    build_image "mr-owlf-mls"
     docker-compose up -d
     ;;
 
