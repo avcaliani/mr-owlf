@@ -34,9 +34,9 @@ def run():
     db = client['mr-owlf-db']
     posts = db['posts']
     result = posts.insert_one({
-        'title': 'Python and MongoDB',
-        'content': 'PyMongo is fun, you guys',
-        'author': 'Scott'
+        'title': 'Mr. Owlf App',
+        'content': 'App works!',
+        'author': 'avcaliani'
     })
     print('One post: {0}'.format(result.inserted_id))
     # posts.drop()
