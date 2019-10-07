@@ -67,6 +67,7 @@ case "$1" in
     cool "Starting project..."
     build_image "mr-owlf-dss"
     build_image "mr-owlf-mls"
+    build_image "mr-owlf-api"
     docker-compose up -d
     ;;
 

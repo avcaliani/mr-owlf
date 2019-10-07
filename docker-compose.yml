@@ -49,5 +49,19 @@ services:
             MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
         volumes:
             - ./docker-shared:/usr/src/mr-owlf/shared/
+
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    #  API
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
+    api:
+        image: mr-owlf-api
+        container_name: mr-owlf-api
+        restart: always
+        ports:
+            - 80:80
+        environment:
+            MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
+        volumes:
+            - ./docker-shared:/usr/src/mr-owlf/shared/
  
 

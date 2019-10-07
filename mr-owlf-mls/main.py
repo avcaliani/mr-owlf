@@ -37,11 +37,14 @@ def run():
     posts = db['posts']
 
     results = posts.find()
+    _results = []
     for post in results:
+        post['_id'] = str(post['_id'])
+        _results.append(post)
         print(f'* {post}')
 
     out_file = open(CLF_FILE, 'wb')
-    dump(list(results), out_file, -1)
+    dump(list(_results), out_file, -1)
 
     out_file.close()
     client.close()
