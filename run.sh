@@ -69,6 +69,11 @@ case "$1" in
     build_image "mr-owlf-mls"
     build_image "mr-owlf-api"
     docker-compose up -d
+    if [ "$2" == "--init-db" ]; then
+      sleep 30
+      info "(Cassandra) Configuring database..."
+      docker exec -it cassandra-node-01 cqlsh -f /app/init-cassandra.cql
+    fi
     ;;
 
   stop)
@@ -82,9 +87,10 @@ case "$1" in
 
   -h)
     info "  Available Commands:"
-    info "   - start       : Start Application"
-    info "   - stop        : Stop Application"
-    info "   - stop -rm    : Stop Application and remove all containers"
+    info "   - start           : Start Application"
+    info "   - start --init-db : Start Application and start"
+    info "   - stop            : Stop Application"
+    info "   - stop -rm        : Stop Application and remove all containers"
     ;;
 
   *)

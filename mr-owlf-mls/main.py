@@ -1,18 +1,16 @@
 from os import environ as env
 from _pickle import dump
-from pymongo import MongoClient
+from cassandra.cluster import Cluster
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 
-DB_CONN = env.get('MR_OWLF_DB_CONN', 'localhost')
-DB_PORT = env.get('MR_OWLF_DB_PORT', '27017')
-DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
-DB_USER = env.get('MR_OWLF_DB_USER', 'mls')
-DB_PASSWORD = env.get('MR_OWLF_DB_PASSWORD', 'ML34rn')
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', './clf.pkl')
+DB_CONN = env.get('MR_OWLF_DB_CONN', '0.0.0.0')
+DB_PORT = env.get('MR_OWLF_DB_PORT', '9042')
+DB_KEYSPACE = env.get('MR_OWLF_DB_KEYSPACE', 'mr_owlf_ks')
+CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../.shared/clf.pkl')
 
 print("""
         __________
@@ -32,23 +30,22 @@ print("""
 
 
 def run():
-    client = MongoClient(f"mongodb://{DB_USER}:{DB_PASSWORD}@{DB_CONN}:{DB_PORT}/{DB_NAME}")
-    db = client['mr-owlf-db']
-    posts = db['posts']
+    print(f'Connecting to our cluster...')
+    cluster = Cluster([DB_CONN], port=int(DB_PORT))
+    session = cluster.connect(DB_KEYSPACE, wait_for_all_pools=True)
 
-    results = posts.find()
+    print(f'Posts: {session.execute("SELECT COUNT(*) FROM posts").one()[0]}')
+    rows = session.execute('SELECT * FROM posts')
     _results = []
-    for post in results:
-        post['_id'] = str(post['_id'])
-        _results.append(post)
-        print(f'* {post}')
+    for row in rows:
+        _results.append({
+            'author':row.author, 'title':row.title, 'author':row.content
+        })
+        print(row.author, row.title, row.content)
 
     out_file = open(CLF_FILE, 'wb')
     dump(list(_results), out_file, -1)
-
     out_file.close()
-    client.close()
-    pass
 
 
 if __name__ == "__main__":
@@ -57,9 +54,7 @@ Environment
 ----------------------------------------
 MR_OWLF_DB_CONN     '{DB_CONN}'
 MR_OWLF_DB_PORT     '{DB_PORT}'
-MR_OWLF_DB_NAME     '{DB_NAME}'
-MR_OWLF_DB_USER     '{DB_USER}'
-MR_OWLF_DB_PASSWORD '{DB_PASSWORD}'
+MR_OWLF_DB_NAME     '{DB_KEYSPACE}'
 MR_OWLF_CLF_FILE    '{CLF_FILE}'
     """)
     run()

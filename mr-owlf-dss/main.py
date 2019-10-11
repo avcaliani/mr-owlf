@@ -1,16 +1,14 @@
 from os import environ as env
-from pymongo import MongoClient
+from cassandra.cluster import Cluster
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 
-DB_CONN = env.get('MR_OWLF_DB_CONN', 'localhost')
-DB_PORT = env.get('MR_OWLF_DB_PORT', '27017')
-DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
-DB_USER = env.get('MR_OWLF_DB_USER', 'dss')
-DB_PASSWORD = env.get('MR_OWLF_DB_PASSWORD', 'D4t4SS')
+DB_CONN = env.get('MR_OWLF_DB_CONN', '0.0.0.0')
+DB_PORT = env.get('MR_OWLF_DB_PORT', '9042')
+DB_KEYSPACE = env.get('MR_OWLF_DB_KEYSPACE', 'mr_owlf_ks')
 
 print("""
       __________
@@ -25,23 +23,26 @@ print("""
         _||_||_
          -- --
         Mr. Owlf
- > Data Sream Service <
+ > Data Stream Service <
 """)
 
 
 def run():
-    client = MongoClient(f"mongodb://{DB_USER}:{DB_PASSWORD}@{DB_CONN}:{DB_PORT}/{DB_NAME}")
-    db = client['mr-owlf-db']
-    posts = db['posts']
-    result = posts.insert_one({
-        'title': 'Mr. Owlf App',
-        'content': 'App works!',
-        'author': 'avcaliani'
-    })
-    print('One post: {0}'.format(result.inserted_id))
-    # posts.drop()
-    client.close()
-    pass
+    print(f'Connecting to our cluster...')
+    cluster = Cluster([DB_CONN], port=int(DB_PORT))
+    session = cluster.connect(DB_KEYSPACE, wait_for_all_pools=True)
+
+    print(f'Posts: {session.execute("SELECT COUNT(*) FROM posts").one()[0]}')
+    print(f'Inserting new post...')
+    session.execute(
+        "INSERT INTO posts (author, title, content) VALUES (%s, %s, %s)",
+        ('dss', 'Post X', 'Content 0X')
+    )
+
+    print(f'(Updated) Posts: {session.execute("SELECT COUNT(*) FROM posts").one()[0]}')
+    rows = session.execute('SELECT * FROM posts')
+    for row in rows:
+        print(row.author, row.title, row.content)
 
 
 if __name__ == "__main__":
@@ -50,9 +51,7 @@ Environment
 ----------------------------------------
 MR_OWLF_DB_CONN     '{DB_CONN}'
 MR_OWLF_DB_PORT     '{DB_PORT}'
-MR_OWLF_DB_NAME     '{DB_NAME}'
-MR_OWLF_DB_USER     '{DB_USER}'
-MR_OWLF_DB_PASSWORD '{DB_PASSWORD}'
+MR_OWLF_DB_NAME     '{DB_KEYSPACE}'
     """)
     run()
 else:

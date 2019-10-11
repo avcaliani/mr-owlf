@@ -3,7 +3,8 @@
 *.swp
 
 # Dev
-docker-shared
+.shared
+.data
 
 # IDEs
 .vscode
