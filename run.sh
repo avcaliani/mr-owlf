@@ -22,7 +22,7 @@ info() {
 }
 
 error() {
-  echo -e "\033[0;31mERROR\033[00m  $1"
+  echo -e "\033[1;31mERROR\033[00m  $1"
 }
 
 build_image() {
@@ -75,13 +75,16 @@ case "$1" in
     cool "Cleaning things up..."
     docker-compose stop
     docker stop $(docker ps -a -q)
-    docker rm $(docker ps -a -q)
+    if [ "$2" == "-rm" ]; then
+      docker rm $(docker ps -a -q)
+    fi
     ;;
 
   -h)
     info "  Available Commands:"
     info "   - start       : Start Application"
     info "   - stop        : Stop Application"
+    info "   - stop -rm    : Stop Application and remove all containers"
     ;;
 
   *)
