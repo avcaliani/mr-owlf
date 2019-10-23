@@ -11,7 +11,10 @@ DB_CONN = env.get('MR_OWLF_DB_CONN', '0.0.0.0')
 DB_PORT = env.get('MR_OWLF_DB_PORT', '9042')
 DB_KEYSPACE = env.get('MR_OWLF_DB_KEYSPACE', 'mr_owlf_ks')
 
-print("""
+init()  # Initializing Logger
+log = getLogger('root')
+
+log.info("""
       __________
      / ___  ___ \\
     / / @ \/ @ \ \\
@@ -47,8 +50,6 @@ def run():
 
 
 if __name__ == "__main__":
-    init()  # Initializing Logger
-    log = getLogger('root')
     log.info(f"""
 Environment
 ----------------------------------------
