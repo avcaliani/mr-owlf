@@ -3,8 +3,8 @@ FROM python:3
 WORKDIR /usr/src/mr-owlf-dss
 
 COPY requirements.txt ./
-COPY *.py .
+COPY mr_owlf_dss ./mr_owlf_dss
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD [ "python", "./main.py" ]
+CMD [ "python", "./mr_owlf_dss/main.py" ]

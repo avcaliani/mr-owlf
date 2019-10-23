@@ -29,7 +29,10 @@ services:
         # restart: always
         depends_on:
             - cassandra-node-01
+        command: sleep 180
         environment:
+            MR_OWLF_ENV: "DOCKER"
+            MR_OWLF_LOG_FILE: "/log/mr-owlf-dss.log"
             MR_OWLF_DB_CONN: cassandra-node-01
             MR_OWLF_DB_PORT: "9042"
             MR_OWLF_DB_KEYSPACE: "mr_owlf_ks"
@@ -43,7 +46,10 @@ services:
         # restart: always
         depends_on:
             - cassandra-node-01
+        command: sleep 300
         environment:
+            MR_OWLF_ENV: "DOCKER"
+            MR_OWLF_LOG_FILE: "/log/mr-owlf-mls.log"
             MR_OWLF_DB_CONN: cassandra-node-01
             MR_OWLF_DB_PORT: "9042"
             MR_OWLF_DB_KEYSPACE: "mr_owlf_ks"
