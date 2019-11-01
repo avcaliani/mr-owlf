@@ -32,10 +32,12 @@ services:
         command: sleep 180
         environment:
             MR_OWLF_ENV: "DOCKER"
-            MR_OWLF_LOG_FILE: "/log/mr-owlf-dss.log"
+            MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-dss.log"
             MR_OWLF_DB_CONN: cassandra-node-01
             MR_OWLF_DB_PORT: "9042"
             MR_OWLF_DB_KEYSPACE: "mr_owlf_ks"
+        volumes:
+            - ./.shared/logs:/usr/src/mr-owlf/logs/
 
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     #  MACHINE LEARNING SERVICES
@@ -49,13 +51,14 @@ services:
         command: sleep 300
         environment:
             MR_OWLF_ENV: "DOCKER"
-            MR_OWLF_LOG_FILE: "/log/mr-owlf-mls.log"
+            MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-mls.log"
             MR_OWLF_DB_CONN: cassandra-node-01
             MR_OWLF_DB_PORT: "9042"
             MR_OWLF_DB_KEYSPACE: "mr_owlf_ks"
             MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
         volumes:
             - ./.shared:/usr/src/mr-owlf/shared/
+            - ./.shared/logs:/usr/src/mr-owlf/logs/
 
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     #  API

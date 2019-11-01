@@ -45,7 +45,7 @@ def run():
         _results.append({
             'author': row.author, 'title': row.title, 'author': row.content
         })
-        log.info(row.author, row.title, row.content)
+        log.info(f'{row.author}, {row.title}, {row.content}')
 
     out_file = open(CLF_FILE, 'wb')
     dump(list(_results), out_file, -1)
