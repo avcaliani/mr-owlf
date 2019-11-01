@@ -1,0 +1,23 @@
+# =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+#  THIS DOCKER FILE IS HERE FOR DEVELOPMENT PURPOSES ONLY!
+# =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+version: '3.7'
+
+services:
+
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    #  CASSANDRA: NODE 01
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    cassandra-dev:
+        image: cassandra:3.11
+        container_name: cassandra-dev
+        volumes:
+            - ../.data/node-01:/var/lib/cassandra/data
+            - ./init.cql:/app/init-cassandra.cql
+        ports:
+            - 9042:9042
+        environment:
+            - CASSANDRA_START_RPC=true
+            - CASSANDRA_CLUSTER_NAME=mr-owlf-cluster
+            - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+            - CASSANDRA_DC=mr-owlf-datacenter

@@ -6,7 +6,7 @@ __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 APP_ENV = env.get('MR_OWLF_ENV', 'DEV')
-LOG_FILE = env.get('MR_OWLF_LOG_FILE', './mls.log')
+LOG_FILE = env.get('MR_OWLF_LOG_FILE', '../mls.log')
 
 
 def init():

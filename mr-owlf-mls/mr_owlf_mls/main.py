@@ -11,7 +11,7 @@ __license__ = 'MIT'
 DB_CONN = env.get('MR_OWLF_DB_CONN', '0.0.0.0')
 DB_PORT = env.get('MR_OWLF_DB_PORT', '9042')
 DB_KEYSPACE = env.get('MR_OWLF_DB_KEYSPACE', 'mr_owlf_ks')
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../.shared/clf.pkl')
+CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../../.shared/clf.pkl')
 
 init()  # Initializing Logger
 log = getLogger('root')
