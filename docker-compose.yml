@@ -29,7 +29,6 @@ services:
         # restart: always
         depends_on:
             - cassandra-node-01
-        command: sleep 180
         environment:
             MR_OWLF_ENV: "DOCKER"
             MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-dss.log"
@@ -48,7 +47,6 @@ services:
         # restart: always
         depends_on:
             - cassandra-node-01
-        command: sleep 300
         environment:
             MR_OWLF_ENV: "DOCKER"
             MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-mls.log"
