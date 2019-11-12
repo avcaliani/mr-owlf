@@ -1,7 +1,7 @@
 # 🦉 Mr. Owlf
 By Anthony Vilarim Caliani
 
-[![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/docker-19.03.2-dodgerblue.svg)](#) [![#](https://img.shields.io/badge/docker--compose-1.24.1-blueviolet.svg)](#) [![#](https://img.shields.io/badge/mongodb-latest-brightgreen.svg)](#)
+[![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/docker-19.03.2-dodgerblue.svg)](#) [![#](https://img.shields.io/badge/docker--compose-1.24.1-blueviolet.svg)](#) [![#](https://img.shields.io/badge/cassandra-3.11-blue.svg)](#)
 
 ## Description
 **TODO**: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed purus at diam tincidunt ornare. Phasellus tincidunt dui eu augue malesuada rhoncus. Aliquam condimentum, orci a finibus vulputate, sapien ante pharetra ligula, sit amet tristique ante odio sed erat. Proin dictum metus et neque vehicula ornare.
