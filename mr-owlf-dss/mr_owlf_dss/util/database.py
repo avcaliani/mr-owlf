@@ -3,7 +3,7 @@ from os import environ as env
 from sys import exc_info
 from time import sleep
 
-from cassandra.cluster import Cluster
+from cassandra.cluster import Cluster, Session
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
@@ -15,7 +15,7 @@ DB_PORT = env.get('MR_OWLF_DB_PORT', '9042')
 DB_KEYSPACE = env.get('MR_OWLF_DB_KEYSPACE', 'mr_owlf_ks')
 
 
-def connect(retry=True):
+def connect(retry: bool = True) -> Session:
     log = getLogger(LOG_NAME)
     log.info(f'DB Info -> [Host: "{DB_CONN}"] [Port: "{DB_PORT}"] [Key Space: "{DB_KEYSPACE}"]')
     while retry:
@@ -30,7 +30,7 @@ def connect(retry=True):
     return None
 
 
-def disconnect(session):
+def disconnect(session: Session) -> None:
     log = getLogger(LOG_NAME)
     try:
         if session is not None:

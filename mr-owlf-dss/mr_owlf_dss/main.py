@@ -1,6 +1,9 @@
 from logging import getLogger
 
-from ingestors.reddit import Reddit
+from cassandra.cluster import Session
+from ingestor.reddit import Reddit
+from pandas import DataFrame
+from repository.post_repository import PostRepository
 from util import database as db
 from util.log import init
 
@@ -12,10 +15,12 @@ init()
 log = getLogger('root')
 
 
-def run(conn):
+def run(conn: Session) -> None:
 
-    posts = Reddit().exec()
-    print(f'{posts.head(2)}\n...\n{posts.tail(2)}')
+    posts: DataFrame = Reddit().exec()
+    print(f'{posts.head(2)}\n...\n{posts.tail(2)}\n{posts.shape}')
+
+    PostRepository(conn).add(posts)
 
     # log.info(f'Posts: {conn.execute("SELECT COUNT(*) FROM posts").one()[0]}')
     # log.info(f'Inserting new post...')
@@ -32,7 +37,7 @@ def run(conn):
 
 if __name__ == "__main__":
     log.info('Starting Mr. Owlf: Data Stream Service...')
-    _conn = db.connect()
+    _conn: Session = db.connect()
     try:
         run(_conn)
     except:

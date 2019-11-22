@@ -9,7 +9,7 @@ APP_ENV = env.get('MR_OWLF_ENV', 'DEV')
 LOG_FILE = env.get('MR_OWLF_LOG_FILE', './mr-owlf-dss.log')
 
 
-def init():
+def init() -> None:
 
     # Console Handler
     _console = StreamHandler()
