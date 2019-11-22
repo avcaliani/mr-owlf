@@ -19,7 +19,6 @@ class PostRepository:
         query = self.conn.prepare(
             "INSERT INTO posts (author, title, last_update, classification, domain) VALUES (?, ?, ?, ?, ?)"
         )
-        #  pd.to_datetime(df_onion['timestamp'], unit='s')
         for index, post in posts.iterrows():
             self.conn.execute(query, (
                 post.author,
