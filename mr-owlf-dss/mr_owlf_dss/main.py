@@ -16,32 +16,19 @@ log = getLogger('root')
 
 
 def run(conn: Session) -> None:
-
     posts: DataFrame = Reddit().exec()
-    print(f'{posts.head(2)}\n...\n{posts.tail(2)}\n{posts.shape}')
-
-    PostRepository(conn).add(posts)
-
-    # log.info(f'Posts: {conn.execute("SELECT COUNT(*) FROM posts").one()[0]}')
-    # log.info(f'Inserting new post...')
-    # conn.execute(
-    #     "INSERT INTO posts (author, title, content) VALUES (%s, %s, %s)",
-    #     ('dss', 'Post X', 'Content 0X')
-    # )
-    #
-    # log.info(f'(Updated) Posts: {conn.execute("SELECT COUNT(*) FROM posts").one()[0]}')
-    # rows = conn.execute('SELECT * FROM posts')
-    # for row in rows:
-    #     print(row.author, row.title, row.content)
+    post_repository = PostRepository(conn)
+    post_repository.add(posts)
+    log.info(f'Current Posts -> "{post_repository.count()}"')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     log.info('Starting Mr. Owlf: Data Stream Service...')
     _conn: Session = db.connect()
     try:
         run(_conn)
-    except:
-        log.fatal("Application has been interrupted!")
+    except Exception as ex:
+        log.fatal(f'Application has been interrupted!\n{ex}')
     finally:
         db.disconnect(_conn)
-        log.info("See ya!")
+        log.info('See ya!')

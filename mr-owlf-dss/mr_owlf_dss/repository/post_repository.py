@@ -15,4 +15,20 @@ class PostRepository:
         self.conn = conn
 
     def add(self, posts: DataFrame) -> None:
-        pass
+
+        query = self.conn.prepare(
+            "INSERT INTO posts (author, title, last_update, classification, domain) VALUES (?, ?, ?, ?, ?)"
+        )
+        #  pd.to_datetime(df_onion['timestamp'], unit='s')
+        for index, post in posts.iterrows():
+            self.conn.execute(query, (
+                post.author,
+                post.title,
+                post.timestamp,
+                post.domain,
+                str(post.__classification__)
+            ))
+        self.log.info(f'{posts.shape[0]} posts processed \\o/')
+
+    def count(self) -> int:
+        return self.conn.execute("SELECT COUNT(*) FROM posts").one()[0]
