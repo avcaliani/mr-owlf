@@ -16,10 +16,6 @@ USE mr_owlf_ks;
 --  TBL POSTS                                                        --
 -- ----------------------------------------------------------------- --
 CREATE TABLE posts (
-    author text, title text, content text, PRIMARY KEY(author, title)
+    author text, title text, last_update timestamp, domain text, classification text, PRIMARY KEY(author, title, last_update)
 );
 
--- ----------------------------------------------------------------- --
---  POSTS                                                            --
--- ----------------------------------------------------------------- --
-INSERT INTO posts(author, title, content) VALUES ('anthony', 'Post 01', 'Content 01');
