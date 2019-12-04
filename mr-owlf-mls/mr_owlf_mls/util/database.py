@@ -3,6 +3,7 @@ from os import environ as env
 from sys import exc_info
 from time import sleep
 
+from pandas import DataFrame
 from cassandra.cluster import Cluster, Session
 
 __author__ = 'Anthony Vilarim Caliani'
@@ -21,6 +22,7 @@ def connect(retry: bool = True) -> Session:
     while retry:
         try:
             session = Cluster([DB_CONN], port=int(DB_PORT)).connect(DB_KEYSPACE, wait_for_all_pools=True)
+            session.row_factory = __pandas_factory
             log.info('Successfully connected to database!')
             return session
         except:
@@ -39,3 +41,7 @@ def disconnect(session: Session) -> None:
     except:
         log.warning('Error while shutting down database connection.')
         log.debug(f'Error Class: {exc_info()[0]}')
+
+
+def __pandas_factory(cols: list, rows: list) -> DataFrame:
+    return DataFrame(rows, columns=cols)
