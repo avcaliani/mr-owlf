@@ -24,8 +24,8 @@ class PostRepository:
                 post.author,
                 post.title,
                 post.timestamp,
-                post.domain,
-                str(post.__classification__)
+                str(post.__classification__),
+                post.domain
             ))
         self.log.info(f'{posts.shape[0]} posts processed \\o/')
 
