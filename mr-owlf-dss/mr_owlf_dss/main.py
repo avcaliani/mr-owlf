@@ -1,8 +1,10 @@
 from logging import getLogger
+from os import environ as env
 
-from cassandra.cluster import Session
 from ingestor.reddit import Reddit
 from pandas import DataFrame
+from pymongo import MongoClient
+from pymongo.database import Database
 from repository.post_repository import PostRepository
 from util import database as db
 from util.log import init
@@ -11,11 +13,13 @@ __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
+DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
+
 init()
 log = getLogger('root')
 
 
-def run(conn: Session) -> None:
+def run(conn: Database) -> None:
     posts: DataFrame = Reddit().exec()
     post_repository = PostRepository(conn)
     post_repository.add(posts)
@@ -24,11 +28,11 @@ def run(conn: Session) -> None:
 
 if __name__ == '__main__':
     log.info('Starting Mr. Owlf: Data Stream Service...')
-    _conn: Session = db.connect()
+    client: MongoClient = db.connect()
     try:
-        run(_conn)
+        run(client[DB_NAME])
     except Exception as ex:
         log.fatal(f'Application has been interrupted!\n{ex}')
     finally:
-        db.disconnect(_conn)
+        db.disconnect(client)
         log.info('See ya!')

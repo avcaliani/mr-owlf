@@ -1,7 +1,7 @@
 from os import environ as env
 from _pickle import dump
 from logging import getLogger
-from cassandra.cluster import Cluster
+from mongodb.cluster import Cluster
 from util.log import init
 
 __author__ = 'Anthony Vilarim Caliani'
