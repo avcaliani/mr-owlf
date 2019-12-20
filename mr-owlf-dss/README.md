@@ -16,7 +16,7 @@ Mr. Owlf Data Stream Services project.
 
 ```bash
 # That's all buddy...
-python main.py
+./start-dev.sh
 ```
 
 ---
