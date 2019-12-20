@@ -4,21 +4,20 @@ version: '3.7'
 services:
 
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
-    #  CASSANDRA: NODE 01
+    #  MONGO DB
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
-    cassandra-node-01:
-        image: cassandra:3.11
-        container_name: cassandra-node-01
-        volumes:
-            - ./.data/node-01:/var/lib/cassandra/data
-            - ./cassandra/init.cql:/app/init-cassandra.cql
-        ports:
-            - 9042:9042
+    db:
+        image: mongo:latest
+        container_name: mr-owlf-mongodb
+        restart: always
         environment:
-            - CASSANDRA_START_RPC=true
-            - CASSANDRA_CLUSTER_NAME=mr-owlf-cluster
-            - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
-            - CASSANDRA_DC=mr-owlf-datacenter
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: admin
+            MONGO_INITDB_DATABASE: mr-owlf-db
+        ports:
+            - 27017:27017
+        volumes:
+            - ./mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     #  DATA STREAM SERVICES
@@ -28,13 +27,15 @@ services:
         container_name: mr-owlf-dss
         # restart: always
         depends_on:
-            - cassandra-node-01
+            - db
         environment:
             MR_OWLF_ENV: "DOCKER"
             MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-dss.log"
-            MR_OWLF_DB_CONN: cassandra-node-01
-            MR_OWLF_DB_PORT: "9042"
-            MR_OWLF_DB_KEYSPACE: "mr_owlf_ks"
+            MR_OWLF_DB_CONN: db
+            MR_OWLF_DB_PORT: "27017"
+            MR_OWLF_DB_NAME: "mr-owlf-db"
+            MR_OWLF_DB_USER: "dss"
+            MR_OWLF_DB_PASSWORD: "D4t4SS"
         volumes:
             - ./.shared/logs:/usr/src/mr-owlf/logs/
 
@@ -46,13 +47,15 @@ services:
         container_name: mr-owlf-mls
         # restart: always
         depends_on:
-            - cassandra-node-01
+            - db
         environment:
             MR_OWLF_ENV: "DOCKER"
             MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-mls.log"
-            MR_OWLF_DB_CONN: cassandra-node-01
-            MR_OWLF_DB_PORT: "9042"
-            MR_OWLF_DB_KEYSPACE: "mr_owlf_ks"
+            MR_OWLF_DB_CONN: db
+            MR_OWLF_DB_PORT: "27017"
+            MR_OWLF_DB_NAME: "mr-owlf-db"
+            MR_OWLF_DB_USER: "mls"
+            MR_OWLF_DB_PASSWORD: "ML34rn"
             MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
         volumes:
             - ./.shared:/usr/src/mr-owlf/shared/

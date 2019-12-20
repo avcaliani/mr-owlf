@@ -1,6 +1,7 @@
 from os import environ as env
 from _pickle import dump
 from logging import getLogger
+from mongodb.cluster import Cluster
 
 from cassandra.cluster import Session
 from pandas import DataFrame
