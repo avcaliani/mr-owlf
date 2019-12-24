@@ -15,12 +15,10 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
 from sklearn.metrics import accuracy_score, recall_score, precision_score, confusion_matrix
 
+import services.commons as commons
+import ai
+import ai_modeling as modeling
 
-#   ____ ____ ____  
-#  / ___/ ___/ ___| 
-# | |   \___ \___ \ 
-# | |___ ___) |__) |
-#  \____|____/____/ 
 
 # Foreground
 blue       = lambda v: f'\033[1;34;40m{v}\033[0m'
@@ -32,576 +30,86 @@ red        = lambda v: f'\033[1;31;40m{v}\033[0m'
 white      = lambda v: f'\033[1;37;40m{v}\033[0m'
 yellow     = lambda v: f'\033[1;33;40m{v}\033[0m'
 
-__the_onion     = lambda v: print(f'{green("r/The Onion    ")}\t{v}')
-__not_the_onion = lambda v: print(f'{red("r/Not The Onion")  }\t{v}')
-__both          = lambda v: print(f'{blue("[Both]")          }\t{v}')
-__ai            = lambda v: print(f'{magenta("[AI]")         }\t{v}')
-__me            = lambda v: print(f'{cyan("[Anthony]")       }\t{v}')
+
+THE_ONION     = green("[r/The Onion]")
+NOT_THE_ONION = red("[r/Not The Onion]")
+AI            = magenta("[AI]")
+ME            = cyan("[ANTHONY]")
 
 
-
-#  ____          _             _____                      _    _                    
-# |  _ \   __ _ | |_   __ _   |  ___| _   _  _ __    ___ | |_ (_)  ___   _ __   ___ 
-# | | | | / _` || __| / _` |  | |_   | | | || '_ \  / __|| __|| | / _ \ | '_ \ / __|
-# | |_| || (_| || |_ | (_| |  |  _|  | |_| || | | || (__ | |_ | || (_) || | | |\__ \
-# |____/  \__,_| \__| \__,_|  |_|     \__,_||_| |_| \___| \__||_| \___/ |_| |_||___/
-#
-def clean_data(dataframe):
-    # Drop duplicate rows
-    dataframe.drop_duplicates(subset='title', inplace=True)    
-    # Remove punctation
-    dataframe['title'] = dataframe['title'].str.replace('[^\w\s]',' ')
-    # Remove numbers 
-    dataframe['title'] = dataframe['title'].str.replace('[^A-Za-z]',' ')
-    # Make sure any double-spaces are single 
-    dataframe['title'] = dataframe['title'].str.replace('  ',' ')
-    dataframe['title'] = dataframe['title'].str.replace('  ',' ')
-    # Transform all text to lowercase
-    dataframe['title'] = dataframe['title'].str.lower()
-    
-    print("New shape:", dataframe.shape)
+# Not The Onion
+print(f'\n{NOT_THE_ONION}')
+df_not_onion: DataFrame = commons.read('data/not-the-onion.csv')
+commons.clean_data(df_not_onion)
+commons.show_statistics(df_not_onion)
 
 
-
-print("""
-          __               _    _    _                          _               
- _ __    / / _ __    ___  | |_ | |_ | |__    ___   ___   _ __  (_)  ___   _ __  
-| '__|  / / | '_ \  / _ \ | __|| __|| '_ \  / _ \ / _ \ | '_ \ | | / _ \ | '_ \ 
-| |    / /  | | | || (_) || |_ | |_ | | | ||  __/| (_) || | | || || (_) || | | |
-|_|   /_/   |_| |_| \___/  \__| \__||_| |_| \___| \___/ |_| |_||_| \___/ |_| |_|
-""")
-
-df_not_onion: DataFrame = pd.read_csv('data/not-the-onion.csv')
-__not_the_onion(f'shape: {df_not_onion.shape}')
-
-clean_data(df_not_onion)
-__not_the_onion(f'\n{df_not_onion.head()}\n...\n{df_not_onion.tail()}\n\n')
+# The Onion
+print(f'\n{THE_ONION}')
+df_onion: DataFrame = commons.read('data/the-onion.csv')
+commons.clean_data(df_onion)
+commons.show_statistics(df_onion)
 
 
+# Join Data Frames
+print(f'\n{THE_ONION} {NOT_THE_ONION} {yellow("[Natural Language Processing]")}')
 
-print("""
-          __ _____  _             ___          _               
- _ __    / /|_   _|| |__    ___  / _ \  _ __  (_)  ___   _ __  
-| '__|  / /   | |  | '_ \  / _ \| | | || '_ \ | | / _ \ | '_ \ 
-| |    / /    | |  | | | ||  __/| |_| || | | || || (_) || | | |
-|_|   /_/     |_|  |_| |_| \___| \___/ |_| |_||_| \___/ |_| |_|
-""")
-
-df_onion = pd.read_csv('data/the-onion.csv')
-__the_onion(f'shape: {df_onion.shape}')
-
-clean_data(df_onion)
-__the_onion(f'\n{df_onion.head()}\n...\n{df_onion.tail()}\n\n')
-
-
-# 
-# (╯°□°）╯︵ ┻━┻
-# Is there any null values?
-#
-__the_onion(f'(before) shape:\t{df_onion.shape}')
-__not_the_onion(f'(before) shape:\t{df_not_onion.shape}')
-DataFrame([df_onion.isnull().sum(), df_not_onion.isnull().sum()], index=["TheOnion","notheonion"]).T
-
-# 
-# Let's clean them up!
-#
-df_onion.dropna(inplace=True)
-df_not_onion.dropna(inplace=True)
-__the_onion(f'(after) shape:\t{df_onion.shape}')
-__not_the_onion(f'(after) shape:\t{df_not_onion.shape}')
-DataFrame([df_onion.isnull().sum(), df_not_onion.isnull().sum()], index=["TheOnion","notheonion"]).T
-
-
-
-print("""
- .----------------.  .----------------.  .----------------.
-| .--------------. || .--------------. || .--------------. |
-| |  _________   | || |  ________    | || |      __      | |
-| | |_   ___  |  | || | |_   ___ `.  | || |     /  \     | |
-| |   | |_  \_|  | || |   | |   `. \ | || |    / /\ \    | |
-| |   |  _|  _   | || |   | |    | | | || |   / ____ \   | |
-| |  _| |___/ |  | || |  _| |___.' / | || | _/ /    \ \_ | |
-| | |_________|  | || | |________.'  | || ||____|  |____|| |
-| |              | || |              | || |              | |
-| '--------------' || '--------------' || '--------------' |
- '----------------'  '----------------'  '----------------'
-                                   Exploratory Data Analysis
-""")
-# Convert Unix Timestamp to Datetime
-df_onion['timestamp'] = pd.to_datetime(df_onion['timestamp'], unit='s')
-df_not_onion['timestamp'] = pd.to_datetime(df_not_onion['timestamp'], unit='s')
-
-# Show date-range of posts scraped from r/TheOnion and r/nottheonion
-__the_onion(f"start date:\t{df_onion['timestamp'].min()}")
-__the_onion(f"end date:\t{df_onion['timestamp'].max()}")
-__not_the_onion(f"start date:\t{df_not_onion['timestamp'].min()}")
-__not_the_onion(f"end date:\t{df_not_onion['timestamp'].max()}")
-
-
-
-print("""
-          __ _____  _             ___          _               
- _ __    / /|_   _|| |__    ___  / _ \  _ __  (_)  ___   _ __  
-| '__|  / /   | |  | '_ \  / _ \| | | || '_ \ | | / _ \ | '_ \ 
-| |    / /    | |  | | | ||  __/| |_| || | | || || (_) || | | |
-|_|   /_/     |_|  |_| |_| \___| \___/ |_| |_||_| \___/ |_| |_|
-
-------------------------------------------------------------------------------
- Most Active Authors
-------------------------------------------------------------------------------
-""")
-# Set x values: # of posts 
-df_onion_authors = df_onion['author'].value_counts() 
-df_onion_authors: DataFrame = df_onion_authors[df_onion_authors > 100].sort_values(ascending=False)
-__the_onion(f'Authors...\n{df_onion_authors.head()}\n...\n{df_onion_authors.tail()}\n\n')
-
-  
-print("""
-------------------------------------------------------------------------------
- Most Referenced Domains
-------------------------------------------------------------------------------
-""")
-# Set x values: # of posts
-df_onion_domain = df_onion['domain'].value_counts() 
-df_onion_domain = df_onion_domain.sort_values(ascending=False).head(5)
-__the_onion(f'Domains...\n{df_onion_domain.head()}\n...\n{df_onion_domain.tail()}\n\n')
-
-
-
-print("""
-          __               _    _    _                          _               
- _ __    / / _ __    ___  | |_ | |_ | |__    ___   ___   _ __  (_)  ___   _ __  
-| '__|  / / | '_ \  / _ \ | __|| __|| '_ \  / _ \ / _ \ | '_ \ | | / _ \ | '_ \ 
-| |    / /  | | | || (_) || |_ | |_ | | | ||  __/| (_) || | | || || (_) || | | |
-|_|   /_/   |_| |_| \___/  \__| \__||_| |_| \___| \___/ |_| |_||_| \___/ |_| |_|
-
-------------------------------------------------------------------------------
- Most Active Authors
-------------------------------------------------------------------------------
-""")
-# Set x values: # of posts
-df_not_onion_authors = df_not_onion['author'].value_counts() 
-df_not_onion_authors = df_not_onion_authors[df_not_onion_authors > 100].sort_values(ascending=False)
-__not_the_onion(f'Authors...\n{df_not_onion_authors.head()}\n...\n{df_not_onion_authors.tail()}\n\n')
-
-
-print("""
-------------------------------------------------------------------------------
- Most Referenced Domains
-------------------------------------------------------------------------------
-""")
-# Set x values: # of posts greater than 100
-df_nonion_domain = df_not_onion['domain'].value_counts() 
-df_nonion_domain = df_nonion_domain.sort_values(ascending=False).head(5)
-__not_the_onion(f'Domains...\n{df_nonion_domain.head()}\n...\n{df_nonion_domain.tail()}\n\n')
-
-
-
-print("""
- .-----------------.  .----------------.  .----------------.
-| .--------------. || .--------------. || .--------------. |
-| | ____  _____  | || |   _____      | || |   ______     | |
-| ||_   \|_   _| | || |  |_   _|     | || |  |_   __ \   | |
-| |  |   \ | |   | || |    | |       | || |    | |__) |  | |
-| |  | |\ \| |   | || |    | |   _   | || |    |  ___/   | |
-| | _| |_\   |_  | || |   _| |__/ |  | || |   _| |_      | |
-| ||_____|\____| | || |  |________|  | || |  |_____|     | |
-| |              | || |              | || |              | |
-| '--------------' || '--------------' || '--------------' |
- '----------------'  '----------------'  '----------------'
-                                 Natural Language Processing
-""")
 # Combine df_onion & df_not_onion with only 'subreddit' (target) and 'title' (predictor) columns
 df = pd.concat([
   df_onion[['subreddit', 'title']],
   df_not_onion[['subreddit', 'title']]
 ], axis=0)
-__both(f'Combined DF shape: {df.shape}')
-__both(f'Combined DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}\n\n')
+print(f'Combined DF shape: {df.shape}')
+print(f'Combined DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}\n\n')
 
 # Reset the index
 df = df.reset_index(drop=True)
 # Replace `TheOnion` with 1, `nottheonion` with 0
 df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1})
-__both(f'Prepared DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}')
+print(f'Prepared DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}')
 
 
 
-print("""
-  ____                       _    __     __             _                 _            
- / ___|  ___   _   _  _ __  | |_  \ \   / /  ___   ___ | |_   ___   _ __ (_) ____  ___ 
-| |     / _ \ | | | || '_ \ | __|  \ \ / /  / _ \ / __|| __| / _ \ | '__|| ||_  / / _ \\
-| |___ | (_) || |_| || | | || |_    \ V /  |  __/| (__ | |_ | (_) || |   | | / / |  __/
- \____| \___/  \__,_||_| |_| \__|    \_/    \___| \___| \__| \___/ |_|   |_|/___| \___|
-                          ngram_range = (1,1)
+# Count Vectorize - ngram_range = (1,1)
+print(f'\n{THE_ONION}')
+onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=1)
 
-------------------------------------------------------------------------------
- TheOnion
-------------------------------------------------------------------------------
-""")
-# Set variables to show TheOnion Titles
-mask_on = df['subreddit'] == 1
-df_onion_titles = df[mask_on]['title']
-
-# Instantiate a CountVectorizer
-cv1 = CountVectorizer(stop_words = 'english')
-
-# Fit and transform the vectorizer on our corpus
-onion_cvec = cv1.fit_transform(df_onion_titles)
-
-# Convert onion_cvec into a DataFrame
-onion_cvec_df = DataFrame(
-    onion_cvec.toarray(),
-    columns=cv1.get_feature_names()
-)
-
-# Inspect head of Onion Titles cvec
-__the_onion(f'The Onion: {onion_cvec_df.shape}')
-
-
-print("""
-------------------------------------------------------------------------------
- NotTheOnion
-------------------------------------------------------------------------------
-""")
-# Set variables to show NotTheOnion Titles
-mask_no = df['subreddit'] == 0
-df_not_onion_titles = df[mask_no]['title']
-
-# Instantiate a CountVectorizer
-cv2 = CountVectorizer(stop_words = 'english')
-
-# Fit and transform the vectorizer on our corpus
-not_onion_cvec = cv2.fit_transform(df_not_onion_titles)
-
-# Convert onion_cvec into a DataFrame
-not_onion_cvec_df = DataFrame(
-    not_onion_cvec.toarray(),
-    columns=cv2.get_feature_names()
-)
-
-# Inspect head of Not Onion Titles cvec
-__not_the_onion(f'Not The Onion: {not_onion_cvec_df.shape}')
+print(f'\n{NOT_THE_ONION}')
+not_onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=0)
 
 
 
-print("""
- _   _         _                                     
-| | | | _ __  (_)  __ _  _ __   __ _  _ __ ___   ___ 
-| | | || '_ \ | | / _` || '__| / _` || '_ ` _ \ / __|
-| |_| || | | || || (_| || |   | (_| || | | | | |\__ \\
- \___/ |_| |_||_| \__, ||_|    \__,_||_| |_| |_||___/
-                  |___/                              
-
-------------------------------------------------------------------------------
- TheOnion
-------------------------------------------------------------------------------
-""")
-# Set up variables to contain top 5 most used words in Onion
-onion_wc = onion_cvec_df.sum(axis = 0)
-onion_top_5 = onion_wc.sort_values(ascending=False).head(5)
-__the_onion(onion_top_5)
-
-
-print("""
-------------------------------------------------------------------------------
- NotTheOnion
-------------------------------------------------------------------------------
-""")
-# Set up variables to contain top 5 most used words in r/nottheonion
-nonion_wc = not_onion_cvec_df.sum(axis = 0)
-nonion_top_5 = nonion_wc.sort_values(ascending=False).head(5)
-__not_the_onion(nonion_top_5)
-
-
-print("""
-------------------------------------------------------------------------------
- TheOnion x NotTheOnion
-------------------------------------------------------------------------------
-""")
-# Top 5 Bigrams: Create list of unique words in top five
-not_onion_5_set = set(nonion_top_5.index)
-onion_5_set = set(onion_top_5.index)
-
-# Return common words
-common_unigrams = onion_5_set.intersection(not_onion_5_set)
-__both(common_unigrams)
+# Unigrams
+print(f'\n{THE_ONION} {NOT_THE_ONION}')
+common_unigrams = ai.unigrams(onion_cvec_df, not_onion_cvec_df)
 
 
 
-print("""
-  ____                       _    __     __             _                 _            
- / ___|  ___   _   _  _ __  | |_  \ \   / /  ___   ___ | |_   ___   _ __ (_) ____  ___ 
-| |     / _ \ | | | || '_ \ | __|  \ \ / /  / _ \ / __|| __| / _ \ | '__|| ||_  / / _ \\
-| |___ | (_) || |_| || | | || |_    \ V /  |  __/| (__ | |_ | (_) || |   | | / / |  __/
- \____| \___/  \__,_||_| |_| \__|    \_/    \___| \___| \__| \___/ |_|   |_|/___| \___|
-                          ngram_range = (2,2)
+# Count Vectorize - ngram_range = (2,2)
+print(f'\n{THE_ONION}')
+onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=1, ngram_range=(2, 2))
 
-------------------------------------------------------------------------------
- TheOnion
-------------------------------------------------------------------------------
-""")
-# Set variables to show TheOnion Titles
-mask = df['subreddit'] == 1
-df_onion_titles = df[mask]['title']
-
-# Instantiate a CountVectorizer
-cv = CountVectorizer(stop_words = 'english', ngram_range=(2,2))
-
-# Fit and transform the vectorizer on our corpus
-onion_cvec = cv.fit_transform(df_onion_titles)
-
-# Convert onion_cvec into a DataFrame
-onion_cvec_df = DataFrame(
-    onion_cvec.toarray(),
-    columns=cv.get_feature_names()
-)
-
-# Inspect head of Onion Titles cvec
-__the_onion(onion_cvec_df.shape)
-
-
-print("""
-------------------------------------------------------------------------------
- NotTheOnion
-------------------------------------------------------------------------------
-""")
-# Set variables to show NotTheOnion Titles
-mask = df['subreddit'] == 0
-df_not_onion_titles = df[mask]['title']
-
-# Instantiate a CountVectorizer
-cv = CountVectorizer(stop_words = 'english', ngram_range=(2,2))
-
-# Fit and transform the vectorizer on our corpus
-not_onion_cvec = cv.fit_transform(df_not_onion_titles)
-
-# Convert onion_cvec into a DataFrame
-not_onion_cvec_df = DataFrame(
-    not_onion_cvec.toarray(),
-    columns=cv.get_feature_names()
-)
-
-# Inspect head of Not Onion Titles cvec
-__not_the_onion(not_onion_cvec_df.shape)
+print(f'\n{NOT_THE_ONION}')
+not_onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=0, ngram_range=(2, 2))
 
 
 
-print("""
- ____   _                                     
-| __ ) (_)  __ _  _ __   __ _  _ __ ___   ___ 
-|  _ \ | | / _` || '__| / _` || '_ ` _ \ / __|
-| |_) || || (_| || |   | (_| || | | | | |\__ \\
-|____/ |_| \__, ||_|    \__,_||_| |_| |_||___/
-           |___/
-
-------------------------------------------------------------------------------
- TheOnion
-------------------------------------------------------------------------------
-""")
-# Set up variables to contain top 5 most used bigrams in r/TheOnion
-onion_wc = onion_cvec_df.sum(axis = 0)
-onion_top_5 = onion_wc.sort_values(ascending=False).head(5)
-__the_onion(onion_top_5)
+# Bigrams
+print(f'\n{THE_ONION} {NOT_THE_ONION}')
+common_bigrams = ai.unigrams(onion_cvec_df, not_onion_cvec_df)
 
 
-print("""
-------------------------------------------------------------------------------
- NotTheOnion
-------------------------------------------------------------------------------
-""")
-# Set up variables to contain top 5 most used bigrams in r/nottheonion
-nonion_wc = not_onion_cvec_df.sum(axis = 0)
-nonion_top_5 = nonion_wc.sort_values(ascending=False).head(5)
-__not_the_onion(nonion_top_5)
 
-
-print("""
-------------------------------------------------------------------------------
- TheOnion x NotTheOnion
-------------------------------------------------------------------------------
-""")
-# Common Bigrams between Top 5 in r/TheOnion & r/nottheonion
-not_onion_5_list = set(nonion_top_5.index)
-onion_5_list = set(onion_top_5.index)
-
-# Return common words
-common_bigrams = onion_5_list.intersection(not_onion_5_list)
-__both(common_bigrams)
-
-
+# Stop Words
+# ------------------
 # Take out {'man', 'new', 'old', 'people', 'say', 'trump', 'woman', 'year'}
 # from dataset when modeling, since these words occur frequently in both subreddits.
-
-print("""
- ____   _                  __        __                  _      
-/ ___| | |_   ___   _ __   \ \      / /  ___   _ __   __| | ___ 
-\___ \ | __| / _ \ | '_ \   \ \ /\ / /  / _ \ | '__| / _` |/ __|
- ___) || |_ | (_) || |_) |   \ V  V /  | (_) || |   | (_| |\__ \\
-|____/  \__| \___/ | .__/     \_/\_/    \___/ |_|    \__,_||___/
-                   |_|                                          
-Create custom stop_words to include common frequent words
-Referencing the common most-used words, add them to a customized stop_words list.
-""")
-# Create lists 
-custom = stop_words.ENGLISH_STOP_WORDS
-custom = list(custom)
-common_unigrams = list(common_unigrams)
-common_bigrams = list(common_bigrams)
-
-# Append unigrams to list 
-for i in common_unigrams:
-    custom.append(i)
-
-    
-# Append bigrams to list 
-for i in common_bigrams:
-    split_words = i.split(" ")
-    for word in split_words:
-        custom.append(word)
+print(f'\n{THE_ONION} {NOT_THE_ONION}')
+custom = ai.get_stop_words(common_unigrams, common_bigrams)
 
 
-
-print("""
- __  __             _        _  _               
-|  \/  |  ___    __| |  ___ | |(_) _ __    __ _ 
-| |\/| | / _ \  / _` | / _ \| || || '_ \  / _` |
-| |  | || (_) || (_| ||  __/| || || | | || (_| |
-|_|  |_| \___/  \__,_| \___||_||_||_| |_| \__, |
-                                          |___/ 
-Baseline score
-""")
-df['subreddit'].value_counts(normalize=True)
-# I expect my model to be better than 54%.
-# The majority class is 1, or, TheOnion.
-# If the model is not better than 54%, I know the model is not performing well.
-
-X = df['title']
-y = df['subreddit']
-# Train/Test Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
-
-#
-# Model 1: CountVectorizer & Logistic Regression (Best Coefficient Interpretability)
-#
-# TODO: Study!
-pipe = Pipeline([
-  ('cvec', CountVectorizer()),    
-  ('lr', LogisticRegression(solver='liblinear'))
-])
-
-# Tune GridSearchCV
-pipe_params = {
-  'cvec__stop_words': [None, 'english', custom],
-  'cvec__ngram_range': [(1,1), (2,2), (1,3)],
-  'lr__C': [0.01, 1]
-}
-
-gs = GridSearchCV(pipe, param_grid=pipe_params, cv=3)
-gs.fit(X_train, y_train)
-print("\n")
-__ai("Grid Search (CountVectorizer, LogisticRegression)")
-__ai(f"Best score  : {gs.best_score_}")
-__ai(f"Train score : {gs.score(X_train, y_train)}")
-__ai(f"Test score  : {gs.score(X_test, y_test)}")
-
-gs.best_params_
-#
-# Throughout my model testing, none of the stop_word lists were chosen as 
-# a best parameter.
-# So from here on out, I omit them from my parameter selection.
-# Additionally, while the model is overfit, I am optimizing to get the 
-# highest accuracy score in my test set.
-#
-
-#
-# Model 2: TfidfVectorize & Logistic Regression
-#
-# TODO: Study!
-pipe = Pipeline([
-  ('tvect', TfidfVectorizer()),    
-  ('lr', LogisticRegression(solver='liblinear'))
-])
-
-# Tune GridSearchCV
-pipe_params = {
-  'tvect__max_df': [.75, .98, 1.0],
-  'tvect__min_df': [2, 3, 5],
-  'tvect__ngram_range': [(1,1), (1,2), (1,3)],
-  'lr__C': [1]
-}
-
-gs = GridSearchCV(pipe, param_grid=pipe_params, cv=3)
-gs.fit(X_train, y_train)
-print("\n")
-__ai("Grid Search (TfidfVectorizer, LogisticRegression)")
-__ai(f"Best score  : {gs.best_score_}")
-__ai(f"Train score : {gs.score(X_train, y_train)}")
-__ai(f"Test score  : {gs.score(X_test, y_test)}")
-
-gs.best_params_
-# This model is also overfit.
-# However, Model 1 performed with a better test score when comparing
-# Logistic Regression models.
-
-#
-# Model 3: CountVectorizer & MultinomialNB (Best Accuracy Score)
-#
-# TODO: Study!
-pipe = Pipeline([
-  ('cvec', CountVectorizer()),    
-  ('nb', MultinomialNB())
-])
-
-# Tune GridSearchCV
-pipe_params = {
-  'cvec__ngram_range': [(1,1),(1,3)],
-  'nb__alpha': [.36, .6]
-}
-
-gs = GridSearchCV(pipe, param_grid=pipe_params, cv=3)
-gs.fit(X_train, y_train)
-print("\n")
-__ai("Grid Search (CountVectorizer, MultinomialNB)")
-__ai(f"Best score  : {gs.best_score_}")
-__ai(f"Train score : {gs.score(X_train, y_train)}")
-__ai(f"Test score  : {gs.score(X_test, y_test)}")
-
-gs.best_params_
-# The model is overfit, but as I mentioned, I am optimizing for accuracy.
-# I want to ensure that all predictions are correct.
-# That is, all posts from r/TheOnion must be classified as being from the subreddit r/TheOnion,
-# and all posts from r/nottheonion must be classified as being from the subreddit r/nottheonion.
-# This model gave me my best test accuracy score.
-
-#
-# Model 4: TfidfVectorizer & MultinomialNB
-#
-# TODO: Study!
-pipe = Pipeline([
-  ('tvect', TfidfVectorizer()),    
-  ('nb', MultinomialNB())
-])
-
-# Tune GridSearchCV
-pipe_params = {
-  'tvect__max_df': [.75, .98],
-  'tvect__min_df': [4, 5],
-  'tvect__ngram_range': [(1,2), (1,3)],
-  'nb__alpha': [0.1, 1]
-}
-
-gs = GridSearchCV(pipe, param_grid=pipe_params, cv=5)
-gs.fit(X_train, y_train)
-print("\n")
-__ai("Grid Search (TfidfVectorizer, MultinomialNB)")
-__ai(f"Best score  : {gs.best_score_}")
-__ai(f"Train score : {gs.score(X_train, y_train)}")
-__ai(f"Test score  : {gs.score(X_test, y_test)}")
-
-gs.best_params_
-# This model is overfit.
-# When comparing test scores of my MultinomialNB models, Model 3 performs better.
+# Modeling
+modeling.try_out(df, custom)
 
 #
 # Best Models
