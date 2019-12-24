@@ -16,25 +16,14 @@ from sklearn import metrics
 from sklearn.metrics import accuracy_score, recall_score, precision_score, confusion_matrix
 
 import services.commons as commons
-import ai
-import ai_modeling as modeling
+import services.ai as ia
+import services.ai_modeling as modeling
 
 
-# Foreground
-blue       = lambda v: f'\033[1;34;40m{v}\033[0m'
-cyan       = lambda v: f'\033[1;36;40m{v}\033[0m'
-gray       = lambda v: f'\033[1;30;40m{v}\033[0m'
-green      = lambda v: f'\033[1;32;40m{v}\033[0m'
-magenta    = lambda v: f'\033[1;35;40m{v}\033[0m'
-red        = lambda v: f'\033[1;31;40m{v}\033[0m'
-white      = lambda v: f'\033[1;37;40m{v}\033[0m'
-yellow     = lambda v: f'\033[1;33;40m{v}\033[0m'
-
-
-THE_ONION     = green("[r/The Onion]")
-NOT_THE_ONION = red("[r/Not The Onion]")
-AI            = magenta("[AI]")
-ME            = cyan("[ANTHONY]")
+THE_ONION     = f'\033[1;32;40m[r/The Onion]\033[0m'
+NOT_THE_ONION = f'\033[1;31;40m[r/Not The Onion]\033[0m'
+AI            = f'\033[1;35;40m[AI]\033[0m'
+ME            = f'\033[1;36;40m[ANTHONY]\033[0m'
 
 
 # Not The Onion
