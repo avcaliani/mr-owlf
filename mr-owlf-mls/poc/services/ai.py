@@ -1,10 +1,11 @@
+from typing import Tuple
 from pandas import DataFrame, Series, to_datetime, read_csv
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk import download
 from nltk.corpus import stopwords
 
 
-def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: tuple = (1, 1)) -> DataFrame:
+def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, int] = (1, 1)) -> DataFrame:
 
     print(r'+-----------------------------------+')
     print(r'|         Count Vectorizer          |')
