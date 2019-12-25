@@ -1,22 +1,8 @@
-# Basic libraries
-import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
-# Natural Language Processing
-from sklearn.feature_extraction import stop_words
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-
-# Modeling
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.pipeline import Pipeline
-from sklearn.naive_bayes import MultinomialNB
-from sklearn import metrics
-from sklearn.metrics import accuracy_score, recall_score, precision_score, confusion_matrix
-
 import services.commons as commons
-import services.ai as ia
+import services.ai as ai
 import services.ai_modeling as modeling
 
 
@@ -41,20 +27,16 @@ commons.show_statistics(df_onion)
 
 
 # Join Data Frames
-print(f'\n{THE_ONION} {NOT_THE_ONION} {yellow("[Natural Language Processing]")}')
+print(f'\n{THE_ONION} {NOT_THE_ONION} {"[Natural Language Processing]"}')
 
 # Combine df_onion & df_not_onion with only 'subreddit' (target) and 'title' (predictor) columns
-df = pd.concat([
-  df_onion[['subreddit', 'title']],
-  df_not_onion[['subreddit', 'title']]
-], axis=0)
-print(f'Combined DF shape: {df.shape}')
+df = pd.concat([ df_onion[['subreddit', 'title']], df_not_onion[['subreddit', 'title']] ], axis=0)
+print(f'Combined DF shape: {df.shape}\n')
 print(f'Combined DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}\n\n')
 
-# Reset the index
-df = df.reset_index(drop=True)
-# Replace `TheOnion` with 1, `nottheonion` with 0
-df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1})
+
+df = df.reset_index(drop=True) # Reset the index
+df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1}) # Replace `TheOnion` with 1, `nottheonion` with 0
 print(f'Prepared DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}')
 
 
@@ -66,11 +48,9 @@ onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=1)
 print(f'\n{NOT_THE_ONION}')
 not_onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=0)
 
-
-
 # Unigrams
 print(f'\n{THE_ONION} {NOT_THE_ONION}')
-common_unigrams = ai.unigrams(onion_cvec_df, not_onion_cvec_df)
+common_unigrams = list(ai.unigrams(onion_cvec_df, not_onion_cvec_df))
 
 
 
@@ -81,11 +61,9 @@ onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=1, ngram_range=(
 print(f'\n{NOT_THE_ONION}')
 not_onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=0, ngram_range=(2, 2))
 
-
-
 # Bigrams
 print(f'\n{THE_ONION} {NOT_THE_ONION}')
-common_bigrams = ai.unigrams(onion_cvec_df, not_onion_cvec_df)
+common_bigrams = list(ai.unigrams(onion_cvec_df, not_onion_cvec_df))
 
 
 
@@ -97,6 +75,7 @@ print(f'\n{THE_ONION} {NOT_THE_ONION}')
 custom = ai.get_stop_words(common_unigrams, common_bigrams)
 
 
+print(f'\n{THE_ONION} {NOT_THE_ONION} [Starting try out...]')
 # Modeling
 modeling.try_out(df, custom)
 
@@ -109,130 +88,55 @@ modeling.try_out(df, custom)
 # The second model, CountVectorizer & Logistic Regression, will be used to 
 # interpret my coefficients.
 
-# TODO: Study!
-#
-# CountVectorizer & MultinomialNB: Best Score
-#
+print(f'\n{THE_ONION} {NOT_THE_ONION}')
+clf_nb, cv_nb = modeling.naive_bayes(df, custom)
 
-#Instantiate the classifier and vectorizer
-nb = MultinomialNB(alpha = 0.36)
-cvec = CountVectorizer(ngram_range= (1, 3))
+print(f'\n{THE_ONION} {NOT_THE_ONION}')
+clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 
-# Fit and transform the vectorizor
-cvec.fit(X_train)
+# #
+# # Coefficient Analysis
+# # 
+# # Create list of logistic regression coefficients 
+# lr_coef = np.array(lr.coef_).tolist()
+# lr_coef = lr_coef[0]
 
-Xcvec_train = cvec.transform(X_train)
-Xcvec_test = cvec.transform(X_test)
+# # create dataframe from lasso coef
+# lr_coef = pd.DataFrame(np.round_(lr_coef, decimals=3), 
+# cvec2.get_feature_names(), columns = ["penalized_regression_coefficients"])
 
-# Fit the classifier
-nb.fit(Xcvec_train,y_train)
+# # sort the values from high to low
+# lr_coef = lr_coef.sort_values(by = 'penalized_regression_coefficients', ascending = False)
 
-# Create the predictions for Y training data
-preds = nb.predict(Xcvec_test)
+# # Jasmine changing things up here on out! Top half not mine. 
+# # create best and worst performing lasso coef dataframes
+# df_head = lr_coef.head(10)
+# df_tail = lr_coef.tail(10)
 
-print("\n")
-__ai("MultinomialNB")
-__ai(nb.score(Xcvec_test, y_test))
-
-# Create a confusion matrix
-cnf_matrix = metrics.confusion_matrix(y_test, preds)
-print("\n")
-__ai(f"Confusion Matrix\n{confusion_matrix}")
-
-# Code from https://www.datacamp.com/community/tutorials/understanding-logistic-regression-python
-# name  of classes
-class_names=[0,1] 
-
-cnf_matrix = np.array(cnf_matrix).tolist()
-
-tn_fp, fn_tp = cnf_matrix
-
-tn, fp = tn_fp
-fn, tp = fn_tp
-
-print("\n")
-__ai("MultinomialNB")
-__ai(f"Accuracy              : {round(metrics.accuracy_score(y_test, preds)*100, 2)}%")
-__ai(f"Precision             : {round(metrics.precision_score(y_test, preds)*100, 2)}%")
-__ai(f"Recall                : {round(metrics.recall_score(y_test, preds)*100, 2)}%")
-__ai(f"Specificity           : {round((tn/(tn+fp))*100, 2)}%")
-__ai(f"Misclassification Rate: {round((fp+fn)/(tn+fp+fn+tn)*100, 2)}%")
-
-# TODO: Study!
-#
-# CountVectorizer & Logistic Regression: Best Coefficient Interpretability
-#
-
-# Customize stop_words to include `onion` so that it doesn't appear
-# in coefficients 
-
-stop_words_onion = stop_words.ENGLISH_STOP_WORDS
-stop_words_onion = list(stop_words_onion)
-stop_words_onion.append('onion')
-
-#Instantiate the classifier and vectorizer
-lr = LogisticRegression(C = 1.0, solver='liblinear')
-cvec2 = CountVectorizer(stop_words = stop_words_onion)
-
-# Fit and transform the vectorizor
-cvec2.fit(X_train)
-
-Xcvec2_train = cvec2.transform(X_train)
-Xcvec2_test = cvec2.transform(X_test)
-
-# Fit the classifier
-lr.fit(Xcvec2_train,y_train)
-
-# Create the predictions for Y training data
-lr_preds = lr.predict(Xcvec2_test)
-
-print("\n")
-__ai("LogisticRegression")
-__ai(lr.score(Xcvec2_test, y_test))
-
-#
-# Coefficient Analysis
-# 
-# Create list of logistic regression coefficients 
-lr_coef = np.array(lr.coef_).tolist()
-lr_coef = lr_coef[0]
-
-# create dataframe from lasso coef
-lr_coef = pd.DataFrame(np.round_(lr_coef, decimals=3), 
-cvec2.get_feature_names(), columns = ["penalized_regression_coefficients"])
-
-# sort the values from high to low
-lr_coef = lr_coef.sort_values(by = 'penalized_regression_coefficients', ascending = False)
-
-# Jasmine changing things up here on out! Top half not mine. 
-# create best and worst performing lasso coef dataframes
-df_head = lr_coef.head(10)
-df_tail = lr_coef.tail(10)
-
-# merge back together
-df_merged = pd.concat([df_head, df_tail], axis=0)
+# # merge back together
+# df_merged = pd.concat([df_head, df_tail], axis=0)
 
 
-print("\n")
-__ai(f"The word that contributes the most positively to being from r/TheOnion is '{df_merged.index[0]}' followed by '{df_merged.index[1]}' and '{df_merged.index[2]}'.")
-__ai("-----------------------------------")
-__ai(f"The word that contributes the most positively to being from r/nottheonion is'{df_merged.index[-1]}' followed by '{df_merged.index[-2]}' and '{df_merged.index[-3]}'.")
+# print("\n")
+# __ai(f"The word that contributes the most positively to being from r/TheOnion is '{df_merged.index[0]}' followed by '{df_merged.index[1]}' and '{df_merged.index[2]}'.")
+# __ai("-----------------------------------")
+# __ai(f"The word that contributes the most positively to being from r/nottheonion is'{df_merged.index[-1]}' followed by '{df_merged.index[-2]}' and '{df_merged.index[-3]}'.")
 
-# Show coefficients that affect r/TheOnion
-df_merged_head = df_merged.head(10)
-exp = df_merged_head['penalized_regression_coefficients'].apply(lambda x: np.exp(x))
-df_merged_head.insert(1, 'exp', exp)
-df_merged_head.sort_values('exp', ascending=False)
+# # Show coefficients that affect r/TheOnion
+# df_merged_head = df_merged.head(10)
+# exp = df_merged_head['penalized_regression_coefficients'].apply(lambda x: np.exp(x))
+# df_merged_head.insert(1, 'exp', exp)
+# df_merged_head.sort_values('exp', ascending=False)
 
-__ai(f"As occurences of '{df_merged_head.index[0]}' increase by 1 in a title, that title is '{round(df_merged_head['exp'][0],2)}' times as likely to be classified as r/TheOnion.")
+# __ai(f"As occurences of '{df_merged_head.index[0]}' increase by 1 in a title, that title is '{round(df_merged_head['exp'][0],2)}' times as likely to be classified as r/TheOnion.")
 
-# Show coefficients that affect r/nottheonion
-df_merged_tail = df_merged.tail(10)
-exp = df_merged_tail['penalized_regression_coefficients'].apply(lambda x: np.exp(x * -1))
-df_merged_tail.insert(1, 'exp', exp)
-df_merged_tail.sort_values('exp', ascending=False)
+# # Show coefficients that affect r/nottheonion
+# df_merged_tail = df_merged.tail(10)
+# exp = df_merged_tail['penalized_regression_coefficients'].apply(lambda x: np.exp(x * -1))
+# df_merged_tail.insert(1, 'exp', exp)
+# df_merged_tail.sort_values('exp', ascending=False)
 
-__ai(f"As occurences of '{df_merged_tail.index[-1]} increase by 1 in a title, that title is {round(df_merged_tail['exp'][-1],2)} times as likely to be classified as r/nottheonion.")
+# __ai(f"As occurences of '{df_merged_tail.index[-1]} increase by 1 in a title, that title is {round(df_merged_tail['exp'][-1],2)} times as likely to be classified as r/nottheonion.")
 
 # Conclusions and Next-Steps
 # The most model to optimize for accuracy in detecting fake news and absurd news
@@ -259,15 +163,8 @@ __ai(f"As occurences of '{df_merged_tail.index[-1]} increase by 1 in a title, th
 # in being able to interpret media (images and videos) and classify them as 
 # authentic news, fake news, or none of the above (i.e., media for entertainment).
 
-print("""
-    _     _   _  _____  _   _   ___   _   _ __   __
-   / \   | \ | ||_   _|| | | | / _ \ | \ | |\ \ / /
-  / _ \  |  \| |  | |  | |_| || | | ||  \| | \ V / 
- / ___ \ | |\  |  | |  |  _  || |_| || |\  |  | |  
-/_/   \_\|_| \_|  |_|  |_| |_| \___/ |_| \_|  |_|  
-""")
-__me("My Test")
-_my_data = pd.DataFrame(
+print(f'\n{ME}')
+_my_data = DataFrame(
   [
       'San Diego backyard shed rents for $1,050 a month',
       'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
@@ -275,18 +172,18 @@ _my_data = pd.DataFrame(
       '12356487984158641351568463213851684132168461'
   ], columns = ['title']
 )
-__me(_my_data.shape)
+print(f'Shape: {_my_data.shape}')
 
-_my_data_cvec = cvec.transform(_my_data['title'])
-__me(_my_data_cvec.shape)
+_my_data_cvec = cv_nb.transform(_my_data['title'])
+print(f'Shape: {_my_data_cvec.shape}')
 
-_preds = nb.predict(_my_data_cvec)
-_preds_prob = nb.predict_proba(_my_data_cvec)
-__me(_preds)
-__me(_preds_prob)
+_preds = clf_nb.predict(_my_data_cvec)
+_preds_prob = clf_nb.predict_proba(_my_data_cvec)
+print(_preds)
+print(_preds_prob)
 
-__me(f'+\tThe Onion\tNot The Onion')
+print(f'+\tThe Onion\tNot The Onion')
 for i in range(0, len(_preds_prob)):
   nto = '{0:.2f}'.format(_preds_prob[i][0])
   to = '{0:.2f}'.format(_preds_prob[i][1])
-  __me(f'{i}\t{to}\t\t{ nto }')
+  print(f'{i}\t{to}\t\t{ nto }')

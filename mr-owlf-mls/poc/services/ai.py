@@ -1,6 +1,7 @@
-from pandas import DataFrame, to_datetime, read_csv
+from pandas import DataFrame, Series, to_datetime, read_csv
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction import stop_words
+from nltk import download
+from nltk.corpus import stopwords
 
 
 def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: tuple = (1, 1)) -> DataFrame:
@@ -20,6 +21,7 @@ def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: tuple = (1, 
 
     print(f'Count Vectorizer Result Shape: {df_cvec.shape}')
     print(f'Sample...\n{df_cvec.head()}\n...\n{df_cvec.tail()}\n')
+    return df_cvec
 
 
 def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
@@ -29,19 +31,14 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
     print(r'+-----------------------------------+')
 
     # Set up variables to contain top 5 most used words
-    df_top_5: DataFrame = df.sum(axis = 0).sort_values(ascending=False).head(5)
+    df_top_5: Series = df.sum(axis = 0).sort_values(ascending=False).head(5)
     df_top_5_set = set(df_top_5.index)
-    print(f'DF: {df_top_5}')
+    print(f'\nDF:\n{df_top_5}')
 
     if df_2 is not None:
-        df_2_top_5: DataFrame = df_2.sum(axis = 0).sort_values(ascending=False).head(5)
+        df_2_top_5: Series = df_2.sum(axis = 0).sort_values(ascending=False).head(5)
         df_2_top_5_set = set(df_2_top_5.index)
-        print(f'DF 2: {df_2_top_5}')
-
-    # FIXME: Remove it ---------
-    print(type(df_top_5))
-    print(type(df_2_top_5))
-    # --------------------------
+        print(f'\nDF 2:\n{df_2_top_5}')
 
     if df_2_top_5_set is not None:
         unigrams = df_top_5_set.intersection(df_2_top_5_set)
@@ -49,6 +46,7 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
         unigrams = df_top_5_set
 
     print(f'Unigrams: {unigrams}')
+    return unigrams
 
 
 def get_stop_words(unigrams: list, bigrams: list) -> list:
@@ -56,8 +54,8 @@ def get_stop_words(unigrams: list, bigrams: list) -> list:
     print(r'+-----------------------------------+')
     print(r'|            Stop Words             |')
     print(r'+-----------------------------------+')
-    
-    custom = list(stop_words.ENGLISH_STOP_WORDS)
+    download('stopwords')
+    custom = list(stopwords.words('english'))
     for i in unigrams:
         custom.append(i)
 
@@ -66,4 +64,5 @@ def get_stop_words(unigrams: list, bigrams: list) -> list:
         for word in split_words:
             custom.append(word)
     
+    print(f'Stop Words: {len(custom)}\n{custom}')
     return custom
