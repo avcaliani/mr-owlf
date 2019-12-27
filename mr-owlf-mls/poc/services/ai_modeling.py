@@ -41,7 +41,7 @@ def try_out(df: DataFrame, stop_words: list) -> None:
         cv=3
     )
     gs.fit(X_train, y_train)
-    show_score('01', gs, X_train, y_train, X_test, y_test)
+    get_score('01', gs, X_train, y_train, X_test, y_test)
 
     # Model 02 ---------------------------------------------------
     gs = GridSearchCV(
@@ -58,7 +58,7 @@ def try_out(df: DataFrame, stop_words: list) -> None:
         cv=3
     )
     gs.fit(X_train, y_train)
-    show_score('02', gs, X_train, y_train, X_test, y_test)
+    get_score('02', gs, X_train, y_train, X_test, y_test)
 
     # Model 03 ---------------------------------------------------
     gs = GridSearchCV(
@@ -67,13 +67,14 @@ def try_out(df: DataFrame, stop_words: list) -> None:
             ('nb', MultinomialNB())
         ]),
         param_grid={
+            'cvec__stop_words': [None, 'english', stop_words],
             'cvec__ngram_range': [(1,1),(1,3)],
             'nb__alpha': [.36, .6]
         },
         cv=3
     )
     gs.fit(X_train, y_train)
-    show_score('03', gs, X_train, y_train, X_test, y_test)
+    get_score('03', gs, X_train, y_train, X_test, y_test)
 
     # Model 04 ---------------------------------------------------
     gs = GridSearchCV(
@@ -87,10 +88,10 @@ def try_out(df: DataFrame, stop_words: list) -> None:
             'tvect__ngram_range': [(1,2), (1,3)],
             'nb__alpha': [0.1, 1]
         },
-        cv=5
+        cv=3
     )
     gs.fit(X_train, y_train)
-    show_score('04', gs, X_train, y_train, X_test, y_test)
+    get_score('04', gs, X_train, y_train, X_test, y_test)
 
 
 def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVectorizer]:
@@ -158,11 +159,23 @@ def show_details(clf, Xcvec_train, y_train, Xcvec_test, y_test, preds) -> None:
     print(f'Misclassification Rate : {round((fp+fn)/(tn+fp+fn+tn) * 100, 2)}%')
 
 
-def show_score(n, gs, X_train, y_train, X_test, y_test) -> None:
+def get_score(n, gs, X_train, y_train, X_test, y_test) -> any:
+    
+    score = {
+        'best_score'   : round(gs.best_score_ * 100, 2),
+        'train_score'  : round(gs.score(X_train, y_train) * 100, 2),
+        'test_score'   : round(gs.score(X_test, y_test) * 100, 2),
+        'classificator': None,
+        'vectorizer'   : None
+    }
+    
     print(r'+-----------------------------------+')
     print(f'|             Model {n}              |')
     print(r'+-----------------------------------+')
-    print(f'\nBest Score  : {round(gs.best_score_ * 100, 2)}%')
-    print(f'Train Score : {round(gs.score(X_train, y_train) * 100, 2)}%')
-    print(f'Test Score  : {round(gs.score(X_test, y_test) * 100, 2)}%')
+    
+    print(f'\nBest Score  : {score["best_score"]}%')
+    print(f'Train Score : {score["train_score"]}%')
+    print(f'Test Score  : {score["test_score"]}%')
     print(f'Best Params : {gs.best_params_}\n')
+
+    return score

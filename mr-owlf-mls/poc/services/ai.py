@@ -21,7 +21,7 @@ def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, i
     )
 
     print(f'Count Vectorizer Result Shape: {df_cvec.shape}')
-    print(f'Sample...\n{df_cvec.head()}\n...\n{df_cvec.tail()}\n')
+    print(f'Sample...\n{df_cvec.head(2)}\n...\n{df_cvec.tail(2)}\n')
     return df_cvec
 
 

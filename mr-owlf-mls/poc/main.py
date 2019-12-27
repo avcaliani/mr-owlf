@@ -18,25 +18,21 @@ df_not_onion: DataFrame = commons.read('data/not-the-onion.csv')
 commons.clean_data(df_not_onion)
 commons.show_statistics(df_not_onion)
 
-
 # The Onion
 print(f'\n{THE_ONION}')
 df_onion: DataFrame = commons.read('data/the-onion.csv')
 commons.clean_data(df_onion)
 commons.show_statistics(df_onion)
 
-
-# Join Data Frames
+# Combine df_onion & df_not_onion with only 'subreddit' (target) and 'title' (predictor) columns
 print(f'\n{THE_ONION} {NOT_THE_ONION} {"[Natural Language Processing]"}')
 
-# Combine df_onion & df_not_onion with only 'subreddit' (target) and 'title' (predictor) columns
 df = pd.concat([ df_onion[['subreddit', 'title']], df_not_onion[['subreddit', 'title']] ], axis=0)
 print(f'Combined DF shape: {df.shape}\n')
 print(f'Combined DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}\n\n')
 
-
 df = df.reset_index(drop=True) # Reset the index
-df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1}) # Replace `TheOnion` with 1, `nottheonion` with 0
+df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1})
 print(f'Prepared DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}')
 
 

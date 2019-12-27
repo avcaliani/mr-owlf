@@ -10,7 +10,7 @@ def read(file_name: str) -> DataFrame:
     print(f'\nReading file: "{file_name}"')
     df = read_csv(file_name)
     print(f'Shape: {df.shape}')
-    print(f'Sample...\n{df.head()}\n...\n{df.tail()}\n')
+    print(f'Sample...\n{df.head(2)}\n...\n{df.tail(2)}\n')
     return df
 
 
@@ -52,10 +52,10 @@ def show_statistics(df: DataFrame) -> None:
     # Set x values: # of posts 
     authors: DataFrame = df['author'].value_counts() 
     authors: DataFrame = authors[authors > 100].sort_values(ascending=False)
-    print(f'\nMost Active Authors...\n{authors.head()}\n...\n{authors.tail()}\n')
+    print(f'\nMost Active Authors...\n{authors.head(2)}\n...\n{authors.tail(2)}\n')
 
     # Set x values: # of posts
     domains: DataFrame = df['domain'].value_counts() 
     domains: DataFrame = domains.sort_values(ascending=False).head(5)
-    print(f'\nMost referenced domains...\n{domains.head()}\n...\n{domains.tail()}\n')
+    print(f'\nMost referenced domains...\n{domains.head(2)}\n...\n{domains.tail(2)}\n')
     
