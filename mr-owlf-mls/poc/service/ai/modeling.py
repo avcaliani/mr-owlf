@@ -27,6 +27,8 @@ def try_out(df: DataFrame, stop_words: list) -> None:
     X, y = df['title'], df['subreddit']
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
 
+    # TODO: Split Models
+    # TODO: Select the best model
     # Model 01 ---------------------------------------------------
     gs = GridSearchCV(
         Pipeline([
@@ -94,6 +96,7 @@ def try_out(df: DataFrame, stop_words: list) -> None:
     get_score('04', gs, X_train, y_train, X_test, y_test)
 
 
+# TODO: Remove this after previous TODOs
 def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVectorizer]:
     """Train a Multinomial Naive Bayes classifier. We are going to use CountVectorizer and MultinomialNB."""
     
@@ -118,6 +121,7 @@ def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVe
     return clf, cv
 
 
+# TODO: Remove this after previous TODOs
 def logistic_regression(df: DataFrame, stop_words: list) -> Tuple[LogisticRegression, CountVectorizer]:
     """Train a Logistic Regression classifier. We are going to use CountVectorizer and MultinomialNB."""
     

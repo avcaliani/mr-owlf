@@ -1,9 +1,9 @@
 import pandas as pd
 from pandas import DataFrame
 
-import services.commons as commons
-import services.ai as ai
-import services.ai_modeling as modeling
+import service.data.utils as data
+import service.ai.utils as ai
+import service.ai.modeling as modeling
 
 
 THE_ONION     = f'\033[1;32;40m[r/The Onion]\033[0m'
@@ -14,15 +14,15 @@ ME            = f'\033[1;36;40m[ANTHONY]\033[0m'
 
 # Not The Onion
 print(f'\n{NOT_THE_ONION}')
-df_not_onion: DataFrame = commons.read('data/not-the-onion.csv')
-commons.clean_data(df_not_onion)
-commons.show_statistics(df_not_onion)
+df_not_onion: DataFrame = data.read('data/not-the-onion.csv')
+data.clean_data(df_not_onion)
+data.show_statistics(df_not_onion)
 
 # The Onion
 print(f'\n{THE_ONION}')
-df_onion: DataFrame = commons.read('data/the-onion.csv')
-commons.clean_data(df_onion)
-commons.show_statistics(df_onion)
+df_onion: DataFrame = data.read('data/the-onion.csv')
+data.clean_data(df_onion)
+data.show_statistics(df_onion)
 
 # Combine df_onion & df_not_onion with only 'subreddit' (target) and 'title' (predictor) columns
 print(f'\n{THE_ONION} {NOT_THE_ONION} {"[Natural Language Processing]"}')
@@ -90,7 +90,7 @@ clf_nb, cv_nb = modeling.naive_bayes(df, custom)
 print(f'\n{THE_ONION} {NOT_THE_ONION}')
 clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 
-# #
+# # TODO: Split it up
 # # Coefficient Analysis
 # # 
 # # Create list of logistic regression coefficients 
@@ -159,6 +159,7 @@ clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 # in being able to interpret media (images and videos) and classify them as 
 # authentic news, fake news, or none of the above (i.e., media for entertainment).
 
+# TODO: Split it up too
 print(f'\n{ME}')
 _my_data = DataFrame(
   [
@@ -183,3 +184,7 @@ for i in range(0, len(_preds_prob)):
   nto = '{0:.2f}'.format(_preds_prob[i][0])
   to = '{0:.2f}'.format(_preds_prob[i][1])
   print(f'{i}\t{to}\t\t{ nto }')
+
+# TODO: Future - Read data from Mongo
+# TODO: Future - Create translator
+# TODO: Future - Create score
