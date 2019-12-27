@@ -22,14 +22,14 @@ def clean_data(df: DataFrame) -> None:
 
     print(f'Old shape: {df.shape}')
     # Drop duplicate rows
-    df.drop_duplicates(subset='title', inplace=True)    
+    df.drop_duplicates(subset='title', inplace=True)
     # Remove punctation
-    df['title'] = df['title'].str.replace(r'[^\w\s]',' ')
-    # Remove numbers 
-    df['title'] = df['title'].str.replace(r'[^A-Za-z]',' ')
-    # Make sure any double-spaces are single 
-    df['title'] = df['title'].str.replace('  ',' ')
-    df['title'] = df['title'].str.replace('  ',' ')
+    df['title'] = df['title'].str.replace(r'[^\w\s]', ' ')
+    # Remove numbers
+    df['title'] = df['title'].str.replace(r'[^A-Za-z]', ' ')
+    # Make sure any double-spaces are single
+    df['title'] = df['title'].str.replace('  ', ' ')
+    df['title'] = df['title'].str.replace('  ', ' ')
     # Transform all text to lowercase
     df['title'] = df['title'].str.lower()
     # Remove null values
@@ -38,7 +38,7 @@ def clean_data(df: DataFrame) -> None:
 
 
 def show_statistics(df: DataFrame) -> None:
-    
+
     print(r'+-----------------------------------+')
     print(r'|       Data Frame Statistics       |')
     print(r'+-----------------------------------+')
@@ -48,14 +48,15 @@ def show_statistics(df: DataFrame) -> None:
     print(f'\nDate range of posts...')
     print(f'* Start date:\t{df["timestamp"].min()}')
     print(f'* End date:\t{df["timestamp"].max()}')
-    
-    # Set x values: # of posts 
-    authors: DataFrame = df['author'].value_counts() 
-    authors: DataFrame = authors[authors > 100].sort_values(ascending=False)
-    print(f'\nMost Active Authors...\n{authors.head(2)}\n...\n{authors.tail(2)}\n')
 
     # Set x values: # of posts
-    domains: DataFrame = df['domain'].value_counts() 
+    authors: DataFrame = df['author'].value_counts()
+    authors: DataFrame = authors[authors > 100].sort_values(ascending=False)
+    print(
+        f'\nMost Active Authors...\n{authors.head(2)}\n...\n{authors.tail(2)}\n')
+
+    # Set x values: # of posts
+    domains: DataFrame = df['domain'].value_counts()
     domains: DataFrame = domains.sort_values(ascending=False).head(5)
-    print(f'\nMost referenced domains...\n{domains.head(2)}\n...\n{domains.tail(2)}\n')
-    
+    print(
+        f'\nMost referenced domains...\n{domains.head(2)}\n...\n{domains.tail(2)}\n')

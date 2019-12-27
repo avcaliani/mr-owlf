@@ -14,9 +14,10 @@ def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, i
     # Set variables to show only one category titles
     titles = df[df['subreddit'] == filter_value]['title']
 
-    cv = CountVectorizer(stop_words = 'english', ngram_range=ngram_range)
+    cv = CountVectorizer(stop_words='english', ngram_range=ngram_range)
     df_cvec = DataFrame(
-        cv.fit_transform(titles).toarray(), # Fit and transform the vectorizer on our corpus
+        # Fit and transform the vectorizer on our corpus
+        cv.fit_transform(titles).toarray(),
         columns=cv.get_feature_names()
     )
 
@@ -32,12 +33,13 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
     print(r'+-----------------------------------+')
 
     # Set up variables to contain top 5 most used words
-    df_top_5: Series = df.sum(axis = 0).sort_values(ascending=False).head(5)
+    df_top_5: Series = df.sum(axis=0).sort_values(ascending=False).head(5)
     df_top_5_set = set(df_top_5.index)
     print(f'\nDF:\n{df_top_5}')
 
     if df_2 is not None:
-        df_2_top_5: Series = df_2.sum(axis = 0).sort_values(ascending=False).head(5)
+        df_2_top_5: Series = df_2.sum(
+            axis=0).sort_values(ascending=False).head(5)
         df_2_top_5_set = set(df_2_top_5.index)
         print(f'\nDF 2:\n{df_2_top_5}')
 
@@ -64,6 +66,6 @@ def get_stop_words(unigrams: list, bigrams: list) -> list:
         split_words = i.split(" ")
         for word in split_words:
             custom.append(word)
-    
+
     print(f'Stop Words: {len(custom)}\n{custom}')
     return custom

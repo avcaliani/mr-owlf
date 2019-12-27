@@ -32,12 +32,12 @@ def try_out(df: DataFrame, stop_words: list) -> None:
     # Model 01 ---------------------------------------------------
     gs = GridSearchCV(
         Pipeline([
-            ('cvec', CountVectorizer()),    
+            ('cvec', CountVectorizer()),
             ('lr', LogisticRegression(solver='liblinear'))
         ]),
         param_grid={
             'cvec__stop_words': [None, 'english', stop_words],
-            'cvec__ngram_range': [(1,1), (2,2), (1,3)],
+            'cvec__ngram_range': [(1, 1), (2, 2), (1, 3)],
             'lr__C': [0.01, 1]
         },
         cv=3
@@ -48,13 +48,13 @@ def try_out(df: DataFrame, stop_words: list) -> None:
     # Model 02 ---------------------------------------------------
     gs = GridSearchCV(
         Pipeline([
-            ('tvect', TfidfVectorizer()),    
+            ('tvect', TfidfVectorizer()),
             ('lr', LogisticRegression(solver='liblinear'))
         ]),
         param_grid={
             'tvect__max_df': [.75, .98, 1.0],
             'tvect__min_df': [2, 3, 5],
-            'tvect__ngram_range': [(1,1), (1,2), (1,3)],
+            'tvect__ngram_range': [(1, 1), (1, 2), (1, 3)],
             'lr__C': [1]
         },
         cv=3
@@ -65,12 +65,12 @@ def try_out(df: DataFrame, stop_words: list) -> None:
     # Model 03 ---------------------------------------------------
     gs = GridSearchCV(
         Pipeline([
-            ('cvec', CountVectorizer()),    
+            ('cvec', CountVectorizer()),
             ('nb', MultinomialNB())
         ]),
         param_grid={
             'cvec__stop_words': [None, 'english', stop_words],
-            'cvec__ngram_range': [(1,1),(1,3)],
+            'cvec__ngram_range': [(1, 1), (1, 3)],
             'nb__alpha': [.36, .6]
         },
         cv=3
@@ -81,13 +81,13 @@ def try_out(df: DataFrame, stop_words: list) -> None:
     # Model 04 ---------------------------------------------------
     gs = GridSearchCV(
         Pipeline([
-            ('tvect', TfidfVectorizer()),    
+            ('tvect', TfidfVectorizer()),
             ('nb', MultinomialNB())
         ]),
         param_grid={
             'tvect__max_df': [.75, .98],
             'tvect__min_df': [4, 5],
-            'tvect__ngram_range': [(1,2), (1,3)],
+            'tvect__ngram_range': [(1, 2), (1, 3)],
             'nb__alpha': [0.1, 1]
         },
         cv=3
@@ -99,7 +99,7 @@ def try_out(df: DataFrame, stop_words: list) -> None:
 # TODO: Remove this after previous TODOs
 def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVectorizer]:
     """Train a Multinomial Naive Bayes classifier. We are going to use CountVectorizer and MultinomialNB."""
-    
+
     print(r'+-----------------------------------+')
     print(r'|     Processing (Naive Bayes)      |')
     print(r'+-----------------------------------+')
@@ -107,24 +107,25 @@ def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVe
     df['subreddit'].value_counts(normalize=True)
     X, y = df['title'], df['subreddit']
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
-    
-    clf = MultinomialNB(alpha = 0.36)
-    cv = CountVectorizer(ngram_range= (1, 3), stop_words = stop_words)
+
+    clf = MultinomialNB(alpha=0.36)
+    cv = CountVectorizer(ngram_range=(1, 3), stop_words=stop_words)
 
     cv.fit(X_train)
 
     Xcvec_train = cv.transform(X_train)
-    Xcvec_test  = cv.transform(X_test)
+    Xcvec_test = cv.transform(X_test)
 
     clf.fit(Xcvec_train, y_train)
-    show_details(clf, Xcvec_train, y_train, Xcvec_test, y_test, clf.predict(Xcvec_test))
+    show_details(clf, Xcvec_train, y_train, Xcvec_test,
+                 y_test, clf.predict(Xcvec_test))
     return clf, cv
 
 
 # TODO: Remove this after previous TODOs
 def logistic_regression(df: DataFrame, stop_words: list) -> Tuple[LogisticRegression, CountVectorizer]:
     """Train a Logistic Regression classifier. We are going to use CountVectorizer and MultinomialNB."""
-    
+
     print(r'+-----------------------------------+')
     print(r'|  Processing (Logistic Regression) |')
     print(r'+-----------------------------------+')
@@ -132,26 +133,27 @@ def logistic_regression(df: DataFrame, stop_words: list) -> Tuple[LogisticRegres
     df['subreddit'].value_counts(normalize=True)
     X, y = df['title'], df['subreddit']
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
-    
-    clf = LogisticRegression(C = 1.0, solver='liblinear')
-    cv = CountVectorizer(stop_words = stop_words)
+
+    clf = LogisticRegression(C=1.0, solver='liblinear')
+    cv = CountVectorizer(stop_words=stop_words)
 
     cv.fit(X_train)
 
     Xcvec_train = cv.transform(X_train)
-    Xcvec_test  = cv.transform(X_test)
+    Xcvec_test = cv.transform(X_test)
 
     clf.fit(Xcvec_train, y_train)
-    show_details(clf, Xcvec_train, y_train, Xcvec_test, y_test, clf.predict(Xcvec_test))
+    show_details(clf, Xcvec_train, y_train, Xcvec_test,
+                 y_test, clf.predict(Xcvec_test))
     return clf, cv
 
 
 def show_details(clf, Xcvec_train, y_train, Xcvec_test, y_test, preds) -> None:
 
-    cnf_matrix   = metrics.confusion_matrix(y_test, preds)
+    cnf_matrix = metrics.confusion_matrix(y_test, preds)
     tn_fp, fn_tp = np.array(cnf_matrix).tolist()
-    tn, fp       = tn_fp
-    fn, tp       = fn_tp
+    tn, fp = tn_fp
+    fn, tp = fn_tp
 
     print(f"Confusion Matrix\n{cnf_matrix}\n")
     print(f'Train Score            : {round(clf.score(Xcvec_train, y_train) * 100, 2)}%')
@@ -164,19 +166,19 @@ def show_details(clf, Xcvec_train, y_train, Xcvec_test, y_test, preds) -> None:
 
 
 def get_score(n, gs, X_train, y_train, X_test, y_test) -> any:
-    
+
     score = {
-        'best_score'   : round(gs.best_score_ * 100, 2),
-        'train_score'  : round(gs.score(X_train, y_train) * 100, 2),
-        'test_score'   : round(gs.score(X_test, y_test) * 100, 2),
+        'best_score': round(gs.best_score_ * 100, 2),
+        'train_score': round(gs.score(X_train, y_train) * 100, 2),
+        'test_score': round(gs.score(X_test, y_test) * 100, 2),
         'classificator': None,
-        'vectorizer'   : None
+        'vectorizer': None
     }
-    
+
     print(r'+-----------------------------------+')
     print(f'|             Model {n}              |')
     print(r'+-----------------------------------+')
-    
+
     print(f'\nBest Score  : {score["best_score"]}%')
     print(f'Train Score : {score["train_score"]}%')
     print(f'Test Score  : {score["test_score"]}%')

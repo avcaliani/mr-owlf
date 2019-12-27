@@ -6,10 +6,10 @@ import service.ai.utils as ai
 import service.ai.modeling as modeling
 
 
-THE_ONION     = f'\033[1;32;40m[r/The Onion]\033[0m'
+THE_ONION = f'\033[1;32;40m[r/The Onion]\033[0m'
 NOT_THE_ONION = f'\033[1;31;40m[r/Not The Onion]\033[0m'
-AI            = f'\033[1;35;40m[AI]\033[0m'
-ME            = f'\033[1;36;40m[ANTHONY]\033[0m'
+AI = f'\033[1;35;40m[AI]\033[0m'
+ME = f'\033[1;36;40m[ANTHONY]\033[0m'
 
 
 # Not The Onion
@@ -27,14 +27,14 @@ data.show_statistics(df_onion)
 # Combine df_onion & df_not_onion with only 'subreddit' (target) and 'title' (predictor) columns
 print(f'\n{THE_ONION} {NOT_THE_ONION} {"[Natural Language Processing]"}')
 
-df = pd.concat([ df_onion[['subreddit', 'title']], df_not_onion[['subreddit', 'title']] ], axis=0)
+df = pd.concat([df_onion[['subreddit', 'title']],
+                df_not_onion[['subreddit', 'title']]], axis=0)
 print(f'Combined DF shape: {df.shape}\n')
 print(f'Combined DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}\n\n')
 
-df = df.reset_index(drop=True) # Reset the index
+df = df.reset_index(drop=True)  # Reset the index
 df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1})
 print(f'Prepared DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}')
-
 
 
 # Count Vectorize - ngram_range = (1,1)
@@ -49,18 +49,18 @@ print(f'\n{THE_ONION} {NOT_THE_ONION}')
 common_unigrams = list(ai.unigrams(onion_cvec_df, not_onion_cvec_df))
 
 
-
 # Count Vectorize - ngram_range = (2,2)
 print(f'\n{THE_ONION}')
-onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=1, ngram_range=(2, 2))
+onion_cvec_df: DataFrame = ai.count_vectorizer(
+    df, filter_value=1, ngram_range=(2, 2))
 
 print(f'\n{NOT_THE_ONION}')
-not_onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=0, ngram_range=(2, 2))
+not_onion_cvec_df: DataFrame = ai.count_vectorizer(
+    df, filter_value=0, ngram_range=(2, 2))
 
 # Bigrams
 print(f'\n{THE_ONION} {NOT_THE_ONION}')
 common_bigrams = list(ai.unigrams(onion_cvec_df, not_onion_cvec_df))
-
 
 
 # Stop Words
@@ -81,7 +81,7 @@ modeling.try_out(df, custom)
 # In this section, I take my two optimal models and run them.
 # The first model, CountVectorizer & MultinomialNB, will be used to convey a
 # confusion matrix which will show all evaluation scores.
-# The second model, CountVectorizer & Logistic Regression, will be used to 
+# The second model, CountVectorizer & Logistic Regression, will be used to
 # interpret my coefficients.
 
 print(f'\n{THE_ONION} {NOT_THE_ONION}')
@@ -92,19 +92,19 @@ clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 
 # # TODO: Split it up
 # # Coefficient Analysis
-# # 
-# # Create list of logistic regression coefficients 
+# #
+# # Create list of logistic regression coefficients
 # lr_coef = np.array(lr.coef_).tolist()
 # lr_coef = lr_coef[0]
 
 # # create dataframe from lasso coef
-# lr_coef = pd.DataFrame(np.round_(lr_coef, decimals=3), 
+# lr_coef = pd.DataFrame(np.round_(lr_coef, decimals=3),
 # cvec2.get_feature_names(), columns = ["penalized_regression_coefficients"])
 
 # # sort the values from high to low
 # lr_coef = lr_coef.sort_values(by = 'penalized_regression_coefficients', ascending = False)
 
-# # Jasmine changing things up here on out! Top half not mine. 
+# # Jasmine changing things up here on out! Top half not mine.
 # # create best and worst performing lasso coef dataframes
 # df_head = lr_coef.head(10)
 # df_tail = lr_coef.tail(10)
@@ -136,7 +136,7 @@ clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 
 # Conclusions and Next-Steps
 # The most model to optimize for accuracy in detecting fake news and absurd news
-# uses CountVectorizer and MultinomialDB. The optimal parameters for this model 
+# uses CountVectorizer and MultinomialDB. The optimal parameters for this model
 # are where ngram_range = (1,3) and alpha = 0.36.
 
 # Accuracy: 89.72%
@@ -146,28 +146,28 @@ clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 # Misclassification Rate: 11.11%
 # To interpret my coefficients, I used my CountVectorizer & Logistic Regression model.
 
-# The word that contributes the most positively to being from r/TheOnion is 
+# The word that contributes the most positively to being from r/TheOnion is
 # 'incredible' followed by 'questions' and 'heartbreaking'.
 # As occurences of "incredible" increase by 1 in a title, that title is 10.32 times
 # as likely to be classified as r/TheOnion.
-# The word that contributes the most positively to being from r/nottheonion 
+# The word that contributes the most positively to being from r/nottheonion
 # is 'australia' followed by 'title' and 'florida'.
-# As occurences of "australia" increase by 1 in a title, that title is 15.03 times 
+# As occurences of "australia" increase by 1 in a title, that title is 15.03 times
 # as likely to be classified as r/nottheonion.
-# Natural Language Processing of text is one way to analyze fake news, but a 
-# major gap exists: image & video analysis. For my next-steps, I am interested 
-# in being able to interpret media (images and videos) and classify them as 
+# Natural Language Processing of text is one way to analyze fake news, but a
+# major gap exists: image & video analysis. For my next-steps, I am interested
+# in being able to interpret media (images and videos) and classify them as
 # authentic news, fake news, or none of the above (i.e., media for entertainment).
 
 # TODO: Split it up too
 print(f'\n{ME}')
 _my_data = DataFrame(
-  [
-      'San Diego backyard shed rents for $1,050 a month',
-      'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
-      '12356487984158641351568463213851684132168461'
-  ], columns = ['title']
+    [
+        'San Diego backyard shed rents for $1,050 a month',
+        'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
+        '12356487984158641351568463213851684132168461'
+    ], columns=['title']
 )
 print(f'Shape: {_my_data.shape}')
 
@@ -181,9 +181,9 @@ print(_preds_prob)
 
 print(f'+\tThe Onion\tNot The Onion')
 for i in range(0, len(_preds_prob)):
-  nto = '{0:.2f}'.format(_preds_prob[i][0])
-  to = '{0:.2f}'.format(_preds_prob[i][1])
-  print(f'{i}\t{to}\t\t{ nto }')
+    nto = '{0:.2f}'.format(_preds_prob[i][0])
+    to = '{0:.2f}'.format(_preds_prob[i][1])
+    print(f'{i}\t{to}\t\t{ nto }')
 
 # TODO: Future - Read data from Mongo
 # TODO: Future - Create translator
