@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 import numpy as np
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -10,7 +10,7 @@ from sklearn import metrics
 from sklearn.metrics import accuracy_score, recall_score, precision_score, confusion_matrix
 
 
-def try_out(df: DataFrame, stop_words: list) -> None:
+def try_out(df: DataFrame, stop_words: List) -> None:
     """Algotithms try out!
 
     We are expecting a model that is better than 54% and the majority class is 1 (TheOnion).
@@ -97,7 +97,7 @@ def try_out(df: DataFrame, stop_words: list) -> None:
 
 
 # TODO: Remove this after previous TODOs
-def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVectorizer]:
+def naive_bayes(df: DataFrame, stop_words: List) -> Tuple[MultinomialNB, CountVectorizer]:
     """Train a Multinomial Naive Bayes classifier. We are going to use CountVectorizer and MultinomialNB."""
 
     print(r'+-----------------------------------+')
@@ -123,7 +123,7 @@ def naive_bayes(df: DataFrame, stop_words: list) -> Tuple[MultinomialNB, CountVe
 
 
 # TODO: Remove this after previous TODOs
-def logistic_regression(df: DataFrame, stop_words: list) -> Tuple[LogisticRegression, CountVectorizer]:
+def logistic_regression(df: DataFrame, stop_words: List) -> Tuple[LogisticRegression, CountVectorizer]:
     """Train a Logistic Regression classifier. We are going to use CountVectorizer and MultinomialNB."""
 
     print(r'+-----------------------------------+')

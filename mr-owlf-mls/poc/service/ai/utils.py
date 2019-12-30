@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 from pandas import DataFrame, Series, to_datetime, read_csv
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk import download
@@ -52,7 +52,7 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
     return unigrams
 
 
-def get_stop_words(unigrams: list, bigrams: list) -> list:
+def get_stop_words(unigrams: List, bigrams: List) -> List:
 
     print(r'+-----------------------------------+')
     print(r'|            Stop Words             |')
