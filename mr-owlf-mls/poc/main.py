@@ -4,6 +4,7 @@ from pandas import DataFrame
 import service.data.utils as data
 import service.ai.utils as ai
 import service.ai.modeling as modeling
+import service.ai.process as process
 
 
 THE_ONION = f'\033[1;32;40m[r/The Onion]\033[0m'
@@ -91,44 +92,17 @@ print(f'\n{THE_ONION} {NOT_THE_ONION}')
 clf_lr, cv_lr = modeling.logistic_regression(df, custom)
 
 
-# The word that contributes the most positively to being from r/TheOnion is
-# 'incredible' followed by 'questions' and 'heartbreaking'.
-# As occurences of "incredible" increase by 1 in a title, that title is 10.32 times
-# as likely to be classified as r/TheOnion.
-# The word that contributes the most positively to being from r/nottheonion
-# is 'australia' followed by 'title' and 'florida'.
-# As occurences of "australia" increase by 1 in a title, that title is 15.03 times
-# as likely to be classified as r/nottheonion.
-# Natural Language Processing of text is one way to analyze fake news, but a
-# major gap exists: image & video analysis. For my next-steps, I am interested
-# in being able to interpret media (images and videos) and classify them as
-# authentic news, fake news, or none of the above (i.e., media for entertainment).
+sentences = [
+    'San Diego backyard shed rents for $1,050 a month',
+    'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
+    '12356487984158641351568463213851684132168461'
+]
 
-# TODO: Split it up too
-print(f'\n{ME}')
-_my_data = DataFrame(
-    [
-        'San Diego backyard shed rents for $1,050 a month',
-        'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
-        '12356487984158641351568463213851684132168461'
-    ], columns=['title']
-)
-print(f'Shape: {_my_data.shape}')
-
-_my_data_cvec = cv_nb.transform(_my_data['title'])
-print(f'Shape: {_my_data_cvec.shape}')
-
-_preds = clf_nb.predict(_my_data_cvec)
-_preds_prob = clf_nb.predict_proba(_my_data_cvec)
-print(_preds)
-print(_preds_prob)
-
-print(f'+\tThe Onion\tNot The Onion')
-for i in range(0, len(_preds_prob)):
-    nto = '{0:.2f}'.format(_preds_prob[i][0])
-    to = '{0:.2f}'.format(_preds_prob[i][1])
-    print(f'{i}\t{to}\t\t{ nto }')
+for sentence in sentences:
+    print(f'\n{ME}')
+    process.run(clf_nb, cv_nb, sentence)
+    process.run(clf_lr, cv_lr, sentence)
 
 # TODO: Future - Read data from Mongo
 # TODO: Future - Create translator
