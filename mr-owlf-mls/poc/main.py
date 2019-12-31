@@ -72,10 +72,6 @@ print(f'\n{THE_ONION} {NOT_THE_ONION}')
 custom = ai.get_stop_words(common_unigrams, common_bigrams)
 
 
-print(f'\n{THE_ONION} {NOT_THE_ONION} [Starting try out...]')
-# Modeling
-modeling.try_out(df, custom)
-
 #
 # Best Models
 #
@@ -86,10 +82,7 @@ modeling.try_out(df, custom)
 # interpret my coefficients.
 
 print(f'\n{THE_ONION} {NOT_THE_ONION}')
-clf_nb, cv_nb = modeling.naive_bayes(df, custom)
-
-print(f'\n{THE_ONION} {NOT_THE_ONION}')
-clf_lr, cv_lr = modeling.logistic_regression(df, custom)
+clf, vectorizer = modeling.get_model(df, custom)
 
 
 sentences = [
@@ -101,8 +94,7 @@ sentences = [
 
 for sentence in sentences:
     print(f'\n{ME}')
-    process.run(clf_nb, cv_nb, sentence)
-    process.run(clf_lr, cv_lr, sentence)
+    process.run(clf, vectorizer, sentence)
 
 # TODO: Future - Read data from Mongo
 # TODO: Future - Create translator
