@@ -1,9 +1,10 @@
 #!/bin/bash
+#
 # @author       Anthony Vilarim Caliani
 # @contact      github.com/avcaliani
+#
 
-
-echo -e  "
+echo -e "
           __________
          / ___  ___ \\
         / / \033[1;32m@\033[00m \\/ \033[1;32m@\033[00m \\ \\
