@@ -28,6 +28,7 @@ class AIFactory:
         )
 
     def get_classifier(self) -> Tuple[any, any, any]:
+
         if self.best_model is not None:
             return self.best_model
 
@@ -45,6 +46,7 @@ class AIFactory:
         return self.best_model
 
     def model_01(self) -> Tuple[any, any, any]:
+
         print(f'\n[ LogisticRegression + CountVectorizer ]')
         gs = GridSearchCV(
             Pipeline([
@@ -71,6 +73,7 @@ class AIFactory:
         return clf, vectorizer, gs_score
 
     def model_02(self) -> Tuple[any, any, any]:
+
         print(f'\n[ LogisticRegression + TfidfVectorizer ]')
         gs = GridSearchCV(
             Pipeline([
@@ -100,6 +103,7 @@ class AIFactory:
         return clf, vectorizer, gs_score
 
     def model_03(self) -> Tuple[any, any, any]:
+
         print(f'\n[ MultinomialNB + CountVectorizer ]')
         gs = GridSearchCV(
             Pipeline([
@@ -126,6 +130,7 @@ class AIFactory:
         return clf, vectorizer, gs_score
 
     def model_04(self) -> Tuple[any, any, any]:
+
         print(f'\n[ MultinomialNB + TfidfVectorizer ]')
         gs = GridSearchCV(
             Pipeline([
@@ -155,6 +160,7 @@ class AIFactory:
         return clf, vectorizer, gs_score
 
     def get_gs_score(self, gs: GridSearchCV) -> any:
+
         score = {
             'best_score': round(gs.best_score_ * 100, 2),
             'best_params': gs.best_params_,

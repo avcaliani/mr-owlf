@@ -34,6 +34,9 @@ df = df.reset_index(drop=True)  # Reset the index
 df["subreddit"] = df["subreddit"].map({"nottheonion": 0, "TheOnion": 1})
 print(f'Prepared DF Sample...\n{df.head(2)}\n...\n{df.tail(2)}')
 
+
+
+
 # Count Vectorize - ngram_range = (1,1)
 print(f'\n{THE_ONION}')
 onion_cvec_df: DataFrame = ai.count_vectorizer(df, filter_value=1)

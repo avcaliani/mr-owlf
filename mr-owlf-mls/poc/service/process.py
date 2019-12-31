@@ -8,6 +8,7 @@ class Process:
         self.vectorizer = vectorizer
 
     def run(self, sentence: str) -> any:
+
         print(f'Sentence => "{sentence}"')
         data = DataFrame({'title': [sentence]})
 

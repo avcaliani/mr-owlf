@@ -9,6 +9,7 @@ from service.ai.factory import AIFactory
 
 
 def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
+
     df['subreddit'].value_counts(normalize=True)
     x, y = df['title'], df['subreddit']
 
@@ -28,6 +29,7 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
 
 
 def show_details(clf, vectorizer, gs_score, Xcvec_train, y_train, Xcvec_test, y_test, preds) -> None:
+
     cnf_matrix = metrics.confusion_matrix(y_test, preds)
     tn_fp, fn_tp = np.array(cnf_matrix).tolist()
     tn, fp = tn_fp

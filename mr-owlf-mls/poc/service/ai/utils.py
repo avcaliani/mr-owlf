@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from typing import Tuple, List, Set
 
 from nltk import download
 from nltk.corpus import stopwords
@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, int] = (1, 1)) -> DataFrame:
+
     print(r'+-----------------------------------+')
     print(r'|         Count Vectorizer          |')
     print(r'+-----------------------------------+')
@@ -26,7 +27,8 @@ def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, i
     return df_cvec
 
 
-def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
+def unigrams(df: DataFrame, df_2: DataFrame = None) -> Set:
+
     print(r'+-----------------------------------+')
     print(r'|             Unigrams              |')
     print(r'+-----------------------------------+')
@@ -36,6 +38,7 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
     df_top_5_set = set(df_top_5.index)
     print(f'\nDF:\n{df_top_5}')
 
+    df_2_top_5_set = None
     if df_2 is not None:
         df_2_top_5: Series = df_2.sum(
             axis=0).sort_values(ascending=False).head(5)
@@ -52,6 +55,7 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> set:
 
 
 def get_stop_words(unigrams: List, bigrams: List) -> List:
+
     print(r'+-----------------------------------+')
     print(r'|            Stop Words             |')
     print(r'+-----------------------------------+')
