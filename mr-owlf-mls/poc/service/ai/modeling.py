@@ -15,7 +15,7 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
     factory = AIFactory(x, y, stop_words)
     clf, vectorizer, gs_score = factory.get_classifier()
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(x, y, random_state=42, stratify=y)
 
     vectorizer.fit(X_train)
 
