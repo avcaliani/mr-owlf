@@ -1,15 +1,14 @@
 from typing import Tuple, List
+
 import numpy as np
 from pandas import DataFrame
 from sklearn import metrics
-from sklearn.metrics import accuracy_score, recall_score, precision_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
 from service.ai.factory import AIFactory
 
 
 def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
-
     df['subreddit'].value_counts(normalize=True)
     x, y = df['title'], df['subreddit']
 
@@ -19,7 +18,6 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
 
 
 def train(df: DataFrame, clf: any, vectorizer: any, gs_score: any) -> Tuple[any, any]:
-
     df['subreddit'].value_counts(normalize=True)
     X, y = df['title'], df['subreddit']
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
@@ -35,7 +33,6 @@ def train(df: DataFrame, clf: any, vectorizer: any, gs_score: any) -> Tuple[any,
 
 
 def show_details(clf, vectorizer, gs_score, Xcvec_train, y_train, Xcvec_test, y_test, preds) -> None:
-
     cnf_matrix = metrics.confusion_matrix(y_test, preds)
     tn_fp, fn_tp = np.array(cnf_matrix).tolist()
     tn, fp = tn_fp
@@ -50,6 +47,6 @@ def show_details(clf, vectorizer, gs_score, Xcvec_train, y_train, Xcvec_test, y_
     print(f'Accuracy                 : {round(metrics.accuracy_score(y_test, preds) * 100, 2)}%')
     print(f'Precision                : {round(metrics.precision_score(y_test, preds) * 100, 2)}%')
     print(f'Recall                   : {round(metrics.recall_score(y_test, preds) * 100, 2)}%')
-    print(f'Specificity              : {round((tn/(tn+fp)) * 100, 2)}%')
-    print(f'Misclassification Rate   : {round((fp+fn)/(tn+fp+fn+tn) * 100, 2)}%')
+    print(f'Specificity              : {round((tn / (tn + fp)) * 100, 2)}%')
+    print(f'Misclassification Rate   : {round((fp + fn) / (tn + fp + fn + tn) * 100, 2)}%')
     print(f'Confusion Matrix\n{DataFrame(cnf_matrix).head()}\n')

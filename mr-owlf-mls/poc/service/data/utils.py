@@ -2,7 +2,6 @@ from pandas import DataFrame, to_datetime, read_csv
 
 
 def read(file_name: str) -> DataFrame:
-
     print(r'+-----------------------------------+')
     print(r'|           Reading File            |')
     print(r'+-----------------------------------+')
@@ -15,7 +14,6 @@ def read(file_name: str) -> DataFrame:
 
 
 def clean_data(df: DataFrame) -> None:
-
     print(r'+-----------------------------------+')
     print(r'|        Data Frame Clean Up        |')
     print(r'+-----------------------------------+')
@@ -38,7 +36,6 @@ def clean_data(df: DataFrame) -> None:
 
 
 def show_statistics(df: DataFrame) -> None:
-
     print(r'+-----------------------------------+')
     print(r'|       Data Frame Statistics       |')
     print(r'+-----------------------------------+')
