@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import DataFrame
 
 import service.ai.modeling as modeling
-import service.ai.process as process
+from service.process import Process
 import service.ai.utils as ai
 import service.data.utils as data
 
@@ -74,9 +74,10 @@ sentences = [
     '12356487984158641351568463213851684132168461'
 ]
 
+process = Process(clf, vectorizer)
 for sentence in sentences:
     print(f'\n{ME}')
-    process.run(clf, vectorizer, sentence)
+    process.run(sentence)
 
 # TODO: Future - Read data from Mongo
 # TODO: Future - Create translator

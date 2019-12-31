@@ -14,12 +14,7 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
 
     factory = AIFactory(x, y, stop_words)
     clf, vectorizer, gs_score = factory.get_classifier()
-    return train(df, clf, vectorizer, gs_score)
 
-
-def train(df: DataFrame, clf: any, vectorizer: any, gs_score: any) -> Tuple[any, any]:
-    df['subreddit'].value_counts(normalize=True)
-    X, y = df['title'], df['subreddit']
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, stratify=y)
 
     vectorizer.fit(X_train)
