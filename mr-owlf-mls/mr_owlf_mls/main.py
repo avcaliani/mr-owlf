@@ -1,49 +1,39 @@
-from os import environ as env
-from _pickle import dump
 from logging import getLogger
-from mongodb.cluster import Cluster
+from os import environ as env
 
-from cassandra.cluster import Session
 from pandas import DataFrame
-from service.nlp_service import NLPService
-from util import database as db
+from pymongo import MongoClient
+from pymongo.database import Database
+
+from repository.post import PostRepository
+from util import database
 from util.log import init
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../.shared/clf.pkl')
+DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
 
 init()
 log = getLogger('root')
 
 
-def run(conn: Session) -> None:
-    log.info(f'Current Posts -> "{conn.execute("SELECT COUNT(*) FROM posts")}"')
-    rows = conn.execute('SELECT * FROM posts')
-    posts: DataFrame = rows._current_rows
-    print(posts.head())
-    _results = []
-    for index, post in posts.iterrows():
-        _results.append({
-            'author': post.author, 'title': post.title
-        })
-        log.info(f'{post.author}, {post.title}')
-
-    out_file = open(CLF_FILE, 'wb')
-    dump(list(_results), out_file, -1)
-    out_file.close()
-    NLPService().exec(posts)
+def run(db: Database) -> None:
+    repository = PostRepository(db)
+    log.info(f'"{repository.count()}" records found!')
+    posts: DataFrame = repository.find()
+    print(posts.head(5))
+    print(posts.tail(5))
 
 
 if __name__ == '__main__':
-    log.info('Starting Mr. Owlf: Machine Learning Service...')
-    _conn: Session = db.connect()
-    # try:
-    run(_conn)
-    # except Exception as ex:
-    #     log.fatal(f'Application has been interrupted!\n{ex}')
-    # finally:
-    #     db.disconnect(_conn)
-    #     log.info('See ya!')
+    log.info('Starting Mr. Owlf: Data Stream Service...')
+    client: MongoClient = database.connect()
+    try:
+        run(client[DB_NAME])
+    except Exception as ex:
+        log.fatal(f'Application has been interrupted!\n{ex}')
+    finally:
+        database.disconnect(client)
+        log.info('See ya!')
