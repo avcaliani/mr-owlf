@@ -16,14 +16,13 @@ class PostRepository:
         self.db = db
 
     def add(self, posts: DataFrame) -> None:
-
         dao: Collection = self.db['posts']
         for index, post in posts.iterrows():
             result = dao.insert_one({
-                "author"        : post.author,
-                "title"         : post.title,
-                "timestamp"     : post.timestamp,
-                "domain"        : post.domain,
+                "author": post.author,
+                "title": post.title,
+                "timestamp": post.timestamp,
+                "domain": post.domain,
                 "classification": int(post.__classification__)
             })
             self.log.debug('Inserted post: {0}'.format(result.inserted_id))

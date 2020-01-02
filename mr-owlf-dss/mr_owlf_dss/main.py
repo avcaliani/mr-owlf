@@ -1,10 +1,11 @@
 from logging import getLogger
 from os import environ as env
 
-from ingestor.reddit import Reddit
 from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
+
+from ingestor.reddit import Reddit
 from repository.post import PostRepository
 from util import database as db
 from util.log import init
