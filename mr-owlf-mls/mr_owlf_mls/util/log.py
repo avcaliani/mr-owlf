@@ -1,5 +1,5 @@
-from os import environ as env
 from logging import StreamHandler, FileHandler, Formatter, getLogger, DEBUG, INFO
+from os import environ as env
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
@@ -10,7 +10,6 @@ LOG_FILE = env.get('MR_OWLF_LOG_FILE', './mr-owlf-mls.log')
 
 
 def init() -> None:
-
     # Console Handler
     _console = StreamHandler()
     _console.setLevel(DEBUG)

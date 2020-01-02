@@ -6,6 +6,9 @@ from pymongo import MongoClient
 from pymongo.database import Database
 
 from repository.post import PostRepository
+from service import modeling
+from service.process import Process
+from util import ai
 from util import database
 from util.log import init
 
@@ -20,11 +23,33 @@ log = getLogger('root')
 
 
 def run(db: Database) -> None:
+
     repository = PostRepository(db)
-    log.info(f'"{repository.count()}" records found!')
-    posts: DataFrame = repository.find()
-    print(posts.head(5))
-    print(posts.tail(5))
+
+    log.info(f'"{repository.count()}" records found!\n')
+    df: DataFrame = repository.find()
+
+    cvec_df: DataFrame = ai.count_vectorizer(df)
+    unigrams = list(ai.unigrams(cvec_df))
+
+    cvec_df: DataFrame = ai.count_vectorizer(df, ngram_range=(2, 2))
+    bigrams = list(ai.unigrams(cvec_df))
+
+    stop_words = ai.get_stop_words(unigrams, bigrams)
+
+    clf, vectorizer = modeling.get_model(df, stop_words)
+
+    # FIXME: Remove it
+    sentences = [
+        'San Diego backyard shed rents for $1,050 a month',
+        'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
+        '12356487984158641351568463213851684132168461'
+    ]
+
+    process = Process(clf, vectorizer)
+    for sentence in sentences:
+        process.run(sentence)
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@ class PostRepository:
                 "title"         : post.title,
                 "timestamp"     : post.timestamp,
                 "domain"        : post.domain,
-                "classification": str(post.__classification__)
+                "classification": int(post.__classification__)
             })
             self.log.debug('Inserted post: {0}'.format(result.inserted_id))
 
