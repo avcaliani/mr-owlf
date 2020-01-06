@@ -19,7 +19,7 @@ By Anthony Vilarim Caliani
 - 📦 **[mr-owlf-dss](mr-owlf-dss/README.md)**: Mr. Owlf Data Stream Services
 - 🤖 **[mr-owlf-mls](mr-owlf-mls/README.md)**: Mr. Owlf Machine Learning Service
 - 🕹 **[mr-owlf-web](mr-owlf-web/README.md)**: Mr. Owlf Web Application
-- 👨‍🔬 **[mr-owlf-poc](mr-owlf-poc/README.md)**: Mr. Owlf POC
+- 👨‍🔬 **[mr-owlf-poc](mr-owlf-poc/README.md)**: Mr. Owlf Proof of Concept
 
 ## Architecture
 ![architecture](.md/architecture.jpg)
