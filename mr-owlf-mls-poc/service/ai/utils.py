@@ -7,7 +7,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, int] = (1, 1)) -> DataFrame:
-
     print(r'+-----------------------------------+')
     print(r'|         Count Vectorizer          |')
     print(r'+-----------------------------------+')
@@ -28,7 +27,6 @@ def count_vectorizer(df: DataFrame, filter_value: int, ngram_range: Tuple[int, i
 
 
 def unigrams(df: DataFrame, df_2: DataFrame = None) -> Set:
-
     print(r'+-----------------------------------+')
     print(r'|             Unigrams              |')
     print(r'+-----------------------------------+')
@@ -55,7 +53,6 @@ def unigrams(df: DataFrame, df_2: DataFrame = None) -> Set:
 
 
 def get_stop_words(unigrams: List, bigrams: List) -> List:
-
     print(r'+-----------------------------------+')
     print(r'|            Stop Words             |')
     print(r'+-----------------------------------+')

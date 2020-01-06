@@ -9,7 +9,6 @@ from service.ai.factory import AIFactory
 
 
 def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
-
     df['subreddit'].value_counts(normalize=True)
     x, y = df['title'], df['subreddit']
 
@@ -29,7 +28,6 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
 
 
 def show_details(clf, vectorizer, gs_score, Xcvec_train, y_train, Xcvec_test, y_test, preds) -> None:
-
     cnf_matrix = metrics.confusion_matrix(y_test, preds)
     tn_fp, fn_tp = np.array(cnf_matrix).tolist()
     tn, fp = tn_fp
@@ -37,8 +35,8 @@ def show_details(clf, vectorizer, gs_score, Xcvec_train, y_train, Xcvec_test, y_
 
     print(f'Classifier               : {type(clf).__name__}')
     print(f'Vectorizer               : {type(vectorizer).__name__}')
-    print(f'Best Params              : {gs_score["best_params"]}%')
-    print(f'Best Score (Grid Search) : {gs_score["best_score"]}')
+    print(f'Best Params              : {gs_score["best_params"]}')
+    print(f'Best Score (Grid Search) : {gs_score["best_score"]}%')
     print(f'Train Score              : {round(clf.score(Xcvec_train, y_train) * 100, 2)}%')
     print(f'Test Score               : {round(clf.score(Xcvec_test, y_test) * 100, 2)}%')
     print(f'Accuracy                 : {round(metrics.accuracy_score(y_test, preds) * 100, 2)}%')
