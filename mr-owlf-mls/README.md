@@ -6,17 +6,18 @@ By Anthony Vilarim Caliani
 ## Description
 Mr. Owlf Machine Learning Service project.
 
-**TODO**: Add more stuff here...
-
 ## Running Locally
 
 > 👉 Before run this script make sure that you have prepared your...
-> - Python 3 virtual environment 
 > - MongoDB instance
 
 ```bash
 # That's all buddy...
-python main.py
+./start-dev.sh
+
+# If you want to create a python package using `setup.py`, you can do it executing this command.
+# WARNING! Before running make sure that you are using project's VEnv.
+python setup.py sdist
 ```
 
 ---

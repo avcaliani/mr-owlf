@@ -26,7 +26,11 @@ error() {
 }
 
 build_image() {
-  cd "./$1" && docker build -f DockerFile -t "$1" . && cd ..
+  if [[ "$(docker images -q $1 2> /dev/null)" == "" ]]; then
+    cd "./$1" && docker build -f DockerFile -t "$1" . && cd ..
+  else
+    echo "Image '$1' already exists!"
+  fi
 }
 
 
@@ -69,28 +73,18 @@ case "$1" in
     build_image "mr-owlf-mls"
     build_image "mr-owlf-api"
     docker-compose up -d
-    if [ "$2" == "--init-db" ]; then
-      sleep 30
-      info "(Cassandra) Configuring database..."
-      docker exec -it cassandra-node-01 cqlsh -f /app/init-cassandra.cql
-    fi
     ;;
 
   stop)
     cool "Cleaning things up..."
-    docker-compose stop
-    docker stop $(docker ps -a -q)
-    if [ "$2" == "-rm" ]; then
-      docker rm $(docker ps -a -q)
-    fi
+    docker-compose down
     ;;
 
   -h)
-    info "  Available Commands:"
-    info "   - start           : Start Application"
-    info "   - start --init-db : Start Application and start"
-    info "   - stop            : Stop Application"
-    info "   - stop -rm        : Stop Application and remove all containers"
+    info "[ AVAILABLE COMMANDS ]"
+    info " -h    : Help"
+    info " start : Start Application"
+    info " stop  : Stop Application"
     ;;
 
   *)

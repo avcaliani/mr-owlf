@@ -17,12 +17,12 @@ class Reddit:
         self.log.debug(f'Data Directory: "{DATA_DIR}"')
 
     def clean_data(self, posts: DataFrame) -> None:
-        posts.drop_duplicates(subset='title', inplace=True)             # Drop duplicate rows
-        posts['title'] = posts['title'].str.replace('[^\w\s]', ' ')     # Remove punctuation
-        posts['title'] = posts['title'].str.replace('[^A-Za-z]', ' ')   # Remove numbers
-        posts['title'] = posts['title'].str.replace('\s{2,}', ' ')      # Make sure any double-spaces are single
-        posts['title'] = posts['title'].str.lower()                     # Transform all text to lowercase
-        posts.fillna("", inplace=True)                                  # Remove null values records
+        posts.drop_duplicates(subset='title', inplace=True)  # Drop duplicate rows
+        posts['title'] = posts['title'].str.replace('[^\w\s]', ' ')  # Remove punctuation
+        posts['title'] = posts['title'].str.replace('[^A-Za-z]', ' ')  # Remove numbers
+        posts['title'] = posts['title'].str.replace('\s{2,}', ' ')  # Make sure any double-spaces are single
+        posts['title'] = posts['title'].str.lower()  # Transform all text to lowercase
+        posts.fillna("", inplace=True)  # Remove null values records
 
     def exec(self) -> DataFrame:
         df_onion: DataFrame = read_csv(f'{DATA_DIR}/the-onion.csv')

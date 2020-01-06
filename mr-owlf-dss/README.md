@@ -11,14 +11,18 @@ Mr. Owlf Data Stream Services project.
 ## Running Locally
 
 > 👉 Before run this script make sure that you have prepared your...
-> - Python 3 virtual environment 
 > - MongoDB instance
 
 ```bash
 # That's all buddy...
 ./start-dev.sh
+
+# If you want to create a python package using `setup.py`, you can do it executing this command.
+# WARNING! Before running make sure that you are using project's VEnv.
+python setup.py sdist
 ```
 
 ---
 
 _You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
+

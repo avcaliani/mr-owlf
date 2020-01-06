@@ -1,64 +1,64 @@
-from os import environ as env
-from _pickle import dump
 from logging import getLogger
-from mongodb.cluster import Cluster
+from os import environ as env
+
+from pandas import DataFrame
+from pymongo import MongoClient
+from pymongo.database import Database
+
+from repository.post import PostRepository
+from service import modeling
+from service.process import Process
+from util import ai
+from util import database
 from util.log import init
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
-DB_CONN = env.get('MR_OWLF_DB_CONN', '0.0.0.0')
-DB_PORT = env.get('MR_OWLF_DB_PORT', '9042')
-DB_KEYSPACE = env.get('MR_OWLF_DB_KEYSPACE', 'mr_owlf_ks')
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../../.shared/clf.pkl')
+DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
 
-init()  # Initializing Logger
+init()
 log = getLogger('root')
 
-log.info("""
-        __________
-       / ___  ___ \\
-      / / @ \/ @ \ \\
-      \ \___/\___/ /\\
-       \____\/____/||
-       /     /\\\\\\\\\\//
-       |     |\\\\\\\\\\\\
-        \      \\\\\\\\\\\\
-         \______/\\\\\\\\
-          _||_||_
-           -- --
-          Mr. Owlf
-> Machine Learning Service <
-""")
+
+def run(db: Database) -> None:
+
+    repository = PostRepository(db)
+
+    log.info(f'"{repository.count()}" records found!\n')
+    df: DataFrame = repository.find()
+
+    cvec_df: DataFrame = ai.count_vectorizer(df)
+    unigrams = list(ai.unigrams(cvec_df))
+
+    cvec_df: DataFrame = ai.count_vectorizer(df, ngram_range=(2, 2))
+    bigrams = list(ai.unigrams(cvec_df))
+
+    stop_words = ai.get_stop_words(unigrams, bigrams)
+
+    clf, vectorizer = modeling.get_model(df, stop_words)
+
+    # FIXME: Remove it
+    sentences = [
+        'San Diego backyard shed rents for $1,050 a month',
+        'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
+        '12356487984158641351568463213851684132168461'
+    ]
+
+    process = Process(clf, vectorizer)
+    for sentence in sentences:
+        process.run(sentence)
 
 
-def run():
-    log.info(f'Connecting to our cluster...')
-    cluster = Cluster([DB_CONN], port=int(DB_PORT))
-    session = cluster.connect(DB_KEYSPACE, wait_for_all_pools=True)
-
-    log.info(f'Posts: {session.execute("SELECT COUNT(*) FROM posts").one()[0]}')
-    rows = session.execute('SELECT * FROM posts')
-    _results = []
-    for row in rows:
-        _results.append({
-            'author': row.author, 'title': row.title, 'author': row.content
-        })
-        log.info(f'{row.author}, {row.title}, {row.content}')
-
-    out_file = open(CLF_FILE, 'wb')
-    dump(list(_results), out_file, -1)
-    out_file.close()
-
-
-if __name__ == "__main__":
-    log.info(f"""
-Environment
-----------------------------------------
-MR_OWLF_DB_CONN     '{DB_CONN}'
-MR_OWLF_DB_PORT     '{DB_PORT}'
-MR_OWLF_DB_NAME     '{DB_KEYSPACE}'
-MR_OWLF_CLF_FILE    '{CLF_FILE}'
-    """)
-    run()
+if __name__ == '__main__':
+    log.info('Starting Mr. Owlf: Data Stream Service...')
+    client: MongoClient = database.connect()
+    try:
+        run(client[DB_NAME])
+    except Exception as ex:
+        log.fatal(f'Application has been interrupted!\n{ex}')
+    finally:
+        database.disconnect(client)
+        log.info('See ya!')
