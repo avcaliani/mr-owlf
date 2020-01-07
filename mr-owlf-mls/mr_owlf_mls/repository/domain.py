@@ -8,17 +8,17 @@ __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 
-class AuthorRepository:
+class DomainRepository:
 
     def __init__(self, db: Database):
         self.log = getLogger('root')
         self.db = db
 
     def find(self, name: str) -> any:
-        dao: Collection = self.db['authors']
-        author: dict = dao.find_one({'author': name})
-        if author is None:
+        dao: Collection = self.db['domains']
+        domain: dict = dao.find_one({'domain': name})
+        if domain is None:
             self.log.warning(f'Record not found for "{name}" author :/')
         else:
-            self.log.info(f'Record found for author "{name}":\n"{author}"')
-        return author
+            self.log.info(f'Record found for author "{name}":\n"{domain}"')
+        return domain
