@@ -47,9 +47,14 @@ def run(db: Database) -> None:
         '12356487984158641351568463213851684132168461'
     ]
 
-    process = Process(clf, vectorizer)
+    process = Process(clf, vectorizer, db)
     for sentence in sentences:
-        process.run(sentence)
+        process.run(
+            sentence=sentence,
+            author='avcaliani',
+            domain='github.com'
+            # publish_date=
+        )
 
 
 if __name__ == '__main__':
