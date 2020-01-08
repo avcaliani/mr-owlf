@@ -18,7 +18,7 @@ class DomainRepository:
         dao: Collection = self.db['domains']
         domain: dict = dao.find_one({'domain': name})
         if domain is None:
-            self.log.warning(f'Record not found for "{name}" author :/')
+            self.log.warning(f'Record not found for "{name}" domain :/')
         else:
-            self.log.info(f'Record found for author "{name}":\n"{domain}"')
+            self.log.info(f'Record found for domain "{name}":\n"{domain}"')
         return domain
