@@ -20,5 +20,5 @@ class DomainRepository:
         if domain is None:
             self.log.warning(f'Record not found for "{name}" domain :/')
         else:
-            self.log.info(f'Record found for domain "{name}":\n"{domain}"')
+            self.log.info(f'Record found for domain "{name}": "{domain}"')
         return domain

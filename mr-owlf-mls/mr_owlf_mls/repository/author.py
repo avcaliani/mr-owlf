@@ -20,5 +20,5 @@ class AuthorRepository:
         if author is None:
             self.log.warning(f'Record not found for "{name}" author :/')
         else:
-            self.log.info(f'Record found for author "{name}":\n"{author}"')
+            self.log.info(f'Record found for author "{name}": "{author}"')
         return author

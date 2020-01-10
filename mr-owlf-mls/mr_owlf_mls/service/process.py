@@ -5,6 +5,7 @@ from pandas import DataFrame
 from pymongo.database import Database
 from repository.author import AuthorRepository
 from repository.domain import DomainRepository
+from service.translator import translate
 
 FAKE = '0'
 NOT_FAKE = '1'
@@ -31,6 +32,7 @@ class Process:
         domain       (str): News domain
         publish_date (str): The UTC date that it was published [YYYY-MM-DD]
         """
+        self.log.info(f'[FINAL SCORE] Calculating score...')
         score = 0.0
         if len(kwargs) == 0:
             return score
@@ -48,18 +50,19 @@ class Process:
             score = score + (self.publish_date_score(kwargs.get('publish_date')) * 1.0)
 
         score = float(score / 10)
-        self.log.info(f'[FINAL SCORE] "{score}"')
+        self.log.info(f'[FINAL SCORE] "{score}"\n')
         return score
 
     def sentence_score(self, sentence: str) -> float:
-        data = DataFrame({'title': [sentence]})
+        data = DataFrame({'title': [translate(sentence)]})
 
         data_cvec = self.vectorizer.transform(data['title'])
         preds_prob = self.clf.predict_proba(data_cvec)
 
         fake = '{0:.2f}'.format(preds_prob[0][0])
         not_fake = '{0:.2f}'.format(preds_prob[0][1])
-        self.log.info(f'[SENTENCE]\n"{sentence}"\nProb. to be Fake "{fake}" / Not Fake "{not_fake}"')
+        self.log.info(f'[SENTENCE] "{sentence}"')
+        self.log.info(f'[SENTENCE] Prob. to be true "{not_fake}" (false "{fake}")')
         return float(preds_prob[0][1])
 
     def author_score(self, author_name: str) -> float:
