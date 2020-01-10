@@ -1,3 +1,4 @@
+from datetime import datetime
 from logging import getLogger
 
 from pandas import DataFrame
@@ -28,14 +29,14 @@ class Process:
         sentence     (str): News sentence
         author       (str): Author(s) name(s)
         domain       (str): News domain
-        publish_date (str): The date that it was published
+        publish_date (str): The UTC date that it was published [YYYY-MM-DD]
         """
         score = 0.0
         if len(kwargs) == 0:
             return score
 
         if 'sentence' in kwargs:
-            score = score + (self.sentence_score(kwargs.get('sentence')) * 1.0)
+            score = score + (self.sentence_score(kwargs.get('sentence')) * 6.5)
 
         if 'author' in kwargs:
             score = score + (self.author_score(kwargs.get('author')) * 1.25)
@@ -44,9 +45,9 @@ class Process:
             score = score + (self.domain_score(kwargs.get('domain')) * 1.25)
 
         if 'publish_date' in kwargs:
-            score = score + (self.publish_date_score(kwargs.get('publish_date')) * 0.5)
+            score = score + (self.publish_date_score(kwargs.get('publish_date')) * 1.0)
 
-        score = float(score / 4)
+        score = float(score / 10)
         self.log.info(f'[FINAL SCORE] "{score}"')
         return score
 
@@ -89,6 +90,15 @@ class Process:
         self.log.info(f'[DOMAIN] "{domain_name}" score is "{score}"')
         return score
 
-    def publish_date_score(self, date: str) -> float:
-        # TODO: Do it
-        return 0.0
+    def publish_date_score(self, publish_date: str) -> float:
+        score = -1.0
+        try:
+            date = datetime.strptime(publish_date, '%Y-%m-%d').date()
+            now = datetime.date(datetime.utcnow())
+            if date < now:
+                score = 1.0
+        except ValueError as ex:
+            self.log.warning(f'[PUBLISH DATE] "{publish_date}" is not a valid date! Message: {ex}')
+
+        self.log.info(f'[PUBLISH DATE] "{publish_date}" score is "{score}"')
+        return score

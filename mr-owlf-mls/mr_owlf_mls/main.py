@@ -41,19 +41,19 @@ def run(db: Database) -> None:
 
     # FIXME: Remove it
     sentences = [
-        'San Diego backyard shed rents for $1,050 a month',
-        'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
-        '12356487984158641351568463213851684132168461'
+        ('San Diego backyard shed rents for $1,050 a month', '2019-12-20'),
+        ('Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together', '2019-12-20'),
+        ('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam', '2021-01-01'),
+        ('12356487984158641351568463213851684132168461', 'bla')
     ]
 
     process = Process(clf, vectorizer, db)
     for sentence in sentences:
         process.run(
-            sentence=sentence,
+            sentence=sentence[0],
             author='avcaliani',
-            domain='github.com'
-            # publish_date=
+            domain='github.com',
+            publish_date=sentence[1]
         )
 
 
