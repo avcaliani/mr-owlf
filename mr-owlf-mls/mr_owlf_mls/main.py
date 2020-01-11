@@ -1,5 +1,6 @@
 from logging import getLogger
 from os import environ as env
+import pickle
 
 from pandas import DataFrame
 from pymongo import MongoClient
@@ -17,9 +18,17 @@ __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
+CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../classifier.pkl')
+VECTORIZER_FILE = env.get('MR_OWLF_VECTORIZER_FILE', '../vectorizer.pkl')
 
 init()
 log = getLogger('root')
+
+
+def save(obj: any, file: str) -> None:
+    _file = open(file, 'wb')
+    pickle.dump(obj=obj, file=_file, protocol=-1)
+    _file.close()
 
 
 def run(db: Database) -> None:
@@ -38,23 +47,8 @@ def run(db: Database) -> None:
     stop_words = ai.get_stop_words(unigrams, bigrams)
 
     clf, vectorizer = modeling.get_model(df, stop_words)
-
-    # FIXME: Remove it
-    sentences = [
-        ('San Diego backyard shed rents for $1,050 a month', '2019-12-20'),
-        ('Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together', '2019-12-20'),
-        ('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam', '2021-01-01'),
-        ('12356487984158641351568463213851684132168461', 'bla')
-    ]
-
-    process = Process(clf, vectorizer, db)
-    for sentence in sentences:
-        process.run(
-            sentence=sentence[0],
-            author='avcaliani',
-            domain='github.com',
-            publish_date=sentence[1]
-        )
+    save(clf, CLF_FILE)
+    save(vectorizer, VECTORIZER_FILE)
 
 
 if __name__ == '__main__':
