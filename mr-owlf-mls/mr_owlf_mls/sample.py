@@ -34,32 +34,60 @@ if __name__ == '__main__':
 
     sentences = [
         (
-            "A Wikipedia anunciou que será forçada a retirar a inscrição para 'Ostrich' devido à falta de financiamento",
+            "A Wikipedia anunciou que será forçada a retirar a inscrição para 'Ostrich' devido à falta de financiamento.",
             'dwaxe',
             'news.clickhole.com',
             '2019-08-10',
             'NOT_FAKE'
         ),
         (
-            'Assessores de Trump investigam denunciante que luta para identificar uma única pessoa na CIA com princípios morais',
+            'Assessores de Trump investigam denunciante que luta para identificar uma única pessoa na CIA com princípios morais.',
             'aresef',
             'politics.theonion.com',
             '2019-12-20',
             'NOT_FAKE'
         ),
         (
-            'Ofertas do "New York Times" para divulgar a identidade dos denunciantes aos leitores que se inscreverem nas próximas 24 horas',
+            'Ofertas do "New York Times" para divulgar a identidade dos denunciantes aos leitores que se inscreverem nas próximas 24 horas.',
             'Live_Think_Diagnosis',
             'theonion.com',
             '2019-01-19',
             'NOT_FAKE'
         ),
         (
-            'Novo parque temático de Hellmann contará com o rio Mayo mais longo e preguiçoso do mundo',
+            'Novo parque temático de Hellmann contará com o rio Mayo mais longo e preguiçoso do mundo.',
             'aresef',
             'theonion.com',
             '2019-01-19',
             'NOT_FAKE'
+        ),
+        (
+            'Trump diz que a China deve investigar os Bidens e dobra sua investigação na Ucrânia.',
+            'not_slim_shaddy',
+            'cnbc.com',
+            '2019-01-19',
+            'FAKE'
+        ),
+        (
+            'Russo processa Apple por "torná-lo gay" depois de receber 69 GayCoin em vez de Bitcoin.',
+            'ShkekeA doctor donated sperm 30 years ago. Now he has at least 17 kids, lawsuit alleges',
+            'telegraph.co.uk',
+            '2019-01-19',
+            'FAKE'
+        ),
+        (
+            'Um médico doou esperma há 30 anos, agora ele tem pelo menos 17 filhos.',
+            'raymf',
+            'fox13now.com',
+            '2019-01-19',
+            'FAKE'
+        ),
+        (
+            'Ex-engenheiro do Yahoo foi preso por invadir 6.000 contas à procura de fotos e vídeos íntimos',
+            'Nawaao',
+            'mazechmedia.com',
+            '2019-01-19',
+            'FAKE'
         )
     ]
 

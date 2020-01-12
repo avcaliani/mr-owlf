@@ -75,7 +75,7 @@ class Process:
         return float(preds_prob[0][1])
 
     def author_score(self, author_name: str) -> float:
-        author = self.author_repository.find(author_name)
+        author = self.author_repository.find(author_name.lower().strip())
         if author is None or 'classification' not in author:
             return 0.0
 
@@ -89,7 +89,7 @@ class Process:
         return score
 
     def domain_score(self, domain_name: str) -> float:
-        domain = self.domain_repository.find(domain_name)
+        domain = self.domain_repository.find(domain_name.lower().strip())
         if domain is None or 'classification' not in domain:
             return 0.0
 
