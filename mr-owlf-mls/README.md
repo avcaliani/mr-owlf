@@ -15,7 +15,17 @@ Mr. Owlf Machine Learning Service project.
 # That's all buddy...
 ./start-dev.sh
 
-# If you want to create a python package using `setup.py`, you can do it executing this command.
+# Try out!
+# ---------------------------
+# WARNING! Before this sample you must have been executed `./start-dev.sh` at least once...
+source .venv/bin/activate
+python mr_owlf_mls/sample.py
+deactivate
+```
+
+# Packaging
+
+```bash
 # WARNING! Before running make sure that you are using project's VEnv.
 python setup.py sdist
 ```
