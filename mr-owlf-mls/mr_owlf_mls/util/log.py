@@ -1,10 +1,6 @@
 from logging import StreamHandler, FileHandler, Formatter, getLogger, DEBUG, INFO
 from os import environ as env
 
-__author__ = 'Anthony Vilarim Caliani'
-__contact__ = 'https://github.com/avcaliani'
-__license__ = 'MIT'
-
 LOG_LEVEL = DEBUG if env.get('APP_LOG_LEVEL', 'DEBUG') == 'DEBUG' else INFO
 LOG_FILE = env.get('APP_LOG_FILE', './mr-owlf-mls.log')
 

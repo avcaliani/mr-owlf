@@ -1,5 +1,6 @@
 import pickle
-from logging import StreamHandler, FileHandler, Formatter, getLogger, DEBUG, INFO
+from logging import StreamHandler, Formatter, getLogger, DEBUG
+
 from pymongo.database import Database
 from service.process import Process
 from util import database

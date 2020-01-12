@@ -1,11 +1,10 @@
+import pickle
 from logging import getLogger
 from os import environ as env
-import pickle
 
 from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
-
 from repository.post import PostRepository
 from service.ml import modeling
 from util import ai

@@ -3,10 +3,6 @@ from logging import getLogger
 from pymongo.collection import Collection
 from pymongo.database import Database
 
-__author__ = 'Anthony Vilarim Caliani'
-__contact__ = 'https://github.com/avcaliani'
-__license__ = 'MIT'
-
 
 class AuthorRepository:
 

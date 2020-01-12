@@ -5,10 +5,6 @@ from time import sleep
 
 from pymongo import MongoClient
 
-__author__ = 'Anthony Vilarim Caliani'
-__contact__ = 'https://github.com/avcaliani'
-__license__ = 'MIT'
-
 LOG_NAME = 'root'
 DB_CONN = env.get('APP_DB_CONN', 'localhost')
 DB_PORT = env.get('APP_DB_PORT', '27017')
