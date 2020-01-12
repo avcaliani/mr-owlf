@@ -43,6 +43,7 @@ class MLFactory:
         if self.best_model is not None:
             return self.best_model
 
+        self.log.info(f'FACTORY # Calculating the best model...\n')
         models = [
             self.model_01(),
             self.model_02(),
@@ -51,7 +52,8 @@ class MLFactory:
         ]
         self.best_model = sorted(models, key=lambda v: v[2]['best_score'], reverse=True)[0]
 
-        self.log.info(f'The best model is {type(self.best_model[0]).__name__} with {type(self.best_model[1]).__name__}')
+        model_name, vectorizer_name = type(self.best_model[0]).__name__, type(self.best_model[1]).__name__
+        self.log.info(f'FACTORY # The best model is {model_name} with {vectorizer_name}')
         return self.best_model
 
     def model_01(self) -> Tuple[any, any, any]:

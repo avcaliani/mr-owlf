@@ -1,5 +1,5 @@
 import pickle
-
+from logging import StreamHandler, FileHandler, Formatter, getLogger, DEBUG, INFO
 from pymongo.database import Database
 from service.process import Process
 from util import database
@@ -7,6 +7,15 @@ from util import database
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
+
+
+def init_log():
+    logger = getLogger('root')
+    logger.setLevel(DEBUG)
+    _console = StreamHandler()
+    _console.setLevel(DEBUG)
+    _console.setFormatter(Formatter(fmt='\033[1;35;40m[SAMPLE] \033[1;32;40m[%(levelname)s]\033[0m %(message)s'))
+    logger.addHandler(_console)
 
 
 def load(file: str) -> any:
@@ -18,34 +27,35 @@ def load(file: str) -> any:
 
 if __name__ == '__main__':
 
+    init_log()
     db: Database = database.connect()['mr-owlf-db']
     clf = load('./classifier.pkl')
     vectorizer = load('./vectorizer.pkl')
 
     sentences = [
         (
-            'more people should have donated wikipedia has announced they will be forced to take down their entry for ostrich due to lack of funding',
+            "A Wikipedia anunciou que será forçada a retirar a inscrição para 'Ostrich' devido à falta de financiamento",
             'dwaxe',
             'news.clickhole.com',
             '2019-08-10',
             'NOT_FAKE'
         ),
         (
-            'trump aides investigating whistleblower struggling to identify single person in cia with moral principles',
+            'Assessores de Trump investigam denunciante que luta para identificar uma única pessoa na CIA com princípios morais',
             'aresef',
             'politics.theonion.com',
             '2019-12-20',
             'NOT_FAKE'
         ),
         (
-            'new york times offers to disclose whistleblower identity to readers who subscribe in next hours',
+            'Ofertas do "New York Times" para divulgar a identidade dos denunciantes aos leitores que se inscreverem nas próximas 24 horas',
             'Live_Think_Diagnosis',
             'theonion.com',
             '2019-01-19',
             'NOT_FAKE'
         ),
         (
-            'new hellmann s theme park to feature world s longest lazy mayo river',
+            'Novo parque temático de Hellmann contará com o rio Mayo mais longo e preguiçoso do mundo',
             'aresef',
             'theonion.com',
             '2019-01-19',
@@ -61,4 +71,3 @@ if __name__ == '__main__':
             domain=sentence[2],
             publish_date=sentence[3]
         )
-        print(f'Score: {score}')

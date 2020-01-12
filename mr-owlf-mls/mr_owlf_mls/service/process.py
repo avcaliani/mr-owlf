@@ -41,7 +41,7 @@ class Process:
                        publish_date (str): The UTC date that it was published [YYYY-MM-DD]
         :return: Score
         """
-        self.log.info(f'[FINAL SCORE] Calculating score...')
+        self.log.info(f'SCORE # Calculating score...')
         score = 0.0
         if len(kwargs) == 0:
             return score
@@ -59,7 +59,7 @@ class Process:
             score = score + (self.publish_date_score(kwargs.get('publish_date')) * 1.0)
 
         score = float(score / 10)
-        self.log.info(f'[FINAL SCORE] "{score}"\n')
+        self.log.info(f'SCORE # "{score}"\n')
         return score
 
     def sentence_score(self, sentence: str) -> float:
@@ -70,8 +70,8 @@ class Process:
 
         fake = '{0:.2f}'.format(preds_prob[0][0])
         not_fake = '{0:.2f}'.format(preds_prob[0][1])
-        self.log.info(f'[SENTENCE] "{sentence}"')
-        self.log.info(f'[SENTENCE] Prob. to be true "{not_fake}" (false "{fake}")')
+        self.log.info(f'SENTENCE # Prob. to be true "{not_fake}" (false "{fake}")')
+
         return float(preds_prob[0][1])
 
     def author_score(self, author_name: str) -> float:
@@ -85,7 +85,7 @@ class Process:
         total = good + bad
         score = 5.0 if total == 0 else float(good / total)
 
-        self.log.info(f'[AUTHOR] "{author_name}" score is "{score}"')
+        self.log.info(f'AUTHOR # "{author_name}" score is "{score}"')
         return score
 
     def domain_score(self, domain_name: str) -> float:
@@ -99,7 +99,7 @@ class Process:
         total = good + bad
         score = 5.0 if total == 0 else float(good / total)
 
-        self.log.info(f'[DOMAIN] "{domain_name}" score is "{score}"')
+        self.log.info(f'DOMAIN # "{domain_name}" score is "{score}"')
         return score
 
     def publish_date_score(self, publish_date: str) -> float:
@@ -110,7 +110,7 @@ class Process:
             if date < now:
                 score = 1.0
         except ValueError as ex:
-            self.log.warning(f'[PUBLISH DATE] "{publish_date}" is not a valid date! Message: {ex}')
+            self.log.warning(f'PUBLISH DATE # "{publish_date}" is not a valid date! Message: {ex}')
 
-        self.log.info(f'[PUBLISH DATE] "{publish_date}" score is "{score}"')
+        self.log.info(f'PUBLISH DATE # "{publish_date}" score is "{score}"')
         return score

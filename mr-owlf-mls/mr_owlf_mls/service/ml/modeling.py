@@ -17,7 +17,6 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
     :param stop_words: Stop Words
     :return: Tuple[Classifier, Vectorizer]
     """
-    log.info(f'[AI] [SELECT MODEL]')
     df['classification'].value_counts(normalize=True)
     x, y = df['title'], df['classification']
 

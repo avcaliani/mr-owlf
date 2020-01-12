@@ -16,25 +16,24 @@ __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
-DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', './classifier.pkl')
-VECTORIZER_FILE = env.get('MR_OWLF_VECTORIZER_FILE', './vectorizer.pkl')
+DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
+CLF_FILE = env.get('APP_CLF_FILE', './classifier.pkl')
+VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', './vectorizer.pkl')
 
 init()
 log = getLogger('root')
 
 
 def save(obj: any, file: str) -> None:
+    log.info(f'Saving file "{file}"')
     _file = open(file, 'wb')
     pickle.dump(obj=obj, file=_file, protocol=-1)
     _file.close()
 
 
 def run(db: Database) -> None:
-
     repository = PostRepository(db)
-
-    log.info(f'"{repository.count()}" records found!\n')
+    log.info(f'DB # "{repository.count()}" records found!\n')
     df: DataFrame = repository.find()
 
     cvec_df: DataFrame = ai.count_vectorizer(df)
