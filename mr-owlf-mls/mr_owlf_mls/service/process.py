@@ -6,6 +6,7 @@ from pymongo.database import Database
 from repository.author import AuthorRepository
 from repository.domain import DomainRepository
 from service.translator import translate
+from util.data import clean
 
 FAKE = '0'
 NOT_FAKE = '1'
@@ -62,7 +63,7 @@ class Process:
         return score
 
     def sentence_score(self, sentence: str) -> float:
-        data = DataFrame({'title': [translate(sentence)]})
+        data = DataFrame({'title': [clean(translate(sentence))]})
 
         data_cvec = self.vectorizer.transform(data['title'])
         preds_prob = self.clf.predict_proba(data_cvec)

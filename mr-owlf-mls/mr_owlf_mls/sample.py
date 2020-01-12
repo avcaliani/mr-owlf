@@ -19,8 +19,8 @@ def load(file: str) -> any:
 if __name__ == '__main__':
 
     db: Database = database.connect()['mr-owlf-db']
-    clf = load('../classifier.pkl')
-    vectorizer = load('../vectorizer.pkl')
+    clf = load('./classifier.pkl')
+    vectorizer = load('./vectorizer.pkl')
 
     sentences = [
         (
