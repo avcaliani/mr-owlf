@@ -5,6 +5,8 @@
 # Dev
 .shared
 .data
+*.pkl
+*.log
 
 # IDEs
 .vscode

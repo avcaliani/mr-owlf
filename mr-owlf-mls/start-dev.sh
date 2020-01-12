@@ -25,7 +25,9 @@ if [ ! -d ".venv" ]; then
     python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && deactivate
 fi
 
+export APP_LOG_LEVEL="DEBUG"
 source .venv/bin/activate && python mr_owlf_mls/main.py "$@" && deactivate
+unset $APP_LOG_LEVEL
 
 echo -e "\n\033[1;32m (งツ)ว \033[00m You nailed it!\n"
 exit 0

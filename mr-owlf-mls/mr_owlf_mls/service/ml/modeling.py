@@ -3,20 +3,24 @@ from typing import Tuple, List
 
 import numpy as np
 from pandas import DataFrame
+from service.ml.factory import MLFactory
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-
-from service.factory import AIFactory
 
 log = getLogger('root')
 
 
 def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
-    log.info(f'[AI] [SELECT MODEL]')
+    """
+    Return a tuple that contains the best scored classifier and vectorizer.
+    :param df: Your data as Data Frame
+    :param stop_words: Stop Words
+    :return: Tuple[Classifier, Vectorizer]
+    """
     df['classification'].value_counts(normalize=True)
     x, y = df['title'], df['classification']
 
-    factory = AIFactory(x, y, stop_words)
+    factory = MLFactory(x, y, stop_words)
     clf, vectorizer, gs_score = factory.get_classifier()
 
     X_train, X_test, y_train, y_test = train_test_split(x, y, random_state=42, stratify=y)

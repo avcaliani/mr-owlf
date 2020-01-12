@@ -1,13 +1,12 @@
+import pickle
 from logging import getLogger
 from os import environ as env
 
 from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
-
 from repository.post import PostRepository
-from service import modeling
-from service.process import Process
+from service.ml import modeling
 from util import ai
 from util import database
 from util.log import init
@@ -16,17 +15,24 @@ __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
-DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
+DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
+CLF_FILE = env.get('APP_CLF_FILE', './classifier.pkl')
+VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', './vectorizer.pkl')
 
 init()
 log = getLogger('root')
 
 
+def save(obj: any, file: str) -> None:
+    log.info(f'Saving file "{file}"')
+    _file = open(file, 'wb')
+    pickle.dump(obj=obj, file=_file, protocol=-1)
+    _file.close()
+
+
 def run(db: Database) -> None:
-
     repository = PostRepository(db)
-
-    log.info(f'"{repository.count()}" records found!\n')
+    log.info(f'DB # "{repository.count()}" records found!\n')
     df: DataFrame = repository.find()
 
     cvec_df: DataFrame = ai.count_vectorizer(df)
@@ -38,18 +44,8 @@ def run(db: Database) -> None:
     stop_words = ai.get_stop_words(unigrams, bigrams)
 
     clf, vectorizer = modeling.get_model(df, stop_words)
-
-    # FIXME: Remove it
-    sentences = [
-        'San Diego backyard shed rents for $1,050 a month',
-        'Are You The Whistleblower? Trump Boys Ask White House Janitor After Giving Him Serum Of All The Sodas Mixed Together',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at diam ac orci pharetra scelerisque non sit amet turpis. Donec quis erat quam',
-        '12356487984158641351568463213851684132168461'
-    ]
-
-    process = Process(clf, vectorizer)
-    for sentence in sentences:
-        process.run(sentence)
+    save(clf, CLF_FILE)
+    save(vectorizer, VECTORIZER_FILE)
 
 
 if __name__ == '__main__':
