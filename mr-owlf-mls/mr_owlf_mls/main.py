@@ -7,8 +7,7 @@ from pymongo import MongoClient
 from pymongo.database import Database
 
 from repository.post import PostRepository
-from service import modeling
-from service.process import Process
+from service.ml import modeling
 from util import ai
 from util import database
 from util.log import init
@@ -18,8 +17,8 @@ __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../classifier.pkl')
-VECTORIZER_FILE = env.get('MR_OWLF_VECTORIZER_FILE', '../vectorizer.pkl')
+CLF_FILE = env.get('MR_OWLF_CLF_FILE', './classifier.pkl')
+VECTORIZER_FILE = env.get('MR_OWLF_VECTORIZER_FILE', './vectorizer.pkl')
 
 init()
 log = getLogger('root')

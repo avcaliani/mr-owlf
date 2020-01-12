@@ -12,8 +12,17 @@ NOT_FAKE = '1'
 
 
 class Process:
+    """
+    This class is responsible to calculate your data score.
+    """
 
     def __init__(self, clf: any, vectorizer: any, db: Database):
+        """
+        Default constructor.
+        :param clf: Classifier
+        :param vectorizer: Vectorizer
+        :param db: Database Connection Instance
+        """
         self.log = getLogger('root')
         self.clf = clf
         self.vectorizer = vectorizer
@@ -21,16 +30,15 @@ class Process:
         self.domain_repository = DomainRepository(db)
 
     def run(self, **kwargs) -> float:
-        """Calculate news score.
-
+        """
+        Calculate news score.
         If no arguments are passed it will return "0.0" as score.
-
-        Keyword Args
-        ------------
-        sentence     (str): News sentence
-        author       (str): Author(s) name(s)
-        domain       (str): News domain
-        publish_date (str): The UTC date that it was published [YYYY-MM-DD]
+        :param kwargs: Optional arguments to calculate data score.
+                       sentence     (str): News sentence
+                       author       (str): Author(s) name(s)
+                       domain       (str): News domain
+                       publish_date (str): The UTC date that it was published [YYYY-MM-DD]
+        :return: Score
         """
         self.log.info(f'[FINAL SCORE] Calculating score...')
         score = 0.0

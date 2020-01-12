@@ -7,6 +7,11 @@ log = getLogger('root')
 
 
 def translate(value: str) -> str:
+    """
+    Translate a sentence to english.
+    :param value: Sentence
+    :return: English sentence.
+    """
     log.info(f'[TRANSLATOR] Original: {value}')
     if value is None:
         return ''

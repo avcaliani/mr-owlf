@@ -9,19 +9,25 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 
 
-class AIFactory:
-    """Algorithms factory!
-
+class MLFactory:
+    """
+    Algorithms factory.
     We are expecting a model that is better than 54% and the majority class is 1 (TheOnion).
     If the model is not better than 54%, we know the model is not performing well.
 
     Model 01: Grid Search using 'Count Vectorizer' and 'Logistic Regression'
     Model 02: Grid Search using 'Tfidf Vectorizer' and 'Logistic Regression'
-    Model 03: Grid Search using 'Count Vectorizer' and 'Multinomial Naive Bayes'
-    Model 04: Grid Search using 'Tfidf Vectorizer' and 'Multinomial Naive Bayes'
+    Model 03: Grid Search using 'Count Vectorizer' and 'Naive Bayes'
+    Model 04: Grid Search using 'Tfidf Vectorizer' and 'Naive Bayes'
     """
 
     def __init__(self, x: Series, y: Series, stop_words: List):
+        """
+        Default constructor.
+        :param x: Data
+        :param y: Classes for each datum
+        :param stop_words: Stop Words
+        """
         self.log = getLogger('root')
         self.best_model = None
         self.stop_words = stop_words
@@ -30,6 +36,10 @@ class AIFactory:
         )
 
     def get_classifier(self) -> Tuple[any, any, any]:
+        """
+        Return the best evaluated model and vectorizer.
+        :return: Tuple[Classifier, Vectorizer, Score Object]
+        """
         if self.best_model is not None:
             return self.best_model
 
@@ -66,7 +76,7 @@ class AIFactory:
         clf = LogisticRegression(C=params['lr__C'], solver='liblinear')
         vectorizer = CountVectorizer(
             ngram_range=params['cvec__ngram_range'],
-            stop_words=self.stop_words
+            stop_words=params['cvec__stop_words']
         )
         return clf, vectorizer, gs_score
 
@@ -121,7 +131,7 @@ class AIFactory:
         clf = MultinomialNB(alpha=params['nb__alpha'])
         vectorizer = CountVectorizer(
             ngram_range=params['cvec__ngram_range'],
-            stop_words=self.stop_words
+            stop_words=params['cvec__stop_words']
         )
         return clf, vectorizer, gs_score
 
