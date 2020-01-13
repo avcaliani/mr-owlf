@@ -5,7 +5,7 @@ from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
 
-from ingestor.reddit import Reddit
+import ingestor.reddit as reddit
 from repository.post import PostRepository
 from util import database as db
 from util.log import init
@@ -14,14 +14,14 @@ __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
-DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
+DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
 
 init()
 log = getLogger('root')
 
 
 def run(conn: Database) -> None:
-    posts: DataFrame = Reddit().exec()
+    posts: DataFrame = reddit.run()
     post_repository = PostRepository(conn)
     post_repository.add(posts)
     log.info(f'Current Posts -> "{post_repository.count()}"')
