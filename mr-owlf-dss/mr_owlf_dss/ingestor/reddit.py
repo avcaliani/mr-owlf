@@ -16,8 +16,11 @@ def clean_data(posts: DataFrame) -> None:
     posts['content'] = posts['content'].str.replace('\s{2,}', ' ')
     # Transform all text to lowercase
     posts['content'] = posts['content'].str.lower()
+    posts['content'] = posts['content'].str.strip()
     posts['author'] = posts['author'].str.lower()
+    posts['author'] = posts['author'].str.strip()
     posts['domain'] = posts['domain'].str.lower()
+    posts['domain'] = posts['domain'].str.strip()
     posts.fillna('', inplace=True)  # Remove null values records
 
 
