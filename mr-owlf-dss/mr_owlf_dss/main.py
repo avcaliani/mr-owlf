@@ -7,6 +7,7 @@ from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
 from repository.author import AuthorRepository
+from repository.domain import DomainRepository
 from repository.post import PostRepository
 from util import database as db
 from util.log import init
@@ -24,15 +25,18 @@ log = getLogger('root')
 def run(conn: Database) -> None:
     post_repository = PostRepository(conn)
     author_repository = AuthorRepository(conn)
+    domain_repository = DomainRepository(conn)
 
     log.info(f'Starting "Reddit" data processing..."')
     posts: DataFrame = reddit.run()
     for index, post in posts.iterrows():
         post_repository.add(post)
         statistics.author(author_repository, post)
+        statistics.domain(domain_repository, post)
 
-    log.info(f'Current Posts   -> "{post_repository.count()}"')
-    log.info(f'Current Authors -> "{author_repository.count()}"')
+    log.info(f'Posts   -> "{post_repository.count()}"')
+    log.info(f'Authors -> "{author_repository.count()}"')
+    log.info(f'Domains -> "{domain_repository.count()}"')
 
 
 if __name__ == '__main__':
