@@ -2,6 +2,7 @@ from logging import getLogger
 
 from pymongo.collection import Collection
 from pymongo.database import Database
+from pymongo.results import InsertOneResult
 
 
 class PostRepository:
@@ -11,7 +12,7 @@ class PostRepository:
         self.collection: Collection = db['posts']
 
     def add(self, post: any) -> None:
-        result = self.collection.insert_one({
+        result: InsertOneResult = self.collection.insert_one({
             'author': post.author,
             'content': post.content,
             'content_original': post.content_original,
