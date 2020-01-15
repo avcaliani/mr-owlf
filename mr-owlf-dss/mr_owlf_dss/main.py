@@ -1,11 +1,12 @@
 from logging import getLogger
 from os import environ as env
 
+import ingestor.reddit as reddit
+import service.statistics as statistics
 from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
-
-import ingestor.reddit as reddit
+from repository.author import AuthorRepository
 from repository.post import PostRepository
 from util import database as db
 from util.log import init
@@ -21,10 +22,17 @@ log = getLogger('root')
 
 
 def run(conn: Database) -> None:
-    posts: DataFrame = reddit.run()
     post_repository = PostRepository(conn)
-    post_repository.add(posts)
-    log.info(f'Current Posts -> "{post_repository.count()}"')
+    author_repository = AuthorRepository(conn)
+
+    log.info(f'Starting "Reddit" data processing..."')
+    posts: DataFrame = reddit.run()
+    for index, post in posts.iterrows():
+        post_repository.add(post)
+        statistics.author(author_repository, post)
+
+    log.info(f'Current Posts   -> "{post_repository.count()}"')
+    log.info(f'Current Authors -> "{author_repository.count()}"')
 
 
 if __name__ == '__main__':
