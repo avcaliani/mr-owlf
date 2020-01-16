@@ -32,7 +32,7 @@ def domain(repository: DomainRepository, post: any) -> None:
     repository.update(_domain['_id'], clf, count)
 
 
-def general(repository: StatisticRepository, df: DataFrame) -> dict:
+def general(repository: StatisticRepository, df: DataFrame) -> any:
     clfs = df['classification'].value_counts()
     not_fake_count = int(clfs['NOT_FAKE'] if 'NOT_FAKE' in clfs else 0)
     fake_count = int(clfs['FAKE'] if 'FAKE' in clfs else 0)
