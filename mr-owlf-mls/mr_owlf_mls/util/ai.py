@@ -13,7 +13,7 @@ def count_vectorizer(df: DataFrame, ngram_range: Tuple[int, int] = (1, 1)) -> Da
     log.debug(f'COUNT VECTORIZER # [{ngram_range}]')
     cv = CountVectorizer(stop_words='english', ngram_range=ngram_range)
     df_cvec = DataFrame(
-        cv.fit_transform(df['title']).toarray(),
+        cv.fit_transform(df['content']).toarray(),
         columns=cv.get_feature_names()
     )
     log.debug(f'COUNT VECTORIZER # Result Shape: {df_cvec.shape}\n')

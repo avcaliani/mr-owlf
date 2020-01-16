@@ -5,16 +5,12 @@ from time import sleep
 
 from pymongo import MongoClient
 
-__author__ = 'Anthony Vilarim Caliani'
-__contact__ = 'https://github.com/avcaliani'
-__license__ = 'MIT'
-
 LOG_NAME = 'root'
-DB_CONN = env.get('MR_OWLF_DB_CONN', 'localhost')
-DB_PORT = env.get('MR_OWLF_DB_PORT', '27017')
-DB_NAME = env.get('MR_OWLF_DB_NAME', 'mr-owlf-db')
-DB_USER = env.get('MR_OWLF_DB_USER', 'dss')
-DB_PASSWORD = env.get('MR_OWLF_DB_PASSWORD', 'D4t4SS')
+DB_CONN = env.get('APP_DB_CONN', 'localhost')
+DB_PORT = env.get('APP_DB_PORT', '27017')
+DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
+DB_USER = env.get('APP_DB_USER', 'dss')
+DB_PASSWORD = env.get('APP_DB_PASSWORD', 'D4t4SS')
 
 
 def connect(retry: bool = True) -> MongoClient:

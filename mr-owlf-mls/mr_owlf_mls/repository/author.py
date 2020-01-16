@@ -8,11 +8,10 @@ class AuthorRepository:
 
     def __init__(self, db: Database):
         self.log = getLogger('root')
-        self.db = db
+        self.collection: Collection = db['authors']
 
     def find(self, name: str) -> any:
-        dao: Collection = self.db['authors']
-        author: dict = dao.find_one({'author': name})
+        author: dict = self.collection.find_one({'author': name})
         if author is None:
             self.log.warning(f'Record not found for "{name}" author :/')
         else:

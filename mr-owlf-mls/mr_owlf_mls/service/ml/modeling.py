@@ -17,8 +17,11 @@ def get_model(df: DataFrame, stop_words: List) -> Tuple[any, any]:
     :param stop_words: Stop Words
     :return: Tuple[Classifier, Vectorizer]
     """
+    df['classification'] = df['classification'].map({
+        'FAKE': 0, 'NOT_FAKE': 1
+    })
     df['classification'].value_counts(normalize=True)
-    x, y = df['title'], df['classification']
+    x, y = df['content'], df['classification']
 
     factory = MLFactory(x, y, stop_words)
     clf, vectorizer, gs_score = factory.get_classifier()

@@ -8,8 +8,8 @@ from repository.domain import DomainRepository
 from service.translator import translate
 from util.data import clean
 
-FAKE = '0'
-NOT_FAKE = '1'
+FAKE = 'FAKE'
+NOT_FAKE = 'NOT_FAKE'
 
 
 class Process:
@@ -63,9 +63,9 @@ class Process:
         return score
 
     def sentence_score(self, sentence: str) -> float:
-        data = DataFrame({'title': [clean(translate(sentence))]})
+        data = DataFrame({'content': [clean(translate(sentence))]})
 
-        data_cvec = self.vectorizer.transform(data['title'])
+        data_cvec = self.vectorizer.transform(data['content'])
         preds_prob = self.clf.predict_proba(data_cvec)
 
         fake = '{0:.2f}'.format(preds_prob[0][0])
