@@ -8,11 +8,10 @@ class DomainRepository:
 
     def __init__(self, db: Database):
         self.log = getLogger('root')
-        self.db = db
+        self.collection: Collection = db['domains']
 
     def find(self, name: str) -> any:
-        dao: Collection = self.db['domains']
-        domain: dict = dao.find_one({'domain': name})
+        domain: dict = self.collection.find_one({'domain': name})
         if domain is None:
             self.log.warning(f'Record not found for "{name}" domain :/')
         else:

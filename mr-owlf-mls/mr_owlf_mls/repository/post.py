@@ -10,11 +10,11 @@ class PostRepository:
 
     def __init__(self, db: Database):
         self.log = getLogger('root')
-        self.dao: Collection = db['posts']
+        self.collection: Collection = db['posts']
 
     def find(self) -> DataFrame:
-        cursor: Cursor = self.dao.find({})
+        cursor: Cursor = self.collection.find({})
         return DataFrame(list(cursor))
 
     def count(self) -> int:
-        return self.dao.count_documents({})
+        return self.collection.count_documents({})
