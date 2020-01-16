@@ -1,5 +1,6 @@
 from logging import getLogger
 from os import environ as env
+from pprint import pformat
 
 import ingestor.reddit as reddit
 import service.statistics as statistics
@@ -9,6 +10,7 @@ from pymongo.database import Database
 from repository.author import AuthorRepository
 from repository.domain import DomainRepository
 from repository.post import PostRepository
+from repository.statistic import StatisticRepository
 from util import database as db
 from util.log import init
 
@@ -26,6 +28,7 @@ def run(conn: Database) -> None:
     post_repository = PostRepository(conn)
     author_repository = AuthorRepository(conn)
     domain_repository = DomainRepository(conn)
+    statistic_repository = StatisticRepository(conn)
 
     log.info(f'Starting "Reddit" data processing..."')
     posts: DataFrame = reddit.run()
@@ -37,6 +40,10 @@ def run(conn: Database) -> None:
     log.info(f'Posts   -> "{post_repository.count()}"')
     log.info(f'Authors -> "{author_repository.count()}"')
     log.info(f'Domains -> "{domain_repository.count()}"')
+
+    log.info(f'Calculating statistics...')
+    result: dict = statistics.general(statistic_repository, post_repository.find())
+    log.info(f'Result...\n{pformat(result)}')
 
 
 if __name__ == '__main__':
