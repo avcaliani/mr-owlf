@@ -1,12 +1,10 @@
-from os import environ as env
 from _pickle import load
-from flask import Blueprint, jsonify, make_response
+from os import environ as env
 
-__author__ = 'Anthony Vilarim Caliani'
-__contact__ = 'https://github.com/avcaliani'
-__license__ = 'MIT'
+from flask import Blueprint, jsonify
 
-CLF_FILE = env.get('MR_OWLF_CLF_FILE', '../.shared/clf.pkl')
+CLF_FILE = env.get('APP_CLF_FILE', '../.shared/classifier.pkl')
+VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../.shared/vectorizer.pkl')
 Controller = Blueprint('Controller', __name__, template_folder='templates')
 
 
