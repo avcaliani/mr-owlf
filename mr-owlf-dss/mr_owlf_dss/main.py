@@ -11,7 +11,7 @@ from repository.author import AuthorRepository
 from repository.domain import DomainRepository
 from repository.post import PostRepository
 from repository.statistic import StatisticRepository
-from util import database as db
+from util import database
 from util.log import init
 
 __author__ = 'Anthony Vilarim Caliani'
@@ -24,11 +24,11 @@ init()
 log = getLogger('root')
 
 
-def run(conn: Database) -> None:
-    post_repository = PostRepository(conn)
-    author_repository = AuthorRepository(conn)
-    domain_repository = DomainRepository(conn)
-    statistic_repository = StatisticRepository(conn)
+def run(db: Database) -> None:
+    post_repository = PostRepository(db)
+    author_repository = AuthorRepository(db)
+    domain_repository = DomainRepository(db)
+    statistic_repository = StatisticRepository(db)
 
     log.info(f'Starting "Reddit" data processing..."')
     posts: DataFrame = reddit.run()
@@ -48,11 +48,11 @@ def run(conn: Database) -> None:
 
 if __name__ == '__main__':
     log.info('Starting Mr. Owlf: Data Stream Service...')
-    client: MongoClient = db.connect()
+    client: MongoClient = database.connect()
     try:
         run(client[DB_NAME])
     except Exception as ex:
         log.fatal(f'Application has been interrupted!\n{ex}')
     finally:
-        db.disconnect(client)
+        database.disconnect(client)
         log.info('See ya!')

@@ -1,6 +1,6 @@
 from flask import Flask
 
-from controllers.controller import controller
+from controller.controller import controller
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
