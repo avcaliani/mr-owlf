@@ -3,8 +3,8 @@ from os import environ as env
 
 from flask import Blueprint, jsonify
 
-CLF_FILE = env.get('APP_CLF_FILE', '../.shared/classifier.pkl')
-VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../.shared/vectorizer.pkl')
+CLF_FILE = env.get('APP_CLF_FILE', '../.dev/classifier.pkl')
+VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../.dev/vectorizer.pkl')
 controller = Blueprint('Controller', __name__, template_folder='templates')
 
 

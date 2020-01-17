@@ -1,13 +1,13 @@
 from flask import Flask
 
-from controllers.controller import Controller
+from controllers.controller import controller
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 app = Flask(__name__, static_url_path='', static_folder='static')
-app.register_blueprint(Controller)
+app.register_blueprint(controller)
 
 
 @app.route('/')

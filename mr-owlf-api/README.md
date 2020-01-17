@@ -6,31 +6,30 @@ By Anthony Vilarim Caliani
 ## Description
 Mr. Owlf RESTfull API.
 
-**TODO**: Add more stuff here...
-
 ## Running Locally
 
-> 👉 Before run this script make sure that you have prepared your...
-> - Python 3 virtual environment 
-
 ```bash
-# Preparing our virtual environment
-python3 -m venv .venv && source .venv/bin/activate
-
-# ONLY ONCE!
-pip install -r requirements.txt
+# Preparing our environment
+./init-env.sh
 
 # Running our API locally \o/
-python main.py
+source .venv/bin/activate \
+    && python app/main.py \
+    && deactivate
+```
 
-# To finish...
-deactivate
+### Creating PKL files
+```bash
+TODO: Do it
+```
 
+### API Usage
+```bash
 # API Usage
-curl http://localhost:80/find
+curl http://localhost:3000/find
 
 # You can open it on your browser too ;)
-# http://localhost:80
+# http://localhost:3000
 ```
 
 ---
