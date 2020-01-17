@@ -1,18 +1,22 @@
-from flask import Flask
+from flask import Flask, jsonify
 
-from controller.controller import controller
+from service import statistic
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 app = Flask(__name__, static_url_path='', static_folder='static')
-app.register_blueprint(controller)
 
 
 @app.route('/')
 def home():
     return app.send_static_file('index.html')
+
+
+@app.route('/statistic', methods=['GET'])
+def get_tasks():
+    return jsonify(statistic.find_last())
 
 
 if __name__ == '__main__':
