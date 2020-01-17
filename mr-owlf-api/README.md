@@ -14,8 +14,17 @@ Mr. Owlf RESTfull API.
 > - Python 3 virtual environment 
 
 ```bash
-# That's all buddy...
+# Preparing our virtual environment
+python3 -m venv .venv && source .venv/bin/activate
+
+# ONLY ONCE!
+pip install -r requirements.txt
+
+# Running our API locally \o/
 python main.py
+
+# To finish...
+deactivate
 
 # API Usage
 curl http://localhost:80/find
