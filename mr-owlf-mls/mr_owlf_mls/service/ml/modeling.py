@@ -2,8 +2,8 @@ from logging import getLogger
 from typing import Tuple, List
 
 import numpy as np
+from mr_owlf_mls.service.ml.factory import MLFactory
 from pandas import DataFrame
-from service.ml.factory import MLFactory
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 

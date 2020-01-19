@@ -22,11 +22,15 @@ echo -e "
 
 if [ ! -d ".venv" ]; then
     echo -e "\n\033[1;32m ¯\_(ツ)_/¯ \033[00m Creating Python VEnv...\n"
-    python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && deactivate
+    python3 -m venv .venv \
+      && source .venv/bin/activate \
+      && pip install --upgrade pip \
+      && pip install -r requirements.txt \
+      && deactivate
 fi
 
 export APP_LOG_LEVEL="DEBUG"
-source .venv/bin/activate && python mr_owlf_mls/main.py "$@" && deactivate
+source .venv/bin/activate && python main.py "$@" && deactivate
 unset $APP_LOG_LEVEL
 
 echo -e "\n\033[1;32m (งツ)ว \033[00m You nailed it!\n"

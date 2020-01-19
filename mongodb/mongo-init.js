@@ -27,3 +27,11 @@ db.createUser({
         { role: "read", db: "mr-owlf-db" }
     ]
 });
+
+db.createUser({
+    user: "api",
+    pwd: "4P1",
+    roles: [
+        { role: "read", db: "mr-owlf-db" }
+    ]
+});

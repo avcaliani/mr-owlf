@@ -1,9 +1,9 @@
 import pickle
 from logging import StreamHandler, Formatter, getLogger, DEBUG
 
+from mr_owlf_mls.service.process import Process
+from mr_owlf_mls.util import database
 from pymongo.database import Database
-from service.process import Process
-from util import database
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
