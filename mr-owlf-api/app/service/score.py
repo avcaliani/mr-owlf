@@ -18,8 +18,9 @@ def is_ready() -> bool:
 
 def get_score(data: any) -> any:
     """
-    Find last statistic data available.
-    :return: Statistics
+    Calculate data score.
+    :param data: Data to be processed
+    :return: Score
     """
     conn: MongoClient = database.connect()
     process = Process(load(CLF_FILE), load(VECTORIZER_FILE), conn[DB_NAME])
