@@ -1,5 +1,6 @@
 import pickle
 from os import environ as env
+from os import path
 
 from mr_owlf_mls.service.process import Process
 from pymongo import MongoClient
@@ -9,6 +10,10 @@ from service import database
 DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
 CLF_FILE = env.get('APP_CLF_FILE', '../.dev/classifier.pkl')
 VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../.dev/vectorizer.pkl')
+
+
+def is_ready() -> bool:
+    return path.exists(CLF_FILE) and path.exists(VECTORIZER_FILE)
 
 
 def get_score(data: any) -> any:

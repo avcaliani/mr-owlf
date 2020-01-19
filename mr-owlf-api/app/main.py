@@ -24,6 +24,8 @@ def create_task():
     if request.json is None or 'sentence' not in request.json:
         abort(400)
     else:
+        if not score.is_ready():
+            abort(503)
         return jsonify(score.get_score(request.json)), 200
 
 
