@@ -1,15 +1,11 @@
-# 📦 Mr. Owlf DSS
+# 📦 Mr. Owlf Data Stream Service
 By Anthony Vilarim Caliani
 
 [![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/python-3.7.x-yellow.svg)](#)
 
-## Description
-Mr. Owlf Data Stream Services project.
-
 ## Running Locally
 
-> 👉 Before run this script make sure that you have prepared your...
-> - MongoDB instance
+> **Before running** make sure that you have prepared your "MongoDB" instance. This may help you 👉 [docker-compose](../mongodb/docker-compose.yml)
 
 ```bash
 # That's all buddy...
