@@ -1,6 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort, request
 
-from service import statistic
+from service import statistic, score
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
@@ -17,6 +17,14 @@ def home():
 @app.route('/statistic', methods=['GET'])
 def get_tasks():
     return jsonify(statistic.find_last())
+
+
+@app.route('/score', methods=['POST'])
+def create_task():
+    if request.json is None or 'sentence' not in request.json:
+        abort(400)
+    else:
+        return jsonify(score.get_score(request.json)), 200
 
 
 if __name__ == '__main__':
