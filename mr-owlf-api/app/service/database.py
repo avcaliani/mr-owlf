@@ -5,16 +5,15 @@ from time import sleep
 
 from pymongo import MongoClient
 
-LOG_NAME = 'root'
 DB_CONN = env.get('APP_DB_CONN', 'localhost')
 DB_PORT = env.get('APP_DB_PORT', '27017')
 DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
 DB_USER = env.get('APP_DB_USER', 'api')
 DB_PASSWORD = env.get('APP_DB_PASSWORD', '4P1')
+log = getLogger('root')
 
 
 def connect(retry: bool = True) -> MongoClient:
-    log = getLogger(LOG_NAME)
     log.info(f'DB Info -> [Host: "{DB_CONN}"] [Port: "{DB_PORT}"] [DB Name: "{DB_NAME}"]')
     while retry:
         try:
@@ -29,7 +28,6 @@ def connect(retry: bool = True) -> MongoClient:
 
 
 def disconnect(client: MongoClient) -> None:
-    log = getLogger(LOG_NAME)
     try:
         if client is not None:
             client.close()

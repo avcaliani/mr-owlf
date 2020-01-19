@@ -1,4 +1,5 @@
 import pickle
+from logging import getLogger
 from os import environ as env
 from os import path
 
@@ -10,10 +11,14 @@ from service import database
 DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
 CLF_FILE = env.get('APP_CLF_FILE', '../.dev/classifier.pkl')
 VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../.dev/vectorizer.pkl')
+log = getLogger('root')
 
 
 def is_ready() -> bool:
-    return path.exists(CLF_FILE) and path.exists(VECTORIZER_FILE)
+    clf = path.exists(CLF_FILE)
+    vectorizer = path.exists(VECTORIZER_FILE)
+    log.info(f'File Status: CLF "{clf}" / VECTORIZER "{vectorizer}"')
+    return clf and vectorizer
 
 
 def get_score(data: any) -> any:

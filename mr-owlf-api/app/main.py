@@ -1,12 +1,14 @@
 from flask import Flask, jsonify, abort, request
 
 from service import statistic, score
+from util import log
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'
 __license__ = 'MIT'
 
 app = Flask(__name__, static_url_path='', static_folder='static')
+log.init()
 
 
 @app.route('/')
