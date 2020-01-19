@@ -2,14 +2,13 @@ import pickle
 from logging import getLogger
 from os import environ as env
 
+from mr_owlf_mls.repository.post import PostRepository
+from mr_owlf_mls.service.ml import modeling
+from mr_owlf_mls.util import ai, database
+from mr_owlf_mls.util.log import init
 from pandas import DataFrame
 from pymongo import MongoClient
 from pymongo.database import Database
-from repository.post import PostRepository
-from service.ml import modeling
-from util import ai
-from util import database
-from util.log import init
 
 __author__ = 'Anthony Vilarim Caliani'
 __contact__ = 'https://github.com/avcaliani'

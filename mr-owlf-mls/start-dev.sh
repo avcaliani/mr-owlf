@@ -30,7 +30,7 @@ if [ ! -d ".venv" ]; then
 fi
 
 export APP_LOG_LEVEL="DEBUG"
-source .venv/bin/activate && python mr_owlf_mls/main.py "$@" && deactivate
+source .venv/bin/activate && python main.py "$@" && deactivate
 unset $APP_LOG_LEVEL
 
 echo -e "\n\033[1;32m (งツ)ว \033[00m You nailed it!\n"

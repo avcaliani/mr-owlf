@@ -1,12 +1,12 @@
 from datetime import datetime
 from logging import getLogger
 
+from mr_owlf_mls.repository.author import AuthorRepository
+from mr_owlf_mls.repository.domain import DomainRepository
+from mr_owlf_mls.service.translator import translate
+from mr_owlf_mls.util.data import clean
 from pandas import DataFrame
 from pymongo.database import Database
-from repository.author import AuthorRepository
-from repository.domain import DomainRepository
-from service.translator import translate
-from util.data import clean
 
 FAKE = 'FAKE'
 NOT_FAKE = 'NOT_FAKE'
