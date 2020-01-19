@@ -5,7 +5,7 @@ By Anthony Vilarim Caliani
 
 ## Running Locally
 
-> 👉 Before run this script make sure that you have prepared at least your "MongoDB" instance
+> **Before running** make sure that you have prepared your "MongoDB" instance. This may help you 👉 [docker-compose](../mongodb/docker-compose.yml)
 
 ```bash
 # IMPORTANT 

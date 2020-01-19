@@ -1,33 +1,31 @@
-# 🤖 Mr. Owlf MLS
+# 🤖 Mr. Owlf Machine Learning Service
 By Anthony Vilarim Caliani
 
 [![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/python-3.7.x-yellow.svg)](#)
 
-## Description
-Mr. Owlf Machine Learning Service project.
-
 ## Running Locally
 
-> 👉 Before run this script make sure that you have prepared your...
-> - MongoDB instance
+> **Before running** make sure that you have prepared your "MongoDB" instance. This may help you 👉 [docker-compose](../mongodb/docker-compose.yml)
 
 ```bash
 # That's all buddy...
 ./start-dev.sh
-
-# Try out!
-# ---------------------------
-# WARNING! Before this sample you must have been executed `./start-dev.sh` at least once...
-source .venv/bin/activate
-python mr_owlf_mls/sample.py
-deactivate
 ```
 
-# Packaging
+## Running Sample
 
 ```bash
-# WARNING! Before running make sure that you are using project's VEnv.
-python setup.py sdist
+# IMPORTANT 
+# ----------
+# Before running this sample you must have been executed "./start-dev.sh" at least once
+# to generate "classifier.pkl" and "vectorizer.pkl" files
+source .venv/bin/activate && python sample.py && deactivate
+```
+
+## Packaging
+
+```bash
+source .venv/bin/activate && python setup.py sdist && deactivate
 ```
 
 ---
