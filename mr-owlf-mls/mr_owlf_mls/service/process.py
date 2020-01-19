@@ -63,8 +63,10 @@ class Process:
         return score
 
     def sentence_score(self, sentence: str) -> float:
-        data = DataFrame({'content': [clean(translate(sentence))]})
+        if sentence is None or sentence.strip() == '':
+            return 0.0
 
+        data = DataFrame({'content': [clean(translate(sentence))]})
         data_cvec = self.vectorizer.transform(data['content'])
         preds_prob = self.clf.predict_proba(data_cvec)
 
@@ -75,6 +77,9 @@ class Process:
         return float(preds_prob[0][1])
 
     def author_score(self, author_name: str) -> float:
+        if author_name is None or author_name.strip() == '':
+            return 0.0
+
         author = self.author_repository.find(author_name.lower().strip())
         if author is None or 'classification' not in author:
             return 0.0
@@ -89,6 +94,9 @@ class Process:
         return score
 
     def domain_score(self, domain_name: str) -> float:
+        if domain_name is None or domain_name.strip() == '':
+            return 0.0
+
         domain = self.domain_repository.find(domain_name.lower().strip())
         if domain is None or 'classification' not in domain:
             return 0.0
@@ -103,6 +111,9 @@ class Process:
         return score
 
     def publish_date_score(self, publish_date: str) -> float:
+        if publish_date is None or publish_date.strip() == '':
+            return 0.0
+
         score = -1.0
         try:
             date = datetime.strptime(publish_date, '%Y-%m-%d').date()
