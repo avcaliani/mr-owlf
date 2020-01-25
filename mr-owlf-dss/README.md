@@ -12,6 +12,18 @@ By Anthony Vilarim Caliani
 ./start-dev.sh
 ```
 
+### Running on Docker
+```bash
+# Creating Docker Image
+docker build -f DockerFile -t mr-owlf-dss .
+
+# Creating Docker Container
+docker run -d --network host --name mr-owlf-dss mr-owlf-dss
+
+# Looking for logs
+docker logs mr-owlf-dss
+```
+
 ---
 
 _You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
