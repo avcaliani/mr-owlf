@@ -9,4 +9,4 @@ COPY *.py ./
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD sleep ${VARIABLE:=0} && python ./main.py
+CMD sleep ${APP_INITIAL_DELAY:=0} && python ./main.py
