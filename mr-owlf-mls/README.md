@@ -28,6 +28,18 @@ source .venv/bin/activate && python sample.py && deactivate
 source .venv/bin/activate && python setup.py sdist && deactivate
 ```
 
+## Running on Docker
+```bash
+# Creating Docker Image
+docker build -f DockerFile -t mr-owlf-mls .
+
+# Creating Docker Container
+docker run -d --network host --name mr-owlf-mls mr-owlf-mls
+
+# Looking for logs
+docker logs mr-owlf-mls
+```
+
 ---
 
 _You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
