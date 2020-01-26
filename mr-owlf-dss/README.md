@@ -12,7 +12,7 @@ By Anthony Vilarim Caliani
 ./start-dev.sh
 ```
 
-### Running on Docker
+## Running on Docker
 ```bash
 # Creating Docker Image
 docker build -f DockerFile -t mr-owlf-dss .
