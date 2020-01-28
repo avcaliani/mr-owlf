@@ -10,7 +10,7 @@ services:
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     mongodb:
         image: mongo:4.2
-        container_name: mr-owlf-mongodb
+        container_name: mongodb
         restart: always
         environment:
             MONGO_INITDB_ROOT_USERNAME: admin
