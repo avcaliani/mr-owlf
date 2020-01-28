@@ -2,7 +2,6 @@ from logging import StreamHandler, FileHandler, Formatter, getLogger, DEBUG, INF
 from os import environ as env
 
 LOG_LEVEL = DEBUG if env.get('APP_LOG_LEVEL', 'DEBUG') == 'DEBUG' else INFO
-LOG_FILE = env.get('APP_LOG_FILE', './mr-owlf-dss.log')
 
 
 def init() -> None:
@@ -14,15 +13,6 @@ def init() -> None:
         datefmt='%y.%m.%d %H:%M:%S'
     ))
 
-    # File Handler
-    _file = FileHandler(LOG_FILE, mode='w+', encoding='utf8')
-    _file.setLevel(LOG_LEVEL)
-    _file.setFormatter(Formatter(
-        fmt='[%(asctime)s][%(levelname)s] %(message)s',
-        datefmt='%y.%m.%d %H:%M:%S'
-    ))
-
     logger = getLogger('root')
     logger.setLevel(LOG_LEVEL)
-    logger.addHandler(_file)
     logger.addHandler(_console)

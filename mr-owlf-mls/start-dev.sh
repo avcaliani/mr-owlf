@@ -29,9 +29,19 @@ if [ ! -d ".venv" ]; then
       && deactivate
 fi
 
+source .venv/bin/activate
 export APP_LOG_LEVEL="DEBUG"
-source .venv/bin/activate && python main.py "$@" && deactivate
+
+if [ "$1" = "--package" ]; then
+  python setup.py sdist
+elif [ "$1" = "--sample" ]; then
+  python sample.py
+else  
+  python main.py "$@"
+fi
+
 unset $APP_LOG_LEVEL
+deactivate
 
 echo -e "\n\033[1;32m (งツ)ว \033[00m You nailed it!\n"
 exit 0
