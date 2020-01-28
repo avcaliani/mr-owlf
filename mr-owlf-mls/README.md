@@ -19,13 +19,25 @@ By Anthony Vilarim Caliani
 # ----------
 # Before running this sample you must have been executed "./start-dev.sh" at least once
 # to generate "classifier.pkl" and "vectorizer.pkl" files
-source .venv/bin/activate && python sample.py && deactivate
+./start-dev.sh --sample
 ```
 
 ## Packaging
 
 ```bash
-source .venv/bin/activate && python setup.py sdist && deactivate
+./start-dev.sh --package
+```
+
+## Running on Docker
+```bash
+# Creating Docker Image
+docker build -f DockerFile -t mr-owlf-mls .
+
+# Creating Docker Container
+docker run -d --network host --name mr-owlf-mls mr-owlf-mls
+
+# Looking for logs
+docker logs mr-owlf-mls
 ```
 
 ---

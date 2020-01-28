@@ -1,4 +1,7 @@
-from logging import StreamHandler, Formatter, getLogger, DEBUG
+from logging import StreamHandler, Formatter, getLogger, DEBUG, INFO
+from os import environ as env
+
+LOG_LEVEL = DEBUG if env.get('APP_LOG_LEVEL', 'DEBUG') == 'DEBUG' else INFO
 
 
 def init() -> None:
@@ -13,5 +16,5 @@ def init() -> None:
     ))
 
     logger = getLogger('root')
-    logger.setLevel(DEBUG)
+    logger.setLevel(LOG_LEVEL)
     logger.addHandler(console)

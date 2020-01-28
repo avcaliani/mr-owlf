@@ -1,10 +1,12 @@
-FROM python:3
+FROM python:3.7
 
-WORKDIR /usr/src/mr-owlf-dss
+WORKDIR /opt/mr-owlf-dss
 
 COPY requirements.txt ./
+COPY data ./data
 COPY mr_owlf_dss ./mr_owlf_dss
 
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 CMD [ "python", "./mr_owlf_dss/main.py" ]

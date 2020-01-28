@@ -9,8 +9,8 @@ from pymongo import MongoClient
 from service import database
 
 DB_NAME = env.get('APP_DB_NAME', 'mr-owlf-db')
-CLF_FILE = env.get('APP_CLF_FILE', '../.dev/classifier.pkl')
-VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../.dev/vectorizer.pkl')
+CLF_FILE = env.get('APP_CLF_FILE', '../tmp/classifier.pkl')
+VECTORIZER_FILE = env.get('APP_VECTORIZER_FILE', '../tmp/vectorizer.pkl')
 log = getLogger('root')
 
 

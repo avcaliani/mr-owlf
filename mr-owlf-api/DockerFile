@@ -1,7 +1,12 @@
 FROM tiangolo/uwsgi-nginx-flask:python3.7
 
-COPY requirements.txt /tmp/
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
-
 WORKDIR /app
+
+COPY requirements.txt /tmp/
+COPY tmp/mr_olwf_mls*.tar.gz /tmp/
+
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install /tmp/mr_olwf_mls*.tar.gz
+
 COPY ./app /app
