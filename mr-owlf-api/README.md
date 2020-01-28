@@ -21,6 +21,19 @@ By Anthony Vilarim Caliani
 source .venv/bin/activate && python app/main.py && deactivate
 ```
 
+## Running on Docker
+```bash
+# Creating Docker Image
+docker build -f DockerFile -t mr-owlf-api .
+
+# Creating Docker Container
+docker run -d \
+	--mount source=tmp,target=/tmp \
+	-p 80:80 \
+	--name mr-owlf-api \
+	mr-owlf-api
+```
+
 ## Creating PKL files
 To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-mls](../mr-owlf-mls/README.md) project, and then copy all generated `*.pkl` files to `./.dev/`, after that you will be ready to go.
 

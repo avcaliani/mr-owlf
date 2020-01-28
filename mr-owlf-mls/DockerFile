@@ -1,10 +1,12 @@
-FROM python:3
+FROM python:3.7
 
-WORKDIR /usr/src/mr-owlf-mls
+WORKDIR /opt/mr-owlf-mls
 
 COPY requirements.txt ./
 COPY mr_owlf_mls ./mr_owlf_mls
+COPY *.py ./
 
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD [ "python", "./mr_owlf_mls/main.py" ]
+CMD sleep ${APP_INITIAL_DELAY:=0} && python ./main.py

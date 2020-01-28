@@ -7,7 +7,7 @@ services:
     #  MONGO DB
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     db:
-        image: mongo:latest
+        image: mongo:4.2
         container_name: mr-owlf-mongodb
         restart: always
         environment:
@@ -23,56 +23,60 @@ services:
     #  DATA STREAM SERVICES
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
     dss:
-        image: mr-owlf-dss
+        image: mr-owlf-dss:latest
         container_name: mr-owlf-dss
-        # restart: always
         depends_on:
             - db
         environment:
-            MR_OWLF_ENV: "DOCKER"
-            MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-dss.log"
-            MR_OWLF_DB_CONN: db
-            MR_OWLF_DB_PORT: "27017"
-            MR_OWLF_DB_NAME: "mr-owlf-db"
-            MR_OWLF_DB_USER: "dss"
-            MR_OWLF_DB_PASSWORD: "D4t4SS"
-        volumes:
-            - ./.shared/logs:/usr/src/mr-owlf/logs/
+            APP_DB_CONN: db
+            APP_DB_PORT: "27017"
+            APP_DB_NAME: "mr-owlf-db"
+            APP_DB_USER: "dss"
+            APP_DB_PASSWORD: "D4t4SS"
+            APP_LOG_LEVEL: "INFO"
 
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     #  MACHINE LEARNING SERVICES
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
     mls:
-        image: mr-owlf-mls
+        image: mr-owlf-mls:latest
         container_name: mr-owlf-mls
-        # restart: always
         depends_on:
             - db
         environment:
-            MR_OWLF_ENV: "DOCKER"
-            MR_OWLF_LOG_FILE: "/usr/src/mr-owlf/logs/mr-owlf-mls.log"
-            MR_OWLF_DB_CONN: db
-            MR_OWLF_DB_PORT: "27017"
-            MR_OWLF_DB_NAME: "mr-owlf-db"
-            MR_OWLF_DB_USER: "mls"
-            MR_OWLF_DB_PASSWORD: "ML34rn"
-            MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
+            APP_INITIAL_DELAY: 300
+            APP_DB_CONN: db
+            APP_DB_PORT: "27017"
+            APP_DB_NAME: "mr-owlf-db"
+            APP_DB_USER: "mls"
+            APP_DB_PASSWORD: "ML34rn"
+            APP_LOG_LEVEL: "INFO"
+            APP_CLF_FILE: "/shared/classifier.pkl"
+            APP_VECTORIZER_FILE: "/shared/vectorizer.pkl"
         volumes:
-            - ./.shared:/usr/src/mr-owlf/shared/
-            - ./.shared/logs:/usr/src/mr-owlf/logs/
+            - ./.shared:/shared/
 
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
     #  API
     # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
     api:
-        image: mr-owlf-api
+        image: mr-owlf-api:latest
         container_name: mr-owlf-api
         restart: always
+        depends_on:
+            - db
         ports:
             - 80:80
         environment:
-            MR_OWLF_CLF_FILE: "/usr/src/mr-owlf/shared/clf.pkl"
+            APP_DB_CONN: db
+            APP_DB_PORT: "27017"
+            APP_DB_NAME: "mr-owlf-db"
+            APP_DB_USER: "api"
+            APP_DB_PASSWORD: "4P1"
+            APP_LOG_LEVEL: "INFO"
+            APP_CLF_FILE: "/shared/classifier.pkl"
+            APP_VECTORIZER_FILE: "/shared/vectorizer.pkl"
         volumes:
-            - ./.shared:/usr/src/mr-owlf/shared/
+            - ./.shared:/shared/
  
 

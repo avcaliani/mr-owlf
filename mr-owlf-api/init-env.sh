@@ -16,35 +16,23 @@ python_venv() {
 }
 
 echo -e "
-          __________
-         / ___  ___ \\
-        / / \033[1;32m@\033[00m \\/ \033[1;32m@\033[00m \\ \\
-        \\ \\___/\\___/ /\\
-         \\____\\/____/||
-         /     /\\\\\\\\\\\\\\\\\\//
-         |     |\\\\\\\\\\\\\\\\\\\\\\\\
-          \\      \\\\\\\\\\\\\\\\\\\\\\\\
-           \\______/\\\\\\\\\\\\\\\\
-            _||_||_
-             -- --
-            \033[1;32mMr. Owlf\033[00m
-      > Environment Setup <
+     _   ___ ___ 
+    /_\ | _ \_ _|
+   / _ \|  _/| | 
+  /_/ \_\_| |___| ENVIRONMENT
 "
 
-mkdir .dev || true
+mkdir tmp || true
 
 cd ../mr-owlf-mls/ \
-  && python_venv \
-  && source .venv/bin/activate \
-  && python setup.py sdist \
-  && deactivate \
-  && mv dist/mr_olwf_mls-*.tar.gz ../mr-owlf-api/.dev/ \
+  && ./start-dev.sh --package \
+  && mv dist/mr_olwf_mls-*.tar.gz ../mr-owlf-api/tmp/ \
   && cd - \
   && python_venv \
   && source .venv/bin/activate \
-  && pip install .dev/mr_olwf_mls-*.tar.gz \
+  && pip install tmp/mr_olwf_mls-*.tar.gz \
   && deactivate \
-  || exit 0
+  || exit 1
 
 echo -e "\n\033[1;32m (งツ)ว \033[00m You are free to go!\n"
-exit 1
+exit 0

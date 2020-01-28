@@ -27,7 +27,7 @@ error() {
 
 build_image() {
   if [[ "$(docker images -q $1 2> /dev/null)" == "" ]]; then
-    cd "./$1" && docker build -f DockerFile -t "$1" . && cd ..
+    cd "./$1" && docker build -f DockerFile -t "$1" . && cd -
   else
     echo "Image '$1' already exists!"
   fi
@@ -42,18 +42,10 @@ build_image() {
 
 
 echo -e  "
-      __________
-     / ___  ___ \\
-    / / @ \\/ @ \\ \\
-    \\ \\___/\\___/ /\\
-     \\____\\/____/||
-     /     /\\\\\\\\\\\\\\\\\\//
-     |     |\\\\\\\\\\\\\\\\\\\\\\\\
-      \\      \\\\\\\\\\\\\\\\\\\\\\\\
-       \\______/\\\\\\\\\\\\\\\\
-        _||_||_
-         -- --
-        \033[1;33mMr. Owlf\033[00m
+   __  __         ___         _  __ 
+  |  \/  |_ _    / _ \__ __ _| |/ _|
+  | |\/| | '_|  | (_) \ V  V / |  _|
+  |_|  |_|_|(_)  \___/ \_/\_/|_|_|  
 "
 
 if [ -z $(command -v docker) ]; then
@@ -69,6 +61,7 @@ fi
 case "$1" in
   start)
     cool "Starting project..."
+    cd mr-owlf-api && ./init-env.sh && cd -
     build_image "mr-owlf-dss"
     build_image "mr-owlf-mls"
     build_image "mr-owlf-api"
@@ -91,7 +84,6 @@ case "$1" in
     error "Invalid option '$1'..."
     info "See available options running with \"-h\" flag :)"
     ;;
-
 esac
 
 info "Bye!"
