@@ -15,7 +15,7 @@ Thank you very much guys!
 ## Architecture
 ![architecture](.doc/architecture.jpg)
 
-As you can see by the architectiure **Mr. Owlf** has some components like _DSS_, _MLS_... And now we are going to understand them a little bit better.
+As you can see by the architecture **Mr. Owlf** has some components like _DSS_, _MLS_... And now we are going to understand them a little bit better.
 
 ### 📦 DSS
 The **Data Stream Service** component is responsible for data ingestion and some statistics calculation. In this project we are going to use two pre-classified files, but the main idea here is to look foward adding more data sources like data streaming, web scraping and etc... By the way we can describe the project workflow by the image below.
