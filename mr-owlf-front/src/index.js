@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 import App from './App';
-import NotFound from './components/NotFound';
+import NotFound from './pages/NotFound';
 
 ReactDOM.render(
     <BrowserRouter>
