@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
-import './index.css';
+import './styles/index.scss';
 import App from './App';
 import NotFound from './pages/NotFound';
 

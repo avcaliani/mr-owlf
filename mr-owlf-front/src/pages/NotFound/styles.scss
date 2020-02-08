@@ -1,0 +1,82 @@
+@import '../../styles/index.scss';
+
+#notfound {
+    position: relative;
+    height: 100vh;
+
+    .notfound {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.notfound {
+    max-width: 410px;
+    width: 100%;
+    text-align: center;
+
+    .notfound-404 {
+        height: 280px;
+        position: relative;
+        z-index: -1;
+    }
+
+    .notfound-404 h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 230px;
+        margin: 0px;
+        font-weight: 900;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        background: url('../../assets/e404.jpg') no-repeat;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: cover;
+        background-position: center;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        color: $color-black;
+        font-size: 24px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-top: 0;
+    }
+
+    p {
+        font-family: 'Montserrat', sans-serif;
+        color: $color-black;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 20px;
+        margin-top: 0px;
+    }
+
+    a {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        text-decoration: none;
+        text-transform: uppercase;
+        background: $color-black;
+        display: inline-block;
+        padding: 15px 30px;
+        border-radius: 40px;
+        color: $color-white;
+        font-weight: 700;
+        box-shadow: 0px 4px 15px -5px $color-black;
+    }
+
+    @media only screen and (max-width: 767px) {
+        .notfound-404 {
+            height: 142px;
+        }
+
+        .notfound-404 h1 {
+            font-size: 112px;
+        }
+    }
+}
