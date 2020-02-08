@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, NavLink, useRouteMatch } from "react-router-dom";
 import Samples from './pages/Samples'
 import Statistics from './pages/Statistics'
-import logo from './logo.svg';
+import logo from './assets/logo.svg';
 import './App.css';
 
 function App() {
