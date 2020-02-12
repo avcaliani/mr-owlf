@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Statistics extends Component {
- 
-    render() {
-        return (<h3>Statistics Page</h3>);
-    }
+function Statistics() {
+    return ( <h1>Statistics Page</h1> );
 }
 
 export default Statistics;

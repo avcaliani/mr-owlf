@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class TryOut extends Component {
- 
-    render() {
-        return (<h1>Try Out Page</h1>);
-    }
+function TryOut() {
+  return ( <h1>Try Out Page</h1> );
 }
 
 export default TryOut;

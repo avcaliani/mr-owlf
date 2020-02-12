@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class About extends Component {
- 
-    render() {
-        return (<h3>Samples Page</h3>);
-    }
+function Samples() {
+    return ( <h1>Samples Page</h1> );
 }
 
-export default About;
+export default Samples;
