@@ -8,7 +8,6 @@ import './styles/index.scss';
 import 'antd/dist/antd.css';
 
 import App from './App';
-import NotFound from './pages/NotFound';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -17,7 +16,9 @@ ReactDOM.render(
                 <Redirect from='/' to='/app' />
             </Route>
             <Route path="/app" component={App} />
-            <Route path="*" component={NotFound} />
+            <Route path="*" >
+                <Redirect from='*' to='/app' />
+            </Route>
         </Switch>
     </ BrowserRouter>,
     document.getElementById('root')

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, NavLink, useRouteMatch } from "react-router-dom";
+import { Switch, Route, Redirect, NavLink, useRouteMatch } from "react-router-dom";
 
 import { Icon } from 'antd';
 
@@ -43,6 +43,9 @@ function App() {
           <Route path={`${path}/statistics`} component={Samples}>
             <Statistics />
           </Route>
+          <Route path={`${path}/*`} >
+                <Redirect from={`${path}/*`} to='/app' />
+            </Route>
         </Switch>
       </div>
       
