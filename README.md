@@ -39,9 +39,9 @@ Further information about these components can be found on [API Docs](mr-owlf-ap
 
 - 🌎 **[mr-owlf-api](mr-owlf-api/README.md)**: Mr. Owlf API
 - 📦 **[mr-owlf-dss](mr-owlf-dss/README.md)**: Mr. Owlf Data Stream Services
+- 🕹 **[mr-owlf-front](mr-owlf-front/README.md)**: Mr. Owlf Web Application
 - 🤖 **[mr-owlf-mls](mr-owlf-mls/README.md)**: Mr. Owlf Machine Learning Service
 - 👨‍🔬 **[mr-owlf-poc](.doc/poc/mr-owlf-poc.ipynb)**: Mr. Owlf Proof of Concept
-- 🕹 **[mr-owlf-web](mr-owlf-web/README.md)**: Mr. Owlf Web Application
 
 
 ## 🔥 The Hardest Part 🔥
