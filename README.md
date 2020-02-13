@@ -22,12 +22,12 @@ The **Data Stream Service** component is responsible for data ingestion and some
 ![dss](.doc/architecture-dss.jpg)
 
 ### 🤖 MLS
-The **Machine Learning Service** component is responsible for data classification and score building. This component is not only a service, It is a library as well and its workflow is described by the following image.
+The **Machine Learning Service** component is responsible for data classification and score building. This component is not only a service, It is a library as well, and its workflow is described by the following image.
 
 ![mls](.doc/architecture-mls.jpg)
 
 - **Service**: The "service" is represented by **"AI Modeling"** dashed box and it is part of the execution pipeline. It is important to say that this part will also generate our classifier and our vectorizer files to be used by "MLS" library later.
-- **Library**: The "library" is represented by **"Score"** dashed box and it is used in _Mr. Owlf API_ for example. It means that you can import this library in your own _Python_ project, besides that this library is responsible for calculating data score and two of its inputs are provided by "MLS" service (classifier and vectorizer file).
+- **Library**: The "library" is represented by **"Score"** dashed box and it is used in _Mr. Owlf API_ for example. It means that you can import this library in your own _Python_ project, besides that, this library is responsible for calculating data score and two of its inputs are provided by "MLS" service (classifier and vectorizer file).
 
 ### 🌎 API & Front-End
 Both components, **API** and **Front-End** are being used to show that we can expose and consume our Fake News detector as a service.
@@ -45,7 +45,7 @@ Further information about these components can be found on [API Docs](mr-owlf-ap
 
 
 ## 🔥 The Hardest Part 🔥
-Let's see how do we run this project...
+Let's see how we run this project...
 
 ```bash
 # Ta dahh
