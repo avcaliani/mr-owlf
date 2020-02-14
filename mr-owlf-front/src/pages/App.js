@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, NavLink, useRouteMatch } from "react-router-do
 
 import { Icon } from 'antd';
 
+import Footer from '../components/Footer'
 import Samples from './Samples'
 import Statistics from './Statistics'
 import TryOut from './TryOut'
@@ -11,9 +12,9 @@ import logo from '../assets/logo.svg';
 
 function App() {
 
-  let { path, url } = useRouteMatch();  
+    let { path, url } = useRouteMatch();  
 
-  return (
+    return (
     <div className='card'>
       <div className="header">
             <div className="logo">
@@ -48,12 +49,9 @@ function App() {
             </Route>
         </Switch>
       </div>
-      
-      <div className="footer">
-        <b>Mr. Owlf</b> is made with <Icon type="heart" theme="twoTone" twoToneColor="#eb2f96" /> in Brazil by <a href="https://github.com/avcaliani" target="_blank" rel="noopener noreferrer">@avcaliani</a>
-      </div>
+        <Footer />
     </div>
-  );
+    );
 }
 
 export default App;
