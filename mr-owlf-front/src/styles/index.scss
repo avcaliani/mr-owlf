@@ -18,7 +18,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-// FIXME: Move it to public
 .large-header {
   position: relative;
   width: 100%;
@@ -29,12 +28,12 @@ body {
   z-index: 1;
 }
 
-// FIXME: Move it to public
 .demo .large-header {
-  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/demo-bg.jpg");
+  background-image: url("../assets/app-bg.jpg");
 }
 
 
+// FIXME: Move it to component style
 .card {
   background: $color-white;
   position: fixed;
@@ -46,6 +45,7 @@ body {
   border-radius: 5px;
 }
 
+// FIXME: Move it to component style
 .header {
   margin: 20px 0;
 
@@ -101,12 +101,12 @@ body {
   }
 }
 
-
+// FIXME: Move it to component style
 .content {
 
 }
 
-
+// FIXME: Move it to component style
 .footer {
   margin: 10px 0 0 0;
   text-align: center;
