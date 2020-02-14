@@ -8,6 +8,8 @@ import Samples from './Samples'
 import Statistics from './Statistics'
 import TryOut from './TryOut'
 
+import './App.scss'
+
 function App() {
 
     let { path } = useRouteMatch();  
