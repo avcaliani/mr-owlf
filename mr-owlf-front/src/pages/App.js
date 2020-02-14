@@ -3,11 +3,11 @@ import { Switch, Route, Redirect, NavLink, useRouteMatch } from "react-router-do
 
 import { Icon } from 'antd';
 
-import Samples from './pages/Samples'
-import Statistics from './pages/Statistics'
-import TryOut from './pages/TryOut'
+import Samples from './Samples'
+import Statistics from './Statistics'
+import TryOut from './TryOut'
 
-import logo from './assets/logo.svg';
+import logo from '../assets/logo.svg';
 
 function App() {
 

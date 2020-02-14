@@ -7,7 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import './styles/index.scss';
 import 'antd/dist/antd.css';
 
-import App from './App';
+import App from './pages/App';
 
 ReactDOM.render(
     <BrowserRouter>
