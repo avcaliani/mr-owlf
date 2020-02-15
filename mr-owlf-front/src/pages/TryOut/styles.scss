@@ -1,0 +1,54 @@
+@import '../../styles/index.scss';
+
+.try-out-form {
+
+    .ant-form-item {
+        margin-bottom: 6px;
+    }
+
+    .ant-input:hover, 
+    .ant-input:focus, 
+    .ant-calendar-picker-input:hover, 
+    .ant-calendar-picker-input:focus, 
+    .ant-calendar-picker:hover, 
+    .ant-calendar-picker:focus {
+        border-color: $color-primary;
+    }
+
+    .ant-btn:hover, .ant-btn:focus {
+        border-color: $color-accent;
+    }
+
+    .ant-calendar-picker {
+        width: 100%;
+
+        i {
+            display: none;
+        }
+    }
+    
+    .submit-button {
+        background: $color-accent;
+        display: block;
+        margin: 6px auto;
+        transition: ease-in-out .3s;
+
+        &:hover {
+            background-color: lighten($color: $color-accent, $amount: 10);
+        }
+
+        i, i:hover, span, span:hover {
+            color: $color-white;
+            text-transform: uppercase;
+        }
+    }
+
+    span {
+        font-size: small;
+        color: $color-primary;
+
+        i { 
+            margin: 0 5px;
+        }
+    }
+}

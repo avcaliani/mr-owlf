@@ -17,7 +17,7 @@ function App() {
     return (
         <div className='card'>
             <Header />
-            <div className="content">
+            <div className="card-content">
                 <Switch>
                     <Route exact path={path}>
                         <TryOut />
