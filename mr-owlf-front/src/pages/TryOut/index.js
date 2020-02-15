@@ -13,7 +13,7 @@ class TryOutForm extends React.Component {
             if (!err) 
                 console.log('Received values of form: ', {
                     ...values,
-                    'publish_date': values['publish_date'].format('YYYY-MM-DD')
+                    'publish_date': values['publish_date'] ? values['publish_date'].format('YYYY-MM-DD') : undefined
                   });
             else
                 console.error('Received errors of form: ', err);
