@@ -1,7 +1,13 @@
 import React from 'react';
+import { Icon } from 'antd';
 
 function Statistics() {
-    return ( <h1>Statistics Page</h1> );
+    return (
+        <div className="working-on">
+            <Icon type="build" theme="twoTone" twoToneColor="#b46328"/>
+            <p>We are working on it...</p>
+        </div>
+    );
 }
 
 export default Statistics;

@@ -1,10 +1,5 @@
-$color-black : #000000;
 $color-white : #ffffff;
-$color-gray: #31352e;
-$color-light-gray : #eaeaea;
 $color-primary : #b46328;
-$color-primary-light: #d59f7d;
-$color-primary-dark : #826a55;
 $color-accent: #5bab5f;
 
 * {
@@ -31,4 +26,16 @@ body {
 
 .demo .large-header {
   background-image: url("../assets/app-bg.jpg");
+}
+
+.working-on {
+  i {
+    display: block;
+    font-size: 64px;
+  }
+
+  p {
+    text-align: center;
+    color: $color-primary;
+  }
 }
