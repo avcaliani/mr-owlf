@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, DatePicker, Button, Icon } from 'antd';
+import { Form, Input, DatePicker, Button, Icon, notification } from 'antd';
 
+import verify from './service.js'
 import './styles.scss';
 
 const { TextArea } = Input;
@@ -10,13 +11,19 @@ class TryOutForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) 
-                console.log('Received values of form: ', {
-                    ...values,
-                    'publish_date': values['publish_date'] ? values['publish_date'].format('YYYY-MM-DD') : undefined
-                  });
-            else
-                console.error('Received errors of form: ', err);
+            const ret = verify({
+                ...values,
+                'publish_date': values['publish_date'] ? values['publish_date'].format('YYYY-MM-DD') : undefined
+            })
+            this.notify(ret.title, ret.description, ret.icon, ret.iconColor)  
+        });
+    };
+
+    notify = (title, desc, icon, iconColor) => {
+        notification.open({
+            message: title,
+            description: desc,
+            icon: <Icon type={icon} style={{ color: iconColor }} />,
         });
     };
 
