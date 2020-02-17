@@ -1,4 +1,4 @@
-const NOTIFICATIONS = {
+const NOTIFICATIONS = { // TODO: Do it
     'FAKE': {
         icon: '', color: '', title: ''
     },
