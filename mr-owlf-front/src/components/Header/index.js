@@ -23,12 +23,12 @@ function Header() {
                 </li>
                 <li>
                     <NavLink activeClassName='active' to={`${url}/samples`}>
-                        <Icon type="fire" />Samples
+                        <Icon type="code" />Samples
                     </NavLink>
                 </li>
                 <li>
                     <NavLink activeClassName='active' to={`${url}/statistics`}>
-                        <Icon type="rocket" />Statistics
+                        <Icon type="pie-chart" />Statistics
                     </NavLink>
                 </li>
             </ul>

@@ -1,7 +1,8 @@
 import React from 'react';
+import Axios from 'axios';
 import { Form, Input, DatePicker, Button, Icon, notification } from 'antd';
 
-import verify from './service.js'
+import service from './service.js'
 import './styles.scss';
 
 const { TextArea } = Input;
@@ -11,31 +12,33 @@ class TryOutForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            const ret = verify({
+            Axios.post('http://localhost:8080/score', { // FIXME: URL by Env
                 ...values,
                 'publish_date': values['publish_date'] ? values['publish_date'].format('YYYY-MM-DD') : undefined
             })
-            this.notify(ret.title, ret.description, ret.icon, ret.iconColor)  
+            .then(response => this.notify(service.verify(response.data)))
+            .catch(err => {
+                const status = err && err.response ? err.response.status : 'NO_NETWORK';
+                this.notify(service.verifyError(status))
+            });
         });
     };
 
-    notify = (title, desc, icon, iconColor) => {
-        notification.open({
-            message: title,
-            description: desc,
-            icon: <Icon type={icon} style={{ color: iconColor }} />,
-        });
-    };
+    notify = data => notification.open({
+        message: data.title,
+        description: data.description,
+        icon: <Icon type={ data.icon } style={{ color: data.iconColor }} />,
+        duration: 10
+    });
 
     render() {
         const { getFieldDecorator } = this.props.form;
-
         return ( 
             <Form onSubmit={this.handleSubmit} className="try-out-form">
 
-                <span><Icon type="team" />Authors</span>
+                <span><Icon type="team" />Author</span>
                 <Form.Item>
-                    { getFieldDecorator('authors')(<Input placeholder="John Dale" />) }
+                    { getFieldDecorator('author')(<Input placeholder="John Dale" />) }
                 </Form.Item>
 
                 <span><Icon type="cloud" />Domain</span>
@@ -50,7 +53,7 @@ class TryOutForm extends React.Component {
 
                 <span><Icon type="coffee" />News</span>
                 <Form.Item>
-                    { getFieldDecorator('news')(<TextArea rows={1} placeholder="I saw something that I don't know if it's fake..." />) }
+                    { getFieldDecorator('sentence')(<TextArea rows={1} placeholder="I saw something that I don't know if it's fake..." />) }
                 </Form.Item>
                 <Form.Item>
                     <Button htmlType="submit" className="submit-button">Try Now</Button>
