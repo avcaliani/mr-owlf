@@ -18,7 +18,10 @@ def home():
 
 @app.route('/statistic', methods=['GET'])
 def get_tasks():
-    return jsonify(statistic.find_last())
+    result = statistic.find_last()
+    if result is None:
+        abort(503)
+    return jsonify(result)
 
 
 @app.route('/score', methods=['POST'])
