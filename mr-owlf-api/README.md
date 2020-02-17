@@ -40,7 +40,7 @@ To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-
 ## API Usage
 ```bash
 # Get statistics
-curl localhost:3000/statistic
+curl localhost:8080/statistic
 
 # Processing some data...
 curl -d '{ 
@@ -50,7 +50,7 @@ curl -d '{
 			"publish_date": "2019-08-10"
 	}' \
      -H 'Content-Type: application/json' \
-     -X POST http://localhost:3000/score
+     -X POST http://localhost:8080/score
 
 
 ```
