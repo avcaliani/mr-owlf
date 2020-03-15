@@ -12,7 +12,7 @@ class TryOutForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            Axios.post('http://localhost:8080/score', { // FIXME: URL by Env
+            Axios.post(`${process.env.REACT_APP_API}/score`, {
                 ...values,
                 'publish_date': values['publish_date'] ? values['publish_date'].format('YYYY-MM-DD') : undefined
             })
