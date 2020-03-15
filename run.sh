@@ -65,6 +65,7 @@ case "$1" in
     build_image "mr-owlf-dss"
     build_image "mr-owlf-mls"
     build_image "mr-owlf-api"
+    build_image "mr-owlf-front"
     docker-compose up -d
     ;;
 

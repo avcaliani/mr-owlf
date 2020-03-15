@@ -1,0 +1,24 @@
+#  ___      _ _    _ 
+# | _ )_  _(_) |__| |
+# | _ \ || | | / _` |
+# |___/\_,_|_|_\__,_|
+FROM node:12.16 as build-deps
+
+WORKDIR /usr/src/app
+COPY package.json yarn.lock ./
+COPY src/ src/
+COPY public/ public/
+COPY .env.prod ./.env
+RUN yarn && yarn build
+
+
+#            _          
+#  _ _  __ _(_)_ _ __ __
+# | ' \/ _` | | ' \\ \ /
+# |_||_\__, |_|_||_/_\_\
+#      |___/            
+FROM nginx:1.16-alpine
+
+COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

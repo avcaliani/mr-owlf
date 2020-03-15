@@ -1,11 +1,8 @@
 {
   "name": "mr-owlf-front",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "antd": "^3.26.9",
     "axios": "^0.19.2",
     "node-sass": "^4.13.1",
@@ -17,7 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "echo 'Tests are not implemented yet.'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
