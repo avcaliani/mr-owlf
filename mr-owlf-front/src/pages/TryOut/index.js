@@ -28,7 +28,7 @@ class TryOutForm extends React.Component {
         message: data.title,
         description: data.description,
         icon: <Icon type={ data.icon } style={{ color: data.iconColor }} />,
-        duration: 10
+        duration: 15
     });
 
     render() {

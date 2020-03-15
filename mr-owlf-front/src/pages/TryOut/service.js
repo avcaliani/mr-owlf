@@ -1,15 +1,15 @@
-const NOTIFICATIONS = { // TODO: Do it
+const NOTIFICATIONS = {
     'FAKE': {
-        icon: '', color: '', title: ''
+        icon: 'frown', color: '#ee5253', title: 'It looks to be fake! Be careful!'
     },
     'MAYBE_FAKE': {
-        icon: '', color: '', title: ''
+        icon: 'meh', color: '#ff9f43', title: 'It may be fake! Be careful!'
     },
     'MAYBE_NOT_FAKE': {
-        icon: '', color: '', title: ''
+        icon: 'meh', color: '#2e86de', title: 'It may not be fake, but be careful.'
     },
     'NOT_FAKE': {
-        icon: '', color: '', title: ''
+        icon: 'smile', color: '#10ac84', title: 'It looks to not be fake.'
     }
 };
 
