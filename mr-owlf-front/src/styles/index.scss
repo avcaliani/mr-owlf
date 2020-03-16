@@ -1,0 +1,41 @@
+$color-white : #ffffff;
+$color-primary : #b46328;
+$color-accent: #5bab5f;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.large-header {
+  position: relative;
+  width: 100%;
+  background: #111;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
+}
+
+.demo .large-header {
+  background-image: url("../assets/app-bg.jpg");
+}
+
+.working-on {
+  i {
+    display: block;
+    font-size: 64px;
+  }
+
+  p {
+    text-align: center;
+    color: $color-primary;
+  }
+}

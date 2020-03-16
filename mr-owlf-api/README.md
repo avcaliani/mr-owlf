@@ -35,12 +35,12 @@ docker run -d \
 ```
 
 ## Creating PKL files
-To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-mls](../mr-owlf-mls/README.md) project, and then copy all generated `*.pkl` files to `./.dev/`, after that you will be ready to go.
+To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-mls](../mr-owlf-mls/README.md) project, and then copy all generated `*.pkl` files to `./tmp/`, after that you will be ready to go.
 
 ## API Usage
 ```bash
 # Get statistics
-curl localhost:3000/statistic
+curl localhost:8080/statistic
 
 # Processing some data...
 curl -d '{ 
@@ -50,7 +50,7 @@ curl -d '{
 			"publish_date": "2019-08-10"
 	}' \
      -H 'Content-Type: application/json' \
-     -X POST http://localhost:3000/score
+     -X POST http://localhost:8080/score
 
 
 ```

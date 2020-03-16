@@ -1,0 +1,57 @@
+@import '../../styles/index.scss';
+
+.header {
+    margin: 20px 0;
+
+    .logo {
+        img {
+            margin: 0 auto;
+            display: block;
+            width: 128px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    }
+
+    .menu {
+        margin: 0px auto;
+        padding: 0px;
+        list-style-type: none;
+        width: fit-content;
+
+        li {
+            display: inline-block;
+
+            a {
+                color: gray;
+                display: block;
+                width: 110px;
+                text-align: center;
+                padding: 5px 10px;
+                margin: 0px 5px;
+                text-decoration: none;
+                background-image: linear-gradient(currentColor, currentColor);
+                background-position: 50% 100%;
+                background-repeat: no-repeat;
+                background-size: 0% 1px;
+                transition: background-size cubic-bezier(0, .5, 0, 1) 0.3s;
+
+                i {
+                    margin-right: 5px;
+                }
+
+                &:hover {
+                    text-decoration: none;
+                    background-size: 10px 1px;
+                }
+            }
+
+            .active {
+                color: $color-primary;
+                font-weight: bold;
+            }
+        }
+    }
+}

@@ -66,7 +66,7 @@ services:
         depends_on:
             - db
         ports:
-            - 80:80
+            - 8080:80
         environment:
             APP_DB_CONN: db
             APP_DB_PORT: "27017"
@@ -78,5 +78,16 @@ services:
             APP_VECTORIZER_FILE: "/shared/vectorizer.pkl"
         volumes:
             - ./.shared:/shared/
+    
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
+    #  FRONT
+    # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= 
+    front:
+        image: mr-owlf-front:latest
+        container_name: mr-owlf-front
+        restart: always
+        depends_on:
+            - api
+        ports:
+            - 80:80
  
-

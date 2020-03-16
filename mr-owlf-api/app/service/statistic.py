@@ -13,9 +13,10 @@ def find_last() -> any:
     :return: Statistics
     """
     conn: MongoClient = database.connect()
-    data: any = conn[DB_NAME]['statistics'] \
-        .find_one({}, sort=[('calculated_at', -1)])
-    del data['_id']
+    data: any = conn[DB_NAME]['statistics'].find_one({}, sort=[('calculated_at', -1)])
+
+    if data is not None and '_id' in data:
+        del data['_id']
 
     database.disconnect(conn)
     return data
