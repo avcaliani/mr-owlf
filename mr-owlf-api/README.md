@@ -35,7 +35,7 @@ docker run -d \
 ```
 
 ## Creating PKL files
-To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-mls](../mr-owlf-mls/README.md) project, and then copy all generated `*.pkl` files to `./.dev/`, after that you will be ready to go.
+To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-mls](../mr-owlf-mls/README.md) project, and then copy all generated `*.pkl` files to `./tmp/`, after that you will be ready to go.
 
 ## API Usage
 ```bash
