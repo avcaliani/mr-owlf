@@ -54,8 +54,3 @@ Let's see how we run this project...
 # When you finish...
 ./run.sh stop
 ````
-
-
----
-
-_You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
