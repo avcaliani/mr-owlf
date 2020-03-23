@@ -39,7 +39,3 @@ docker run -d --network host --name mr-owlf-mls mr-owlf-mls
 # Looking for logs
 docker logs mr-owlf-mls
 ```
-
----
-
-_You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
