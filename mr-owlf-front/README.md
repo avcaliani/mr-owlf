@@ -26,7 +26,3 @@ docker run -d \
 
 ## Screenshot
 ![#app](public/screenshot.jpg)
-
----
-
-_You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
