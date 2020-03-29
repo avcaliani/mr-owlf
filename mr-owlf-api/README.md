@@ -1,4 +1,4 @@
-# 🌎 Mr. Owlf API
+# 🌎 API
 By Anthony Vilarim Caliani
 
 [![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/python-3.7.x-yellow.svg)](#)
