@@ -43,12 +43,12 @@ To create `classifier.pkl` and `vectorizer.pkl` files you must execute [mr-owlf-
 curl localhost:8080/statistic
 
 # Processing some data...
-curl -d '{ 
-			"sentence": "A Wikipedia anunciou que será forçada a retirar a inscrição para Ostrich devido à falta de financiamento",
-			"author": "dwaxe", 
-			"domain": "news.clickhole.com", 
-			"publish_date": "2019-08-10"
-	}' \
+curl -d '{
+       "sentence": "A Wikipedia anunciou que será forçada a retirar a inscrição para Ostrich devido à falta de financiamento",
+       "author": "dwaxe", 
+       "domain": "news.clickhole.com", 
+       "publish_date": "2019-08-10"
+     }' \
      -H 'Content-Type: application/json' \
      -X POST http://localhost:8080/score
 
