@@ -71,7 +71,7 @@ if __name__ == '__main__':
         ),
         (
             'Russo processa Apple por "torná-lo gay" depois de receber 69 GayCoin em vez de Bitcoin.',
-            'ShkekeA doctor donated sperm 30 years ago. Now he has at least 17 kids, lawsuit alleges',
+            'cnbc.com',
             'telegraph.co.uk',
             '2019-01-19',
             'FAKE'

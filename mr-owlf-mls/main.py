@@ -48,7 +48,7 @@ def run(db: Database) -> None:
 
 
 if __name__ == '__main__':
-    log.info('Starting Mr. Owlf: Data Stream Service...')
+    log.info('Starting Mr. Owlf: Machine Learning Service...')
     client: MongoClient = database.connect()
     try:
         run(client[DB_NAME])
