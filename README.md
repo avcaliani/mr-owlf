@@ -1,7 +1,7 @@
 # 🦉 Mr. Owlf
 By Anthony Vilarim Caliani
 
-[![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#)
+![License](https://img.shields.io/github/license/avcaliani/aws-app?logo=apache&color=lightseagreen)
 
 ### Before Starting...
 I would like to thank everyone that has supported me to make it possible!
